@@ -1,0 +1,3 @@
+(library
+ (name spaml)
+ (libraries mrmime fpath angstrom fmt prettym jsonm ocplib-json-typed))
