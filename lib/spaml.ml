@@ -60,22 +60,27 @@ module Machine (Features : FV) (DecisionTree : DT) = struct
   type model = DecisionTree.model
   type filename = string
 
-  let train_and_write filename mails =
-    let oc = open_out filename in
-    List.iter
-      (fun (module F : FEATURE) -> F.(train mails |> write_db oc))
-      Features.vector;
-    close_out oc
+  let build_filename dirname (module Feature : FEATURE) =
+    dirname ^ "/" ^ Feature.name
 
-  let instanciation filename mail : model =
-    let ic = open_in filename in
+  let train_and_write dirname mails =
+    List.iter
+      (fun (module F : FEATURE) ->
+        let oc = open_out (build_filename dirname (module F)) in
+        F.(train mails |> write_db oc);
+        close_out oc)
+      Features.vector
+
+  let instanciation dirname mail : model =
     let model =
       List.fold_left
         (fun acc (module F : FEATURE) ->
-          (F.name, F.read_db ic |> F.rank mail) :: acc)
+          let ic = open_in (build_filename dirname (module F)) in
+          let db = F.read_db ic in
+          close_in ic;
+          (F.name, F.rank mail db) :: acc)
         [] Features.vector
     in
-    close_in ic;
     model
 
   let classify : model -> label = DecisionTree.classify
