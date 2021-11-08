@@ -26,8 +26,6 @@ module type FEATURE = sig
   val rank : mail -> db -> float list
   val write_db : out_channel -> db -> unit
   val read_db : in_channel -> db
-  val db_to_json : string -> db -> unit
-  val db_of_json : out_channel -> db
 end
 
 type feature_vector
@@ -42,19 +40,19 @@ end
 
 (** Decision Tree *)
 module type DT = sig
-  type model = (string * float list) list
+  type ranks = (string * float list) list
 
-  val classify : model -> label
+  val classify : ranks -> label
 end
 
 (** Machine *)
 module type MACHINE = functor (Features : FV) (DecisionTree : DT) -> sig
-  type model = DecisionTree.model
+  type ranks = DecisionTree.ranks
   type filename = string
 
   val train_and_write : filename -> (label * mail) list -> unit
-  val instanciation : filename -> mail -> model
-  val classify : model -> label
+  val instanciation : filename -> mail -> ranks
+  val classify : ranks -> label
 end
 
 module Machine : MACHINE

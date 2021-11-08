@@ -42,22 +42,22 @@ module type FV = sig
 end
 
 module type DT = sig
-  type model = (string * float list) list
+  type ranks = (string * float list) list
 
-  val classify : model -> label
+  val classify : ranks -> label
 end
 
 module type MACHINE = functor (Features : FV) (DecisionTree : DT) -> sig
-  type model = DecisionTree.model
+  type ranks = DecisionTree.ranks
   type filename = string
 
   val train_and_write : filename -> (label * mail) list -> unit
-  val instanciation : filename -> mail -> model
-  val classify : model -> label
+  val instanciation : filename -> mail -> ranks
+  val classify : ranks -> label
 end
 
 module Machine (Features : FV) (DecisionTree : DT) = struct
-  type model = DecisionTree.model
+  type ranks = DecisionTree.ranks
   type filename = string
 
   let train_and_write filename mails =
@@ -67,16 +67,17 @@ module Machine (Features : FV) (DecisionTree : DT) = struct
       Features.vector;
     close_out oc
 
-  let instanciation filename mail : model =
+  let instanciation filename mail : ranks =
     let ic = open_in filename in
-    let model =
+    let ranks =
       List.fold_left
         (fun acc (module F : FEATURE) ->
-          (F.name, F.read_db ic |> F.rank mail) :: acc)
+          (F.name, F.read_db ic |> F.rank mail)
+          :: acc)
         [] Features.vector
     in
     close_in ic;
-    model
+    ranks
 
-  let classify : model -> label = DecisionTree.classify
+  let classify : ranks -> label = DecisionTree.classify
 end
