@@ -1,5 +1,5 @@
 (**
- Implementaiton of a bayesian filter applied to two features :
+ Implementation of a bayesian filter applied to two features :
 
   - the main subject of the mail (meaning only the first headers
    are introspect to extract a subject)
@@ -18,8 +18,6 @@ module BayesianBody : FEATURE = struct
   let extract mail = Extract.extract_bodies_words mail
   let write_db ic db = Database.write ic db
   let read_db oc = Database.read oc
-  let db_to_json _ = failwith "todo"
-  let db_of_json _ = failwith "todo"
 
   let train labeled_mails =
     List.fold_left
@@ -30,7 +28,6 @@ module BayesianBody : FEATURE = struct
       (Database.create ()) labeled_mails
 
   let rank mail db = [ Classify.rank ~max_word:15 mail db ]
-
 end
 
 module BayesianSubject : FEATURE = struct
@@ -41,8 +38,6 @@ module BayesianSubject : FEATURE = struct
   let extract = Extract.extract_main_subject_values
   let write_db ic db = Database.write ic db
   let read_db oc = Database.read oc
-  let db_to_json _ = failwith "todo"
-  let db_of_json _ = failwith "todo"
 
   type db = Database.db
 
@@ -68,10 +63,10 @@ module BayesianFilter =
       let vector = fv
     end)
     (struct
-      type model = (string * float list) list
+      type ranks = (string * float list) list
 
-      let classify model =
-        let subject_score = List.assoc BayesianSubject.name model |> List.hd in
-        let body_score = List.assoc BayesianBody.name model |> List.hd in
+      let classify ranks =
+        let subject_score = List.assoc BayesianSubject.name ranks |> List.hd in
+        let body_score = List.assoc BayesianBody.name ranks |> List.hd in
         if subject_score > 0.7 && body_score > 0.7 then `Spam else `Ham
     end)
