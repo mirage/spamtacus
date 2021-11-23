@@ -4,7 +4,7 @@
 open Mrmime
 module Map : Map.S with type key = string
 
-type db
+type db = { nb_spam : int; nb_ham : int; freqs : freq Map.t }
 (** Describe a database *)
 
 and freq = { in_spam : int; in_ham : int }
@@ -16,6 +16,7 @@ val read : in_channel -> db
 val write : out_channel -> db -> unit
 (** [write filename db]*)
 
+    (*
 type unit_or_error = (unit, [ `Msg of string ]) result
 type buffer = bytes * int * int
 type transmit = buffer -> buffer
@@ -26,7 +27,8 @@ type 'a dst =
   | Channel : out_channel -> (out_channel -> unit_or_error) dst
 
 val to_json : dst:'a dst -> 'a -> db -> unit_or_error
-
+*)
+    
 val create : unit -> db
 (** [create ()] *)
 

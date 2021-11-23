@@ -93,8 +93,10 @@ let extract_bodies_words (mail : Mrmime.Header.t * string Mrmime.Mail.t) =
 let extract_main_subject_values (header, _) =
   let all_subjet_values =
     Mrmime.Header.assoc Mrmime.Field_name.subject header
+    |> List.map (fun h -> Prettym.to_string Mrmime.Field.Encoder.field h)
   in
-  List.map
-    (fun h -> Prettym.to_string Mrmime.Field.Encoder.field h)
-    all_subjet_values
-  |> WordSet.of_list
+  let valid_wordset = List.map split all_subjet_values |> List.concat in
+  List.fold_left
+    (fun wordset feature ->
+      if filter feature then add wordset feature else wordset)
+    WordSet.empty valid_wordset

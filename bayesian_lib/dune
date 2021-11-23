@@ -1,3 +1,4 @@
 (library
  (name bayesian)
- (libraries spaml))
+ (libraries fpath mrmime)
+)

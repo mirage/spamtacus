@@ -41,8 +41,8 @@ let parse_first_line line =
       let nb_spam, nb_ham = (int_of_string nb_spam, int_of_string nb_ham) in
       let freqs = Map.empty in
       { nb_spam; nb_ham; freqs }
-  | _ -> failwith "todo"
-
+  | _ -> failwith "todo database parse_first_line"
+        
 let parse_line db line =
   match String.split_on_char ' ' line with
   | [ word; in_spam; in_ham ] ->
@@ -50,7 +50,7 @@ let parse_line db line =
         { in_spam = int_of_string in_spam; in_ham = int_of_string in_ham }
       in
       { db with freqs = Map.add word freq db.freqs }
-  | _ -> failwith "todo"
+  | _ -> failwith "todo database parse_line"
 
 let read ic =
   let first_line = input_line ic in
@@ -104,7 +104,7 @@ let add_ham = add `Ham
 let spam_count db = db.nb_spam
 let ham_count db = db.nb_ham
 let freq word db = Map.find_opt word db.freqs
-    
+
 (** Debug functions *)
 let add_spaces w n =
   let len = String.length w in
@@ -123,7 +123,7 @@ let print ?(min_freq = 1) ({ nb_spam; nb_ham; freqs } : db) =
           f.in_ham f.in_spam)
     freqs;
   Fmt.pr "%!"
-
+(*
 (** Function to encode/decode database to/from json *)
 let encoding_db : db Json_encoding.encoding =
   let open Json_encoding in
@@ -247,3 +247,4 @@ let to_json : type a. dst:a dst -> a -> db -> unit_or_error =
 
 
 (* *)
+*)
