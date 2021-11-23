@@ -26,8 +26,6 @@ module type FEATURE = sig
   val rank : mail -> db -> float list
   val write_db : out_channel -> db -> unit
   val read_db : in_channel -> db
-  val db_to_json : string -> db -> unit
-  val db_of_json : out_channel -> db
 end
 
 type feature_vector = (module FEATURE) list
@@ -36,6 +34,9 @@ let create_fv () : feature_vector = []
 
 let add_feature (f : (module FEATURE)) (fv : feature_vector) : feature_vector =
   f :: fv
+
+let map_features (f : (module FEATURE) -> 'a) (fv : feature_vector) : 'a list =
+  List.map f fv
 
 module type FV = sig
   val vector : feature_vector
@@ -54,6 +55,7 @@ module type MACHINE = functor (Features : FV) (DecisionTree : DT) -> sig
   val train_and_write : filename -> (label * mail) list -> unit
   val instanciation : filename -> mail -> ranks
   val classify : ranks -> label
+  val get_features_name : unit -> filename list
 end
 
 module Machine (Features : FV) (DecisionTree : DT) = struct
@@ -71,8 +73,8 @@ module Machine (Features : FV) (DecisionTree : DT) = struct
         close_out oc)
       Features.vector
 
-  let instanciation dirname mail : model =
-    let model =
+  let instanciation dirname mail : ranks =
+    let ranks =
       List.fold_left
         (fun acc (module F : FEATURE) ->
           let ic = open_in (build_filename dirname (module F)) in
@@ -81,7 +83,10 @@ module Machine (Features : FV) (DecisionTree : DT) = struct
           (F.name, F.rank mail db) :: acc)
         [] Features.vector
     in
-    model
+    ranks
 
   let classify : ranks -> label = DecisionTree.classify
+
+  let get_features_name () =
+    List.map (fun (module Feature : FEATURE) -> Feature.name) Features.vector
 end

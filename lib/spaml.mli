@@ -13,7 +13,6 @@ module type FEATURE = sig
   (** [extract] is the function that defines how to extract the feature
    from the mail. *)
 
-  (* this part should probably be out of the module somehow *)
   type db
   (** [db] defines the structure of the data we need to registered for
    this feature. For example, for a naive bayesian filter, we may
@@ -33,6 +32,7 @@ type feature_vector
 
 val create_fv : unit -> feature_vector
 val add_feature : (module FEATURE) -> feature_vector -> feature_vector
+val map_features : ((module FEATURE) -> 'a) -> feature_vector -> 'a list
 
 module type FV = sig
   val vector : feature_vector
@@ -53,6 +53,7 @@ module type MACHINE = functor (Features : FV) (DecisionTree : DT) -> sig
   val train_and_write : filename -> (label * mail) list -> unit
   val instanciation : filename -> mail -> ranks
   val classify : ranks -> label
+  val get_features_name : unit -> filename list
 end
 
 module Machine : MACHINE
