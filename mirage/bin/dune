@@ -1,0 +1,3 @@
+(executable
+ (name generate)
+ (libraries bayesian_filter cmdliner))

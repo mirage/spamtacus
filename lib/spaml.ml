@@ -1,31 +1,34 @@
-type mail = Mrmime.Header.t * string Mrmime.Mail.t
 type label = [ `Spam | `Ham ]
+type partial = { name : string; extracted : string list }
+type header_tree = Mrmime.Header.t * unit Mrmime.Mail.t
+type rank = float list
+type ranks = (string * rank) list
+type training_set = { spam : Fpath.t; ham : Fpath.t }
 
 module type FEATURE = sig
-  type t
-  (** A feature is a part of the mail that is extracted and studied by
-      the ML algorith to classify it.  *)
-
   val name : string
-  (** The unique identifier used to defined the feature.*)
 
-  val extract : mail -> t
-  (** [extract] is the function that defines how to extract the feature
-   from the mail. *)
+  type t
 
-  (* this part should probably be out of the module somehow *)
+  val empty : t
+
+  (* Extraction functions. *)
+  val partial_extract : Mrmime.Header.t -> string -> partial option
+  val extract_from_header_tree : header_tree -> t
+  val add_partial : t -> partial -> t
+
+  (* Database related functions and type*)
   type db
-  (** [db] defines the structure of the data we need to registered for
-   this feature. For example, for a naive bayesian filter, we may
-   simply need to register how many times each extracted words
-   appeared in spams and in hams. *)
 
-  val train : (label * mail) list -> db
-  (** [train labeled_mails] *)
+  val empty_db : db
 
-  val rank : mail -> db -> float list
+  (* [train] and [extract] are used for the same thing *)
+  val train : db -> label -> t -> db
   val write_db : out_channel -> db -> unit
-  val read_db : in_channel -> db
+  val read_db : in_channel option -> db
+
+  (* Ranking functions *)
+  val rank : t -> db -> rank
 end
 
 type feature_vector = (module FEATURE) list
@@ -43,50 +46,144 @@ module type FV = sig
 end
 
 module type DT = sig
-  type ranks = (string * float list) list
-
   val classify : ranks -> label
 end
 
 module type MACHINE = functor (Features : FV) (DecisionTree : DT) -> sig
-  type ranks = DecisionTree.ranks
-  type filename = string
+  (* Training functions *)
+  val train_and_write_to_file : training_set -> output:Fpath.t -> unit
 
-  val train_and_write : filename -> (label * mail) list -> unit
-  val instanciation : filename -> mail -> ranks
+  (* Ranking functions *)
+  val partial_extract : Mrmime.Header.t -> string -> partial list
+
+  val instanciate :
+    ?input_dir:Fpath.t ->
+    (unit -> partial option Lwt.t) ->
+    header_tree ->
+    ranks Lwt.t
+
   val classify : ranks -> label
-  val get_features_name : unit -> filename list
+
+  (* Utilitary function *)
+  val get_features_name : unit -> string list
 end
 
-module Machine (Features : FV) (DecisionTree : DT) = struct
-  type ranks = DecisionTree.ranks
-  type filename = string
+module Machine : MACHINE =
+functor
+  (Features : FV)
+  (DecisionTree : DT)
+  ->
+  struct
+    let build_filename dirname (module Feature : FEATURE) =
+      Fpath.add_seg dirname Feature.name |> Fpath.to_string
 
-  let build_filename dirname (module Feature : FEATURE) =
-    dirname ^ "/" ^ Feature.name
+    let readdir dirpath =
+      let dirpath' = Fpath.to_string dirpath in
+      if Sys.is_directory dirpath' then
+        Sys.readdir dirpath'
+        |> Array.map (fun filename -> Fpath.add_seg dirpath filename)
+        |> Array.to_list
+      else failwith "todo"
 
-  let train_and_write dirname mails =
-    List.iter
-      (fun (module F : FEATURE) ->
-        let oc = open_out (build_filename dirname (module F)) in
-        F.(train mails |> write_db oc);
-        close_out oc)
-      Features.vector
+    let to_stream (stream : 'a Lwt_stream.t) : unit -> 'a option Lwt.t =
+     fun () -> Lwt_stream.get stream
 
-  let instanciation dirname mail : ranks =
-    let ranks =
+    open Lwt.Infix
+
+    (* to improve *)
+    let parse_mail (module F : FEATURE) training_set output =
+      let rec build_feature h t = function
+        | Mrmime.Mail.Leaf b -> (
+            match F.partial_extract h b with
+            | Some partial -> F.add_partial t partial
+            | None -> t)
+        | Mrmime.Mail.Message (h, mail) -> build_feature h t mail
+        | Mrmime.Mail.Multipart parts ->
+            List.fold_left
+              (fun t (h, body) ->
+                match body with None -> t | Some m -> build_feature h t m)
+              t parts
+      in
+      (* [add_to_db] add one-by-one the extracted partos of each email
+         of the training set to the in-construction database *)
+      let rec add_to_db db = function
+        | [] -> db
+        | (label, filename) :: xs ->
+            let h, mail = Mail_io.parse filename in
+            let t = build_feature h F.empty mail in
+            add_to_db (F.train db label t) xs
+      in
+      add_to_db F.empty_db training_set |> F.write_db output
+
+    let train_and_write_to_file { spam; ham } ~output : unit =
+      let spam_filename =
+        readdir spam |> List.map (fun filename -> (`Spam, filename))
+      in
+      let ham_filename =
+        readdir ham |> List.map (fun filename -> (`Ham, filename))
+      in
+      let training_set = spam_filename @ ham_filename in
+      let rec go fv =
+        match fv with
+        | [] -> ()
+        | (module F : FEATURE) :: fvs ->
+            let oc = open_out (build_filename output (module F)) in
+            parse_mail (module F) training_set oc;
+            close_out oc;
+            go fvs
+      in
+      go Features.vector
+
+    (* let instanciation dirname mail : ranks =
+       let ranks =
+         List.fold_left
+           (fun acc (module F : FEATURE) ->
+             let ic = open_in (build_filename dirname (module F)) in
+             let db = F.read_db ic in
+             close_in ic;
+             (F.name, F.rank mail db) :: acc)
+           [] Features.vector
+       in
+       ranks*)
+
+    let partial_extract (h : Mrmime.Header.t) (str : string) : partial list =
       List.fold_left
         (fun acc (module F : FEATURE) ->
-          let ic = open_in (build_filename dirname (module F)) in
-          let db = F.read_db ic in
-          close_in ic;
-          (F.name, F.rank mail db) :: acc)
+          match F.partial_extract h str with
+          | None -> List.rev acc
+          | Some extracted -> extracted :: acc)
         [] Features.vector
-    in
-    ranks
 
-  let classify : ranks -> label = DecisionTree.classify
+    let instanciate ?input_dir (input_stream : unit -> partial option Lwt.t)
+        (header_tree : header_tree) : ranks Lwt.t =
+      let rec loop (fv : feature_vector) (ranks, stream) =
+        match fv with
+        | [] -> Lwt.return (List.rev ranks)
+        | (module F : FEATURE) :: fvs ->
+            let ic =
+              match input_dir with
+              | Some input_dir ->
+                  Some (open_in (build_filename input_dir (module F)))
+              | None -> None
+            in
+            let db = F.read_db ic in
+            let copy, pusher = Lwt_stream.create () in
+            let t = F.extract_from_header_tree header_tree in
+            let rec go t =
+              stream () >>= function
+              | None -> Lwt.return ((F.name, F.rank t db) :: ranks, copy)
+              | Some ({ name; _ } as ext) ->
+                  if name = F.name then go (F.add_partial t ext)
+                  else (
+                    pusher (Some ext);
+                    go t)
+            in
+            go t >>= fun (ranks, copy) -> loop fvs (ranks, to_stream copy)
+      in
+      loop Features.vector ([], input_stream)
 
-  let get_features_name () =
-    List.map (fun (module Feature : FEATURE) -> Feature.name) Features.vector
-end
+    let classify : ranks -> label = DecisionTree.classify
+
+    let get_features_name () =
+      List.map (fun (module Feature : FEATURE) -> Feature.name) Features.vector
+  end

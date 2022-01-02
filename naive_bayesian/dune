@@ -1,0 +1,4 @@
+(library
+ (name bayesian)
+ (libraries fpath mrmime lwt)
+)

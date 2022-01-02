@@ -1,0 +1,3 @@
+To generate the file containing the static value of the database :
+
+dune exec ./mirage/bin/generate.exe -- mails/

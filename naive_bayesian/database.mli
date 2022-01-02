@@ -1,7 +1,6 @@
 (*
     Database build, read and write functions.
 *)
-open Mrmime
 module Map : Map.S with type key = string
 
 type db = { nb_spam : int; nb_ham : int; freqs : freq Map.t }
@@ -35,10 +34,10 @@ val create : unit -> db
 val mem : string -> db -> bool
 (** [mem word db] *)
 
-val add_spam : Header.t * string Mail.t -> Extract.extractor -> db -> db
+val add_spam : Extract.WordSet.t -> db -> db
 (** [add_spam spam db] *)
 
-val add_ham : Header.t * string Mail.t -> Extract.extractor -> db -> db
+val add_ham : Extract.WordSet.t -> db -> db
 (** [add_ham ham db] *)
 
 (* Accessors *)

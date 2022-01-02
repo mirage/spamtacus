@@ -1,0 +1,4 @@
+(library
+ (name bayesian_filter)
+ (libraries bayesian spaml static_database lwt)
+)

@@ -132,10 +132,9 @@ let _print_result (spaminess : (string * float) list) pspam =
     spaminess;
   Fmt.pr "Resulting probability of the mail to be a spam: %02f\n" pspam
 
-let rank ~max_word mail db =
+let rank ~max_word bag_of_words db =
   let all_useful_words =
-    Extract.extract_bodies_words mail
-    |> Extract.WordSet.filter (fun w -> Database.mem w db)
+    Extract.WordSet.filter (fun w -> Database.mem w db) bag_of_words
   in
   (* probably more efficient to do it with a array of size [max_word]
      as it is done in spamoracle*)

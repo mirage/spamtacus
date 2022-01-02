@@ -1,30 +1,48 @@
-type mail = Mrmime.Header.t * string Mrmime.Mail.t
 type label = [ `Spam | `Ham ]
+type partial = { name : string; extracted : string list }
+type header_tree = Mrmime.Header.t * unit Mrmime.Mail.t
+type rank = float list
+type ranks = (string * rank) list
+type training_set = { spam : Fpath.t; ham : Fpath.t }
 
 module type FEATURE = sig
-  type t
-  (** A feature is a part of the mail that is extracted and studied by
-      the ML algorith to classify it.  *)
-
   val name : string
   (** The unique identifier used to defined the feature.*)
 
-  val extract : mail -> t
-  (** [extract] is the function that defines how to extract the feature
-   from the mail. *)
+  type t
+  (** Describe the part of the mail that is extracted and studied by the
+   classification ML algorith. *)
 
+  val empty : t
+
+  (* Extraction functions. *)
+  val partial_extract : Mrmime.Header.t -> string -> partial option
+  (** [partial_extract] defines how to extract some partial feature from
+   a piece of body and the corresponding headers. *)
+
+  val extract_from_header_tree : header_tree -> t
+
+  val add_partial : t -> partial -> t
+  (** [build_from_partial] defines how to build the feature from partial
+   part extracted with [partial_extract]. *)
+
+  (* Database related functions and type*)
   type db
   (** [db] defines the structure of the data we need to registered for
-   this feature. For example, for a naive bayesian filter, we may
-   simply need to register how many times each extracted words
-   appeared in spams and in hams. *)
+      this feature. For a naive bayesian filter, we may simply need to
+      register how many times each extracted words appeared in spams and
+      in hams. *)
 
-  val train : (label * mail) list -> db
-  (** [train labeled_mails] *)
+  val empty_db : db
 
-  val rank : mail -> db -> float list
+  val train : db -> label -> t -> db
+  (** [train labeled extracts db] *)
+
   val write_db : out_channel -> db -> unit
-  val read_db : in_channel -> db
+  val read_db : in_channel option -> db
+
+  (* Ranking functions *)
+  val rank : t -> db -> rank
 end
 
 type feature_vector
@@ -40,20 +58,29 @@ end
 
 (** Decision Tree *)
 module type DT = sig
-  type ranks = (string * float list) list
-
   val classify : ranks -> label
 end
 
 (** Machine *)
 module type MACHINE = functor (Features : FV) (DecisionTree : DT) -> sig
-  type ranks = DecisionTree.ranks
-  type filename = string
 
-  val train_and_write : filename -> (label * mail) list -> unit
-  val instanciation : filename -> mail -> ranks
+  (* Training functions *)
+  val train_and_write_to_file : training_set -> output:Fpath.t -> unit
+
+  (* Extraction functions *)
+  val partial_extract : Mrmime.Header.t -> string -> partial list
+
+  (* Ranking functions *)
+  val instanciate :
+    ?input_dir:Fpath.t ->
+    (unit -> partial option Lwt.t) ->
+    header_tree ->
+    ranks Lwt.t
+
   val classify : ranks -> label
-  val get_features_name : unit -> filename list
+
+  (* Utilitary function *)
+  val get_features_name : unit -> string list
 end
 
 module Machine : MACHINE
