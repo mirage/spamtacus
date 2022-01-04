@@ -1,0 +1,27 @@
+opam-version: "2.0"
+name:         "spaml"
+maintainer:   "Carine Morel <carine@tarides.com>"
+authors:      "Carine Morel <carine@tarides.com>"
+homepage:     "https://github.com/lyrm/spaml"
+bug-reports:  "https://github.com/lyrm/spaml/issues"
+dev-repo:     "git+https://github.com/lyrm/spaml.git"
+license:      "MIT"
+synopsis:     "Spam filter in OCaml for MirageOS"
+description: """Naive bayesian spam filter for mirageOS unikernel."""
+
+build: [
+  [ "dune" "subst" ] {dev}
+  [ "dune" "build" "-p" name "-j" jobs ]
+  [ "dune" "runtest" "-p" name "-j" jobs ] {with-test}
+]
+
+depends: [
+  "ocaml"      {>= "4.08.0"}
+  "dune"       {>= "2.0.0"}
+  "spaml"       {= version}
+  "lwt"
+  "mrmime"     {>= "0.5.0"}
+  "lwt-unix"   {with-test}
+  "fmt"        {with-test}
+  "logs"       {with-test}
+]

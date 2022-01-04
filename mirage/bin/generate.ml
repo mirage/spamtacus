@@ -3,6 +3,7 @@ open Cmdliner
 exception Error of string
 
 let run training_set_dir =
+  let output = "mirage/lib/database/" |> Fpath.of_string |> Result.get_ok in
   let training_set =
     Spaml.
       {
@@ -10,12 +11,11 @@ let run training_set_dir =
         ham = Fpath.add_seg training_set_dir "ham";
       }
   in
-  let output = "mirage/database/" |> Fpath.of_string |> Result.get_ok in
   try
     Format.printf "Parsing and Writing database file@.";
-    Bayesian_filter.train_and_write_to_file ~output training_set;
+    Filter.train_and_write_to_file ~output training_set;
     Format.printf "Writing database.ml file@.";
-    Bayesian_filter.serialize output "static_database";
+    Filter.serialize output "static_database";
     `Ok 0
   with Error str -> `Error (false, str)
 
@@ -29,7 +29,7 @@ let training_set_dir =
     required
     & pos ~rev:true 0 (some filename) None
     & info [] ~doc ~docv:"TRAINING_SET_PATH")
-
+  
 let cmd =
   let doc = "todo" in
   let man =

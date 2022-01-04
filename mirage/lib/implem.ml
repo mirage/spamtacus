@@ -75,14 +75,6 @@ module BayesianSubject : FEATURE with type db = Database.db = struct
 
   let partial_extract _ _ = None
 
-  (* let extract_from_header_tree ((header, _tree) : header_tree) : t =
-     let main_subjects = extract_main_subject_value header in
-     List.fold_left
-       (fun bow subject ->
-         let new_bow = Extract.extract subject in
-         Extract.WordSet.union new_bow bow)
-       Extract.WordSet.empty main_subjects
-  *)
   let extract_from_header_tree ((header, tree) : header_tree) : t =
     let extract_and_add acc header =
       let main_subjects = extract_main_subject_value header in
@@ -120,7 +112,6 @@ module BayesianSubject : FEATURE with type db = Database.db = struct
   let rank t db = [ Classify.rank ~max_word:1 t db ]
 end
 
-(* Let's try ! *)
 let fv =
   create_fv ()
   |> add_feature (module BayesianBody)

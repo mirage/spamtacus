@@ -1,5 +1,0 @@
-(library
- (name static_database)
- (libraries bayesian)
- (wrapped false)
-)

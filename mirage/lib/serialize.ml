@@ -53,7 +53,6 @@ let serialize_freqs_into_multiple_files output_dir name freqs =
     let modulename = build_modulename name (idx - 1) in
     let oc = open_out (Fpath.add_seg output_dir filename |> Fpath.to_string) in
     let ppf = Format.formatter_of_out_channel oc in
-
     Format.fprintf ppf "open Bayesian.Database@.";
     if first then
       Format.fprintf ppf "let db = Map.empty @,@[<4>%a@]\n%!" serialize freqs
@@ -96,5 +95,5 @@ let serialize oc output_dir name db =
   let freqs = Bayesian.Database.Map.bindings db.freqs in
   let idx = serialize_freqs_into_multiple_files output_dir name freqs in
   let freqs_name = build_modulename name idx in
-  Format.fprintf ppf "open Bayesian.Database@.";
-  Format.fprintf ppf "let %s = @[<2>%a@]@.%!" name (serialize_db freqs_name) db
+  Format.fprintf ppf "let %s = Bayesian.Database.@[<2>%a@]@.%!" name
+    (serialize_db freqs_name) db
