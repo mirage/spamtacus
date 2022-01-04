@@ -1,0 +1,3 @@
+(executable
+ (name test)
+ (libraries bayesian_filter lwt lwt.unix ))
