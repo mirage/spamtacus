@@ -32,7 +32,7 @@ let read filename =
       | Some truc -> Lwt.return (Some truc))
 
 let rank stream : Spaml.label Lwt.t =
-  Bayesian_filter.rank stream >>= fun (label, _mail_stream) -> Lwt.return label
+  Filter.rank stream >>= fun (label, _mail_stream) -> Lwt.return label
 
 let print_result filename label =
   Format.printf "File %s is a %s@." filename
