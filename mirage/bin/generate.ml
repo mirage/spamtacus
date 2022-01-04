@@ -11,9 +11,8 @@ let run training_set_dir =
       }
   in
   let output = "mirage/database/" |> Fpath.of_string |> Result.get_ok in
-  Format.printf "Parsing and processing mails@.";
   try
-    Format.printf "Writing database file@.";
+    Format.printf "Parsing and Writing database file@.";
     Bayesian_filter.train_and_write_to_file ~output training_set;
     Format.printf "Writing database.ml file@.";
     Bayesian_filter.serialize output "static_database";

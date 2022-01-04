@@ -15,19 +15,6 @@ val read : in_channel -> db
 val write : out_channel -> db -> unit
 (** [write filename db]*)
 
-    (*
-type unit_or_error = (unit, [ `Msg of string ]) result
-type buffer = bytes * int * int
-type transmit = buffer -> buffer
-
-type 'a dst =
-  | Manual : transmit -> buffer dst
-  | Buffer : Buffer.t -> (Buffer.t -> unit_or_error) dst
-  | Channel : out_channel -> (out_channel -> unit_or_error) dst
-
-val to_json : dst:'a dst -> 'a -> db -> unit_or_error
-*)
-    
 val create : unit -> db
 (** [create ()] *)
 

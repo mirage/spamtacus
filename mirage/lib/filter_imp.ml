@@ -55,7 +55,7 @@ module BayesianBody : FEATURE with type db = Database.db = struct
     | `Spam -> Database.add_spam t db
     | `Ham -> Database.add_ham t db
 
-  let rank t db = [ Classify.rank ~max_word:15 t db ]
+  let rank t db = [ Classify.rank ~max_word:10 t db ]
 end
 
 module BayesianSubject : FEATURE with type db = Database.db = struct
@@ -75,13 +75,36 @@ module BayesianSubject : FEATURE with type db = Database.db = struct
 
   let partial_extract _ _ = None
 
-  let extract_from_header_tree ((header, _tree) : header_tree) : t =
-    let main_subjects = extract_main_subject_value header in
-    List.fold_left
-      (fun bow subject ->
-        let new_bow = Extract.extract subject in
-        Extract.WordSet.union new_bow bow)
-      Extract.WordSet.empty main_subjects
+  (* let extract_from_header_tree ((header, _tree) : header_tree) : t =
+     let main_subjects = extract_main_subject_value header in
+     List.fold_left
+       (fun bow subject ->
+         let new_bow = Extract.extract subject in
+         Extract.WordSet.union new_bow bow)
+       Extract.WordSet.empty main_subjects
+  *)
+  let extract_from_header_tree ((header, tree) : header_tree) : t =
+    let extract_and_add acc header =
+      let main_subjects = extract_main_subject_value header in
+      List.fold_left
+        (fun bow subject ->
+          let new_bow = Extract.extract subject in
+          Extract.WordSet.union new_bow bow)
+        acc main_subjects
+    in
+    let rec go acc = function
+      | Mrmime.Mail.Leaf () -> acc
+      | Message (h, t) ->
+          let acc = extract_and_add acc h in
+          go acc t
+      | Multipart parts ->
+          List.fold_left
+            (fun acc (header, bodyopt) ->
+              let acc = extract_and_add acc header in
+              match bodyopt with None -> acc | Some t -> go acc t)
+            acc parts
+    in
+    go (extract_and_add Extract.WordSet.empty header) tree
 
   let add_partial (t : t) ({ extracted; _ } : partial) : t =
     List.fold_left (fun t word -> Extract.WordSet.add word t) t extracted
@@ -94,7 +117,7 @@ module BayesianSubject : FEATURE with type db = Database.db = struct
     | `Spam -> Database.add_spam t db
     | `Ham -> Database.add_ham t db
 
-  let rank t db = [ Classify.rank ~max_word:15 t db ]
+  let rank t db = [ Classify.rank ~max_word:1 t db ]
 end
 
 (* Let's try ! *)
@@ -111,7 +134,9 @@ module BayesianFilter =
       let classify ranks =
         let subject_score = List.assoc BayesianSubject.name ranks |> List.hd in
         let body_score = List.assoc BayesianBody.name ranks |> List.hd in
-        if subject_score > 0.7 && body_score > 0.7 then `Spam else `Ham
+        if subject_score > 0.7 then `Spam
+        else if body_score > 0.7 then `Spam
+        else `Ham
     end)
 
 include BayesianFilter

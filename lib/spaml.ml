@@ -90,8 +90,27 @@ functor
 
     open Lwt.Infix
 
+    let mail_to_header_tree header m : header_tree =
+      let open Mrmime.Mail in
+      let rec build = function
+        | Leaf _ -> Leaf ()
+        | Message (h, t) -> Message (h, build t)
+        | Multipart parts ->
+            let parts =
+              List.map
+                (fun (h, topt) ->
+                  match topt with
+                  | None -> (h, None)
+                  | Some t -> (h, Some (build t)))
+                parts
+            in
+            Multipart parts
+      in
+
+      (header, build m)
+
     (* to improve *)
-    let parse_mail (module F : FEATURE) training_set output =
+    let add_mail (module F : FEATURE) training_set output =
       let rec build_feature h t = function
         | Mrmime.Mail.Leaf b -> (
             match F.partial_extract h b with
@@ -108,10 +127,14 @@ functor
          of the training set to the in-construction database *)
       let rec add_to_db db = function
         | [] -> db
-        | (label, filename) :: xs ->
-            let h, mail = Mail_io.parse filename in
-            let t = build_feature h F.empty mail in
-            add_to_db (F.train db label t) xs
+        | (label, filename) :: xs -> (
+            try
+              let h, mail = Mail_io.parse filename in
+              let header_tree = mail_to_header_tree h mail in
+              let t = F.extract_from_header_tree header_tree in
+              let t = build_feature h t mail in
+              add_to_db (F.train db label t) xs
+            with Mail_io.ParsingError _ -> add_to_db db xs)
       in
       add_to_db F.empty_db training_set |> F.write_db output
 
@@ -128,7 +151,7 @@ functor
         | [] -> ()
         | (module F : FEATURE) :: fvs ->
             let oc = open_out (build_filename output (module F)) in
-            parse_mail (module F) training_set oc;
+            add_mail (module F) training_set oc;
             close_out oc;
             go fvs
       in
@@ -171,7 +194,7 @@ functor
             let t = F.extract_from_header_tree header_tree in
             let rec go t =
               stream () >>= function
-              | None -> Lwt.return ((F.name, F.rank t db) :: ranks, copy)
+              | None -> pusher None; Lwt.return ((F.name, F.rank t db) :: ranks, copy)
               | Some ({ name; _ } as ext) ->
                   if name = F.name then go (F.add_partial t ext)
                   else (

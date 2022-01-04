@@ -18,14 +18,14 @@ let compute_spaminess ?(rare = 3.0) spam_count ham_count freq_in_spam
     freq_in_ham =
   (* basic computation, hypothesis = ps = ph = 0.5 *)
   let p_w_in_spam = float freq_in_spam /. float spam_count in
-  let p_w_in_ham = float freq_in_ham /. float ham_count in  
+  let p_w_in_ham = float freq_in_ham /. float ham_count in
   let spaminess = p_w_in_spam /. (p_w_in_spam +. p_w_in_ham) in
   if rare = 0.0 then normalize_proba spaminess
   else
     (* Rare words spaminess are corrected using the formula proved in Gary
        Robinson paper, « A statistical approach to the spam problem », *)
     let freq_in_all = freq_in_spam + freq_in_ham in
-    (rare *. 0.5 +. float freq_in_all  *. spaminess)
+    ((rare *. 0.5) +. (float freq_in_all *. spaminess))
     /. (rare +. float freq_in_all)
     |> normalize_proba
 
@@ -112,25 +112,18 @@ let spaminess db word =
   | Some Database.{ in_ham; in_spam } ->
       let spam_count, ham_count =
         (Database.spam_count db, Database.ham_count db)
-      in      
-      let res = compute_spaminess ~rare:3.0 spam_count ham_count in_spam in_ham
+      in
+      let res =
+        compute_spaminess ~rare:3.0 spam_count ham_count in_spam in_ham
       in
       (*if word = "types" then
         begin
           let p_w_in_spam = float in_spam /. float spam_count in
-          let p_w_in_ham = float in_ham /. float ham_count in  
+          let p_w_in_ham = float in_ham /. float ham_count in
           let spaminess = p_w_in_spam /. (p_w_in_spam +. p_w_in_ham) in
           Fmt.pr "in spam %f in ham %f spaminess %f res %f" p_w_in_spam p_w_in_ham spaminess res
-        end;*) res
-      
-
-let _print_result (spaminess : (string * float) list) pspam =
-  Fmt.pr "Used words:\n";
-  List.iter
-    (fun (w, spaminess) ->
-      Fmt.pr "%s has a spaminess of %i\n" w (truncate (spaminess *. 100.0)))
-    spaminess;
-  Fmt.pr "Resulting probability of the mail to be a spam: %02f\n" pspam
+        end;*)
+      res
 
 let rank ~max_word bag_of_words db =
   let all_useful_words =
@@ -149,13 +142,8 @@ let rank ~max_word bag_of_words db =
   in
   let rec keep_n_first n l =
     if n = 0 then []
-    else
-      match l with
-      | [] -> []
-      | x :: y ->
-          x :: keep_n_first (n - 1) y
+    else match l with [] -> [] | x :: y -> x :: keep_n_first (n - 1) y
   in
   let retained_spaminess = keep_n_first max_word sorted_spaminess in
   let pspam = compute_spam_probability retained_spaminess in
-  (*print_result retained_spaminess pspam;*)
   pspam

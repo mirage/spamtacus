@@ -68,7 +68,7 @@ let manage_input { copy_pusher; stream } () =
       copy_pusher v;
       Lwt.return (`String (str ^ "\r\n"))
 
-let stream input =
+let parse input =
   let stream_of_words, push_words = Lwt_stream.create () in
   let emitters headers =
     let stream, push = Lwt_stream.create () in
@@ -93,9 +93,8 @@ let stream input =
        data available on input.stream, creating an Lwt_stream.Closed
        exeception *)
     Lwt.catch (manage_input input) (function
-        (*| Lwt_io.Channel_closed _ -> Lwt.return `Eof *)
-        (* does not works without unix *)
-        | exn -> Lwt.fail exn)
+      | Lwt_io.Channel_closed _ -> Lwt.return `Eof
+      | exn -> Lwt.fail exn)
     >>= fun data ->
     match parse data with
     | `Continue -> go ()
@@ -143,14 +142,18 @@ let header_to_stream header =
 
 let rank (input : unit -> (string * int * int) option Lwt.t) =
   let input, copy_stream = create_input input in
-  stream input >>= function
+  parse input >>= fun r ->
+  match r with
   | Ok (header, tree, stream_of_words) ->
       ( Filter_imp.instanciate (stream_to_t stream_of_words) (header, tree)
       >>= fun ranks ->
-        match Filter_imp.classify ranks with
+        let label = Filter_imp.classify ranks in
+        match label with
         | `Spam ->
             let header_stream = build_spam_header true |> header_to_stream in
-            Lwt.return (Lwt_stream.append header_stream copy_stream)
-        | `Ham -> Lwt.return copy_stream )
-      >>= fun stream -> Lwt.return (fun () -> Lwt_stream.get stream)
-  | Error _ -> Lwt.fail (failwith "todo")
+            Lwt.return (label, Lwt_stream.append header_stream copy_stream)
+        | `Ham -> Lwt.return (label, copy_stream) )
+      >>= fun (label, stream) ->
+      Lwt.return (label, fun () -> Lwt_stream.get stream)
+  | Error (`Msg s) ->
+      Lwt.fail (failwith ("TODO : mirage/lib/stream.ml (Error: " ^ s ^ ")"))
