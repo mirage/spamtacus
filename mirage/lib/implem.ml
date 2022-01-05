@@ -55,7 +55,7 @@ module BayesianBody : FEATURE with type db = Database.db = struct
     | `Spam -> Database.add_spam t db
     | `Ham -> Database.add_ham t db
 
-  let rank t db = [ Classify.rank ~max_word:10 t db ]
+  let rank t db = [ Classify.rank ~max_word:20 t db ]
 end
 
 module BayesianSubject : FEATURE with type db = Database.db = struct

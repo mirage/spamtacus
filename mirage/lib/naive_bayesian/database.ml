@@ -1,18 +1,24 @@
-(* Database read and write functions.
+(* Database read and write functions.*)
+
+(* Some note for future improvements *)
+(* 1. About words frequency:
 
    Spamoracle actually separates words in two categories: frequent
    ones and rare ones. A full database (containing both categories) is
-   used when building or adding to the database. When testing an
-   email, only the frequent words are read and used.
+   used when building or adding to the database. When testing an mail
+   to classify it, only the frequent words are read and used.
 
-   Here, we are actually using a corrected probability that take into
-   account the frequency of a word (should it be in how many mails the
-   word appeared or its actual occurences across all mails ?).
+   In our current implementation for mirage, the filtering of frequent
+   words is done when writing the static database: only the [n] more
+   frequent in mails (spams and hams) are actually written. *)
 
-   It requires however than the probability of an mail to be a spam is
-   0.5, meaning the number of spams in the database must be equal to
-   the number of hams (TODO: find a paper or some references about
-   that). *)
+(* 2. About corrected probabilty:
+
+   Here, we are actually using a corrected probability that takes into
+   account the frequency of a word.  It requires however than the
+   probability of a mail to be a spam is 0.5, meaning the number of
+   spams in the database must be equal to the number of hams. *)
+
 module Map = Map.Make (struct
   type t = string
 
@@ -76,14 +82,14 @@ let incr_freq label { in_spam; in_ham } =
   | `Ham -> { in_spam; in_ham = in_ham + 1 }
   | `Spam -> { in_spam = in_spam + 1; in_ham }
 
-(** [add_word label w db] add +1 to the proper frequency (ham or
-   spam) of a word [w] in [db]. *)
+(* [add_word label w db] add +1 to the proper frequency (ham or spam)
+   of a word [w] in [db]. *)
 let add_word (label : [ `Spam | `Ham ]) w db =
   match Map.find_opt w db.freqs with
   | None -> { db with freqs = Map.add w (init_freq label) db.freqs }
   | Some freq -> { db with freqs = Map.add w (incr_freq label freq) db.freqs }
 
-(** [add label mail db*)
+(* [add label mail db] *)
 let add label words (db : db) =
   let db =
     match label with
@@ -92,7 +98,7 @@ let add label words (db : db) =
   in
   Extract.WordSet.fold (add_word label) words db
 
-(** [add_spam mail db] cut a mail into elementary pieces and *)
+(* [add_spam mail db] cut a mail into elementary pieces and *)
 let add_spam = add `Spam
 
 let add_ham = add `Ham
@@ -102,7 +108,7 @@ let spam_count db = db.nb_spam
 let ham_count db = db.nb_ham
 let freq word db = Map.find_opt word db.freqs
 
-(** Debug functions *)
+(* Debug functions *)
 let add_spaces w n =
   let len = String.length w in
   let spaces = String.make (max 0 (n - len)) ' ' in

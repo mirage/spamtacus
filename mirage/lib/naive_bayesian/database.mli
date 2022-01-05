@@ -1,6 +1,5 @@
-(*
-    Database build, read and write functions.
-*)
+(** Database build, read and write functions. *)
+
 module Map : Map.S with type key = string
 
 type db = { nb_spam : int; nb_ham : int; freqs : freq Map.t }
