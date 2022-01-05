@@ -10,9 +10,7 @@ synopsis:     "Spam filter abstraction in OCaml"
 description: """Spaml filter with a personnalized features vector as input."""
 
 build: [
-  [ "dune" "subst" ] {dev}
   [ "dune" "build" "-p" name "-j" jobs ]
-  [ "dune" "runtest" "-p" name "-j" jobs ] {with-test}
 ]
 
 depends: [

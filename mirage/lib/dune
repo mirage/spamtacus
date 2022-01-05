@@ -2,5 +2,6 @@
 
 (library
  (name filter)
+ (public_name spaml-mirage)
  (libraries spaml lwt lwt.unix)
 )

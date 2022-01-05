@@ -10,9 +10,7 @@ synopsis:     "Spam filter in OCaml for MirageOS"
 description: """Naive bayesian spam filter for mirageOS unikernel."""
 
 build: [
-  [ "dune" "subst" ] {dev}
   [ "dune" "build" "-p" name "-j" jobs ]
-  [ "dune" "runtest" "-p" name "-j" jobs ] {with-test}
 ]
 
 depends: [
