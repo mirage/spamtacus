@@ -13,9 +13,9 @@ let run training_set_dir =
   in
   try
     Format.printf "Parsing and Writing database file@.";
-    Filter.train_and_write_to_file ~output training_set;
+    Spaml_mirage.train_and_write_to_file ~output training_set;
     Format.printf "Writing database.ml file@.";
-    Filter.serialize output "static_database";
+    Spaml_mirage.serialize output "static_database";
     `Ok 0
   with Error str -> `Error (false, str)
 

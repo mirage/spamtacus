@@ -1,7 +1,7 @@
 (include_subdirs unqualified)
 
 (library
- (name filter)
+ (name spaml_mirage)
  (public_name spaml-mirage)
  (libraries spaml lwt lwt.unix)
 )
