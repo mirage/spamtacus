@@ -1,0 +1,3 @@
+(executable
+ (name generate)
+ (libraries spaml_bayesian cmdliner))
