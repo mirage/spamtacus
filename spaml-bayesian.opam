@@ -6,8 +6,8 @@ homepage:     "https://github.com/lyrm/spaml"
 bug-reports:  "https://github.com/lyrm/spaml/issues"
 dev-repo:     "git+https://github.com/lyrm/spaml.git"
 license:      "MIT"
-synopsis:     "Spam filter in OCaml for MirageOS"
-description: """Naive bayesian spam filter for mirageOS unikernel."""
+synopsis:     "Spam filter in OCaml"
+description: """Naive bayesian spam filter implementation."""
 
 build: [
   [ "dune" "build" "-p" name "-j" jobs ]
@@ -18,8 +18,4 @@ depends: [
   "dune"       {>= "2.0.0"}
   "spaml"       {= version}
   "lwt"
-  "mrmime"     {>= "0.5.0"}
-  "lwt-unix"   {with-test}
-  "fmt"        {with-test}
-  "logs"       {with-test}
 ]
