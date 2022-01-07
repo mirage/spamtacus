@@ -1,4 +1,5 @@
 open Implem
+
 type training_set = Spaml.training_set
 
 let serialize db_dir filename =
@@ -21,7 +22,7 @@ let serialize db_dir filename =
     close_in ic;
     serialize name db);
   close_out oc
-    
+
 let build_spam_header is_spam =
   if is_spam then
     let field =
@@ -52,9 +53,11 @@ let header_to_stream header =
       | Some str -> Lwt.return_some (str, 0, String.length str)
       | None -> Lwt.return_none)
 
+exception ParsingError of string
+
 let rank (input : unit -> (string * int * int) option Lwt.t) =
   let open Lwt.Infix in
-    let input, copy_stream = Stream.create_input input in
+  let input, copy_stream = Stream.create_input input in
   Stream.parse input >>= function
   | Ok (header, tree, stream_of_words) ->
       ( Implem.instanciate
@@ -70,6 +73,6 @@ let rank (input : unit -> (string * int * int) option Lwt.t) =
       >>= fun (label, stream) ->
       Lwt.return (label, fun () -> Lwt_stream.get stream)
   | Error (`Msg s) ->
-      Lwt.fail (failwith ("TODO : mirage/lib/stream.ml (Error: " ^ s ^ ")"))
+      Lwt.fail (ParsingError ("mirage/lib/stream.ml (Error: " ^ s ^ ")"))
 
 let train_and_write_to_file = Implem.train_and_write_to_file

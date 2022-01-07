@@ -54,10 +54,10 @@ let create_input stream =
   let stream', copy_pusher = Lwt_stream.create () in
   ({ copy_pusher; stream }, stream')
 
-let manage_input { copy_pusher; stream } () =
+let manage_input { copy_pusher; stream } =
   stream () >>= function
   | None ->
-      copy_pusher None;
+      (try copy_pusher None with Lwt_stream.Closed -> ());
       Lwt.return `Eof (* end-of-input *)
   | Some (str, _, _) as v ->
       copy_pusher v;
@@ -83,14 +83,7 @@ let parse input =
   in
   let parse = parse ~emitters in
   let rec go () =
-    (* In some cases, all data are not parsed at once by [parse] and
-       [parse `Eof] stil returns `Continue, whereas there are no more
-       data available on input.stream, creating an Lwt_stream.Closed
-       exeception *)
-    Lwt.catch (manage_input input) (function
-      | Lwt_io.Channel_closed _ -> Lwt.return `Eof
-      | exn -> Lwt.fail exn)
-    >>= fun data ->
+    manage_input input >>= fun data ->
     match parse data with
     | `Continue -> go ()
     | `Done (header, t) ->

@@ -3,5 +3,5 @@
 (library
  (name spaml_mirage)
  (public_name spaml-mirage)
- (libraries spaml lwt lwt.unix)
+ (libraries spaml lwt)
 )

@@ -11,7 +11,7 @@ let first_line ic =
   | None -> failwith "empty mail"
   | Some line -> if invalid_first_line line then None else Some line
 
-let read filename =
+let read ic =
   let first = ref true in
   let read_to_stream ic =
     if !first then (
@@ -22,13 +22,15 @@ let read filename =
           >|= Option.map (fun str -> (str ^ "\r\n", 0, String.length str))
       | Some str -> Lwt.return_some (str ^ "\r\n", 0, String.length str))
     else
-      Lwt_io.read_line_opt ic
-      >|= Option.map (fun str -> (str ^ "\r\n", 0, String.length str))
+      Lwt.catch
+        (fun () ->
+          Lwt_io.read_line_opt ic
+          >|= Option.map (fun str -> (str ^ "\r\n", 0, String.length str)))
+        (function _ -> Lwt.return_none)
   in
-  Lwt_io.open_file ~mode:Lwt_io.input filename >>= fun ic ->
   Lwt.return (fun () ->
       read_to_stream ic >>= function
-      | None -> Lwt_io.close ic >>= fun _ -> Lwt.return_none
+      | None -> Lwt.return_none
       | Some truc -> Lwt.return (Some truc))
 
 let rank stream : Spaml.label Lwt.t =
@@ -44,13 +46,15 @@ let ranks (labelled_filenames : ([ `Ham | `Spam ] * string) list) :
     ([ `Ham | `Spam ] * label) list Lwt.t =
   Lwt_list.map_s
     (fun (label, filename) ->
-      (*read filename >>= fun input ->
-        rank input >>= fun res -> Lwt.return (label, (res :> label)))*)
       Lwt.catch
         (fun () ->
-          read filename >>= fun input ->
-          rank input >>= fun res -> Lwt.return (label, (res :> label)))
-        (fun _exn -> Lwt.return (label, `Error)))
+          Lwt_io.open_file ~mode:Lwt_io.input filename >>= fun ic ->
+          read ic >>= fun input ->
+          rank input >>= fun res ->
+          Lwt_io.close ic >>= fun _ -> Lwt.return (label, (res :> label)))
+        (function
+          | Spaml_mirage.ParsingError _str -> Lwt.return (label, `Error)
+          | exn -> Lwt.fail exn))
     labelled_filenames
 
 (* Extract all filenames in the training set directory.*)
@@ -118,47 +122,3 @@ let main () =
 ;;
 
 main ()
-
-(*
-let first_line ic =
-  let line = input_line ic in
-  if invalid_first_line line then None else Some line
-
-let input_line ic =
-  let line = input_line ic in
-  line ^ "\r\n"
-
-let read filename =
-  let ic = open_in filename in
-  let rec read acc =
-    try
-      let line = input_line ic in
-      read (line :: acc)
-    with End_of_file ->
-      close_in ic;
-      List.rev acc
-  in
-  let lines =
-    try
-      let first_line = input_line ic in
-      if invalid_first_line first_line then read [] else read [ first_line ]
-    with _ -> []
-  in
-  let input =
-    List.map (fun str -> (str, 0, String.length str)) lines
-    |> Lwt_stream.of_list
-  in
-  fun () -> Lwt_stream.get input
-
-let print_stream stream =
-  let rec go () =
-    stream () >>= function
-    | Some (str, _, _) ->
-        Format.printf "%s" str;
-        go ()
-    | None ->
-        Format.printf "EOF@.";
-        Lwt.return ()
-  in
-  go ()
-*)
