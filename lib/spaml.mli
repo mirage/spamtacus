@@ -1,6 +1,5 @@
 type label = [ `Spam | `Ham ]
 type partial = { name : string; extracted : string list }
-type header_tree = Mrmime.Header.t * unit Mrmime.Mail.t
 type rank = float list
 type ranks = (string * rank) list
 type training_set = { spam : Fpath.t; ham : Fpath.t }
@@ -20,7 +19,7 @@ module type FEATURE = sig
   (** [partial_extract] defines how to extract some partial feature from
    a piece of body and the corresponding headers. *)
 
-  val extract_from_header_tree : header_tree -> t
+  val extract_from_header_tree : Mrmime.Header.t * unit Mrmime.Mail.t -> t
 
   val add_partial : t -> partial -> t
   (** [build_from_partial] defines how to build the feature from partial
@@ -63,7 +62,6 @@ end
 
 (** Machine *)
 module type MACHINE = functor (Features : FV) (DecisionTree : DT) -> sig
-
   (* Training functions *)
   val train_and_write_to_file : training_set -> output:Fpath.t -> unit
 
@@ -74,7 +72,7 @@ module type MACHINE = functor (Features : FV) (DecisionTree : DT) -> sig
   val instanciate :
     ?input_dir:Fpath.t ->
     (unit -> partial option Lwt.t) ->
-    header_tree ->
+    Mrmime.Header.t * unit Mrmime.Mail.t ->
     ranks Lwt.t
 
   val classify : ranks -> label

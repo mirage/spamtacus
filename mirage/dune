@@ -1,0 +1,5 @@
+(library
+ (name spaml_mirage)
+ (public_name spaml-mirage)
+ (libraries spaml_bayesian)
+)

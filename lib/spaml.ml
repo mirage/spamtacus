@@ -1,6 +1,5 @@
 type label = [ `Spam | `Ham ]
 type partial = { name : string; extracted : string list }
-type header_tree = Mrmime.Header.t * unit Mrmime.Mail.t
 type rank = float list
 type ranks = (string * rank) list
 type training_set = { spam : Fpath.t; ham : Fpath.t }
@@ -14,7 +13,7 @@ module type FEATURE = sig
 
   (* Extraction functions. *)
   val partial_extract : Mrmime.Header.t -> string -> partial option
-  val extract_from_header_tree : header_tree -> t
+  val extract_from_header_tree : Mrmime.Header.t * unit Mrmime.Mail.t -> t
   val add_partial : t -> partial -> t
 
   (* Database related functions and type*)
@@ -59,7 +58,7 @@ module type MACHINE = functor (Features : FV) (DecisionTree : DT) -> sig
   val instanciate :
     ?input_dir:Fpath.t ->
     (unit -> partial option Lwt.t) ->
-    header_tree ->
+    Mrmime.Header.t * unit Mrmime.Mail.t ->
     ranks Lwt.t
 
   val classify : ranks -> label
@@ -90,7 +89,7 @@ functor
 
     open Lwt.Infix
 
-    let mail_to_header_tree header m : header_tree =
+    let mail_to_header_tree header m : Mrmime.Header.t * unit Mrmime.Mail.t =
       let open Mrmime.Mail in
       let rec build = function
         | Leaf _ -> Leaf ()
@@ -157,18 +156,6 @@ functor
       in
       go Features.vector
 
-    (* let instanciation dirname mail : ranks =
-       let ranks =
-         List.fold_left
-           (fun acc (module F : FEATURE) ->
-             let ic = open_in (build_filename dirname (module F)) in
-             let db = F.read_db ic in
-             close_in ic;
-             (F.name, F.rank mail db) :: acc)
-           [] Features.vector
-       in
-       ranks*)
-
     let partial_extract (h : Mrmime.Header.t) (str : string) : partial list =
       List.fold_left
         (fun acc (module F : FEATURE) ->
@@ -178,7 +165,7 @@ functor
         [] Features.vector
 
     let instanciate ?input_dir (input_stream : unit -> partial option Lwt.t)
-        (header_tree : header_tree) : ranks Lwt.t =
+        (header_tree : Mrmime.Header.t * unit Mrmime.Mail.t) : ranks Lwt.t =
       let rec loop (fv : feature_vector) (ranks, stream) =
         match fv with
         | [] -> Lwt.return (List.rev ranks)
@@ -194,7 +181,9 @@ functor
             let t = F.extract_from_header_tree header_tree in
             let rec go t =
               stream () >>= function
-              | None -> pusher None; Lwt.return ((F.name, F.rank t db) :: ranks, copy)
+              | None ->
+                  pusher None;
+                  Lwt.return ((F.name, F.rank t db) :: ranks, copy)
               | Some ({ name; _ } as ext) ->
                   if name = F.name then go (F.add_partial t ext)
                   else (

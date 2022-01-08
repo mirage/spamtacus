@@ -1,0 +1,3 @@
+(executable
+ (name test)
+ (libraries spaml_mirage lwt lwt.unix ))

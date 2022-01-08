@@ -6,8 +6,8 @@ homepage:     "https://github.com/lyrm/spaml"
 bug-reports:  "https://github.com/lyrm/spaml/issues"
 dev-repo:     "git+https://github.com/lyrm/spaml.git"
 license:      "MIT"
-synopsis:     "Spam filter abstraction in OCaml"
-description: """Spaml filter with a personnalized features vector as input."""
+synopsis:     "Spam filter in OCaml"
+description: """Naive bayesian spam filter implementation."""
 
 build: [
   [ "dune" "build" "-p" name "-j" jobs ]
@@ -16,7 +16,6 @@ build: [
 depends: [
   "ocaml"      {>= "4.08.0"}
   "dune"       {>= "2.0.0"}
-  "mrmime"     {>= "0.5.0"}
-  "fmt"        {with-test}
-  "logs"       {with-test}
+  "spaml"       {= version}
+  "lwt"
 ]
