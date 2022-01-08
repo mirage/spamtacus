@@ -7,7 +7,7 @@
  - all bodies included in the mail.   
 *)
 
-include Spaml
+include Spamacus
 
 module BayesianBody : FEATURE with type db = Database.db = struct
   let name = "BayesianBody"

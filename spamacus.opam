@@ -1,13 +1,13 @@
 opam-version: "2.0"
-name:         "spaml"
+name:         "spamacus"
 maintainer:   "Carine Morel <carine@tarides.com>"
 authors:      "Carine Morel <carine@tarides.com>"
-homepage:     "https://github.com/lyrm/spaml"
-bug-reports:  "https://github.com/lyrm/spaml/issues"
-dev-repo:     "git+https://github.com/lyrm/spaml.git"
+homepage:     "https://github.com/lyrm/spamacus"
+bug-reports:  "https://github.com/lyrm/spamacus/issues"
+dev-repo:     "git+https://github.com/lyrm/spamacus.git"
 license:      "MIT"
 synopsis:     "Spam filter abstraction in OCaml"
-description: """Spaml filter with a personnalized features vector as input."""
+description: """Spam filter with a personnalizable features vector."""
 
 build: [
   [ "dune" "build" "-p" name "-j" jobs ]

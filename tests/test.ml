@@ -33,8 +33,8 @@ let read ic =
       | None -> Lwt.return_none
       | Some truc -> Lwt.return (Some truc))
 
-let rank stream : Spaml.label Lwt.t =
-  Spaml_mirage.rank stream >>= fun (label, _mail_stream) -> Lwt.return label
+let rank stream : Spamacus.label Lwt.t =
+  Spamacus_mirage.rank stream >>= fun (label, _mail_stream) -> Lwt.return label
 
 let print_result filename label =
   Format.printf "File %s is a %s@." filename
@@ -53,7 +53,7 @@ let ranks (labelled_filenames : ([ `Ham | `Spam ] * string) list) :
           rank input >>= fun res ->
           Lwt_io.close ic >>= fun _ -> Lwt.return (label, (res :> label)))
         (function
-          | Spaml_mirage.ParsingError _str -> Lwt.return (label, `Error)
+          | Spamacus_mirage.ParsingError _str -> Lwt.return (label, `Error)
           | exn -> Lwt.fail exn))
     labelled_filenames
 

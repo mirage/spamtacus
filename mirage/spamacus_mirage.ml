@@ -35,11 +35,11 @@ let rank (input : unit -> (string * int * int) option Lwt.t) =
   let input, copy_stream = Stream.create_input input in
   Stream.parse input >>= function
   | Ok (header, tree, stream_of_words) ->
-      ( Spaml_bayesian.instanciate
+      ( Spamacus_bayesian.instanciate
           (fun () -> Lwt_stream.get stream_of_words)
           (header, tree)
       >>= fun ranks ->
-        let label = Spaml_bayesian.classify ranks in
+        let label = Spamacus_bayesian.classify ranks in
         match label with
         | `Spam ->
             let header_stream = build_spam_header true |> header_to_stream in

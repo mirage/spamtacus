@@ -9,7 +9,7 @@ val create_input :
 
 val parse :
   input ->
-  ( Mrmime.Header.t * unit Mrmime.Mail.t * Spaml.partial Lwt_stream.t,
+  ( Mrmime.Header.t * unit Mrmime.Mail.t * Spamacus.partial Lwt_stream.t,
     [ `Msg of string ] )
   result
   Lwt.t

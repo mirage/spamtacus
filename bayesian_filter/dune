@@ -1,7 +1,7 @@
 (include_subdirs unqualified)
 
 (library
- (name spaml_bayesian)
- (public_name spaml-bayesian)
- (libraries spaml lwt)
+ (name spamacus_bayesian)
+ (public_name spamacus-bayesian)
+ (libraries spamacus lwt)
 )
