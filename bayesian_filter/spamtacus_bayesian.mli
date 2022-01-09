@@ -1,4 +1,4 @@
-open Spamacus
+open Spamtacus
 
 val train_and_write_to_file : training_set -> output:Fpath.t -> unit
 

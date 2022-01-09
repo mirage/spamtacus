@@ -1,4 +1,4 @@
 (library
- (name spamacus)
- (public_name spamacus)
+ (name spamtacus)
+ (public_name spamtacus)
  (libraries mrmime fpath lwt))

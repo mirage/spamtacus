@@ -7,7 +7,7 @@ let run training_set_dir =
     "bayesian_filter/database/" |> Fpath.of_string |> Result.get_ok
   in
   let training_set =
-    Spamacus.
+    Spamtacus.
       {
         spam = Fpath.add_seg training_set_dir "spam";
         ham = Fpath.add_seg training_set_dir "ham";
@@ -15,9 +15,9 @@ let run training_set_dir =
   in
   try
     Format.printf "Parsing and Writing database file@.";
-    Spamacus_bayesian.train_and_write_to_file ~output training_set;
+    Spamtacus_bayesian.train_and_write_to_file ~output training_set;
     Format.printf "Writing database.ml file@.";
-    Spamacus_bayesian.serialize output "static_database";
+    Spamtacus_bayesian.serialize output "static_database";
     `Ok 0
   with Error str -> `Error (false, str)
 
