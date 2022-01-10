@@ -1,5 +1,5 @@
 (library
- (name spaml_mirage)
- (public_name spaml-mirage)
- (libraries spaml_bayesian)
+ (name spamtacus_mirage)
+ (public_name spamtacus-mirage)
+ (libraries spamtacus_bayesian)
 )

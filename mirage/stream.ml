@@ -68,7 +68,7 @@ let parse input =
   let emitters headers =
     let stream, push = Lwt_stream.create () in
     let stream' =
-      Lwt_stream.map (Spaml_bayesian.partial_extract headers) stream
+      Lwt_stream.map (Spamtacus_bayesian.partial_extract headers) stream
       |> Lwt_stream.flatten
     in
     let rec transfer () =
