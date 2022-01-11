@@ -87,7 +87,7 @@ let parse input =
     match parse data with
     | `Continue -> go ()
     | `Done (header, t) ->
-        push_words None;
+        (try push_words None with Lwt_stream.Closed -> ());
         Lwt.return_ok (header, t, stream_of_words)
     | `Fail ->
         push_words None;

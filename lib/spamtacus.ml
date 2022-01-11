@@ -182,7 +182,7 @@ functor
             let rec go t =
               stream () >>= function
               | None ->
-                  pusher None;
+                  (try pusher None with Lwt_stream.Closed -> ());
                   Lwt.return ((F.name, F.rank t db) :: ranks, copy)
               | Some ({ name; _ } as ext) ->
                   if name = F.name then go (F.add_partial t ext)
