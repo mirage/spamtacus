@@ -73,14 +73,11 @@ let parse input =
     in
     let rec transfer () =
       Lwt_stream.get stream' >>= function
-      | None ->
-          (try push_words None with Lwt_stream.Closed -> ());
-          Lwt.return ()
+      | None -> Lwt.return ()
       | Some str ->
           push_words (Some str);
           transfer ()
     in
-
     Lwt.async transfer;
     (push, ())
   in
@@ -89,11 +86,9 @@ let parse input =
     manage_input input >>= fun data ->
     match parse data with
     | `Continue -> go ()
-    | `Done (header, t) ->
-        (try push_words None with Lwt_stream.Closed -> ());
-        Lwt.return_ok (header, t, stream_of_words)
-    | `Fail ->
-        push_words None;
-        Lwt.return_error (`Msg "Invalid email")
+    | `Done (header, t) -> Lwt.return_ok (header, t, stream_of_words)
+    | `Fail -> Lwt.return_error (`Msg "Invalid email")
   in
-  go ()
+  Lwt.finalize go (fun () ->
+      (try push_words None with Lwt_stream.Closed -> ());
+      Lwt.return ())
