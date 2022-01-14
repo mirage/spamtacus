@@ -73,11 +73,14 @@ let parse input =
     in
     let rec transfer () =
       Lwt_stream.get stream' >>= function
-      | None -> Lwt.return ()
+      | None ->
+          (try push_words None with Lwt_stream.Closed -> ());
+          Lwt.return ()
       | Some str ->
           push_words (Some str);
           transfer ()
     in
+
     Lwt.async transfer;
     (push, ())
   in
