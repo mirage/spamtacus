@@ -12,30 +12,33 @@ include Spamtacus
 module BayesianBody : FEATURE with type db = Database.db = struct
   let name = "BayesianBody"
 
-  type t = Extract.WordSet.t
+  type t = Extract.BagOfWords.t
 
-  let empty = Extract.WordSet.empty
+  let empty = Extract.BagOfWords.empty
 
   type db = Database.db
 
   let empty_db = Database.create ()
 
   let partial_extract _ (str : string) : partial option =
-    let extracted = Extract.extract_list str in
+    let extracted =
+      Extract.extract str |> fun e ->
+      Extract.BagOfWords.fold (fun w _ acc -> w :: acc) e []
+    in
     match extracted with [] -> None | _ -> Some { name; extracted }
 
-  let extract_from_header_tree _header_tree : t = Extract.WordSet.empty
+  let extract_from_header_tree _header_tree : t = Extract.BagOfWords.empty
 
   let add_partial (t : t) ({ extracted; _ } : partial) : t =
-    List.fold_left (fun t word -> Extract.WordSet.add word t) t extracted
+    List.fold_left (fun t word -> Extract.BagOfWords.add word t) t extracted
 
   let write_db oc db = Database.write oc db
   let read_db _ic = Static_database.bayesianBody
 
-  let train db label t : db =
+  let train db label bow : db =
     match label with
-    | `Spam -> Database.add_spam t db
-    | `Ham -> Database.add_ham t db
+    | `Spam -> Database.add_spam bow db
+    | `Ham -> Database.add_ham bow db
 
   let rank t db = [ Classify.rank ~max_word:20 t db ]
 end
@@ -43,9 +46,9 @@ end
 module BayesianSubject : FEATURE with type db = Database.db = struct
   let name = "BayesianMainSubject"
 
-  type t = Extract.WordSet.t
+  type t = Extract.BagOfWords.t
 
-  let empty = Extract.WordSet.empty
+  let empty = Extract.BagOfWords.empty
 
   type db = Database.db
 
@@ -63,7 +66,7 @@ module BayesianSubject : FEATURE with type db = Database.db = struct
       List.fold_left
         (fun bow subject ->
           let new_bow = Extract.extract subject in
-          Extract.WordSet.union new_bow bow)
+          Extract.BagOfWords.union bow new_bow)
         acc main_subjects
     in
     let rec go acc = function
@@ -78,10 +81,10 @@ module BayesianSubject : FEATURE with type db = Database.db = struct
               match bodyopt with None -> acc | Some t -> go acc t)
             acc parts
     in
-    go (extract_and_add Extract.WordSet.empty header) tree
+    go (extract_and_add Extract.BagOfWords.empty header) tree
 
   let add_partial (t : t) ({ extracted; _ } : partial) : t =
-    List.fold_left (fun t word -> Extract.WordSet.add word t) t extracted
+    List.fold_left (fun t word -> Extract.BagOfWords.add word t) t extracted
 
   let write_db oc db = Database.write oc db
   let read_db _ic = Static_database.bayesianMainSubject

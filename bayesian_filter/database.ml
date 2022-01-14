@@ -73,30 +73,31 @@ let write oc db =
     (fun w freq -> Printf.fprintf oc "%s %d %d\n" w freq.in_spam freq.in_ham)
     db.freqs
 
-let init_freq = function
-  | `Ham -> { in_spam = 0; in_ham = 1 }
-  | `Spam -> { in_spam = 1; in_ham = 0 }
+let init_freq_with i = function
+  | `Ham -> { in_spam = 0; in_ham = i }
+  | `Spam -> { in_spam = i; in_ham = 0 }
 
-let incr_freq label { in_spam; in_ham } =
+let add_to_freq i label { in_spam; in_ham } =
   match label with
-  | `Ham -> { in_spam; in_ham = in_ham + 1 }
-  | `Spam -> { in_spam = in_spam + 1; in_ham }
+  | `Ham -> { in_spam; in_ham = in_ham + i }
+  | `Spam -> { in_spam = in_spam + i; in_ham }
 
 (* [add_word label w db] add +1 to the proper frequency (ham or spam)
    of a word [w] in [db]. *)
-let add_word (label : [ `Spam | `Ham ]) w db =
+let add_word (label : [ `Spam | `Ham ]) (w, occ) db =
   match Map.find_opt w db.freqs with
-  | None -> { db with freqs = Map.add w (init_freq label) db.freqs }
-  | Some freq -> { db with freqs = Map.add w (incr_freq label freq) db.freqs }
+  | None -> { db with freqs = Map.add w (init_freq_with occ label) db.freqs }
+  | Some freq ->
+      { db with freqs = Map.add w (add_to_freq occ label freq) db.freqs }
 
 (* [add label mail db] *)
-let add label words (db : db) =
+let add label (bow : Extract.BagOfWords.t) (db : db) =
   let db =
     match label with
     | `Spam -> { db with nb_spam = db.nb_spam + 1 }
     | `Ham -> { db with nb_ham = db.nb_ham + 1 }
   in
-  Extract.WordSet.fold (add_word label) words db
+  Extract.BagOfWords.fold (fun w occ db -> add_word label (w, occ) db) bow db
 
 (* [add_spam mail db] cut a mail into elementary pieces and *)
 let add_spam = add `Spam

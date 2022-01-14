@@ -20,10 +20,10 @@ val create : unit -> db
 val mem : string -> db -> bool
 (** [mem word db] *)
 
-val add_spam : Extract.WordSet.t -> db -> db
+val add_spam : Extract.BagOfWords.t -> db -> db
 (** [add_spam spam db] *)
 
-val add_ham : Extract.WordSet.t -> db -> db
+val add_ham : Extract.BagOfWords.t -> db -> db
 (** [add_ham ham db] *)
 
 (* Accessors *)
