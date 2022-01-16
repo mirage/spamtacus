@@ -1,4 +1,4 @@
-val rank : max_word:int -> Extract.WordSet.t -> Database.db -> float
+val rank : max_word:int -> Extract.BagOfWords.t -> Database.db -> float
 (** [rank ~max_word bag_of_words db] returns the probability of beeing
    a spam from a [bag_of_words] extracted from a mail, using a naive
    bayesian approach with a precomputed database [db].

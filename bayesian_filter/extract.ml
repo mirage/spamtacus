@@ -43,11 +43,28 @@ let split text =
   | Ok fs -> fs
   | Error m -> failwith m
 
-module WordSet = Set.Make (struct
-  type t = string
+module BagOfWords = struct
+  module Map = Map.Make (struct
+    type t = string
 
-  let compare = compare
-end)
+    let compare = compare
+  end)
+
+  type t = int Map.t
+
+  let empty = Map.empty
+
+  let add w (bow : t) : t =
+    match Map.find_opt w bow with
+    | None -> Map.add w 1 bow
+    | Some i -> Map.add w (i + 1) bow
+
+  let fold (f : string -> int -> 'a -> 'a) (t : t) (acc : 'a) : 'a =
+    Map.fold f t acc
+
+  let filter (f : string -> int -> bool) (t : t) : 'a = Map.filter f t
+  let union m m' = Map.union (fun _ occ occ' -> Some (occ + occ')) m m'
+end
 
 (* Kept words : between 3 and 12 letters
    Kept numeric : between 3 and 8 characters
@@ -60,21 +77,21 @@ let filter = function
       let len = String.length n in
       len >= 3 && len <= 8
 
-(* [add wordset word] adds a [word] to a [wordset] with an exception:
+(* [add bow word] adds a [word] to a bag of words [bow] with an exception:
    uppercased words are added twice: lowercased and uppercased. *)
-let add words = function
-  | Word w | Num w -> WordSet.add w words
-  | Upper w -> WordSet.add w words |> WordSet.add (lowercase w)
+let add bow = function
+  | Word w | Num w -> BagOfWords.add w bow
+  | Upper w -> BagOfWords.add w bow |> BagOfWords.add (lowercase w)
 
 (* [extract str] splits [str] into words, all-uppercased words and
    numeric strings, filters it depending on their length and returns
-   the list of extracted unique words (uppercased or not) and numeric
+   the list of extracted words (uppercased or not) and numeric
    strings. *)
 let extract str =
-  let valid_wordset = split str in
   List.fold_left
-    (fun wordset feature ->
-      if filter feature then add wordset feature else wordset)
-    WordSet.empty valid_wordset
+    (fun bow word -> if filter word then add bow word else bow)
+    BagOfWords.empty (split str)
 
-let extract_list str = extract str |> WordSet.elements
+let extract_list str =
+  let bow = extract str in
+  BagOfWords.fold (fun w _ seq -> w :: seq) bow []

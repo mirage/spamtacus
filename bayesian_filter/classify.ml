@@ -36,15 +36,16 @@ let spaminess db word =
       in
       res
 
-let rank ~max_word bag_of_words db =
+let rank ~max_word (bag_of_words : Extract.BagOfWords.t) db =
   (* extract number of occurence of each words in the db*)
   let all_useful_words =
-    Extract.WordSet.filter (fun w -> Database.mem w db) bag_of_words
+    (* should be done when extracting *)
+    Extract.BagOfWords.filter (fun w _ -> Database.mem w db) bag_of_words
   in
   let sorted_spaminess =
     (* compute spaminess *)
-    Extract.WordSet.fold
-      (fun w acc -> (w, spaminess db w) :: acc)
+    Extract.BagOfWords.fold
+      (fun w _occ acc -> (w, spaminess db w) :: acc)
       all_useful_words []
     (* and sort from higher to lower spaminess *)
     |> List.sort (fun (_, spaminess1) (_, spaminess2) ->
