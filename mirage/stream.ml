@@ -65,7 +65,10 @@ let manage_input { copy_pusher; stream } =
 
 let parse input =
   let stream_of_words, push_words = Lwt_stream.create () in
+  let async_emitters = ref 1 in
+  (*  let no_more_async_emitters_cond = Lwt_condition.create () in*)
   let emitters headers =
+    incr async_emitters;
     let stream, push = Lwt_stream.create () in
     let stream' =
       Lwt_stream.map (Spamtacus_bayesian.partial_extract headers) stream
@@ -73,7 +76,10 @@ let parse input =
     in
     let rec transfer () =
       Lwt_stream.get stream' >>= function
-      | None -> Lwt.return ()
+      | None ->
+          decr async_emitters;
+          if !async_emitters = 0 then push_words None;
+          Lwt.return ()
       | Some str ->
           push_words (Some str);
           transfer ()
@@ -85,10 +91,13 @@ let parse input =
   let rec go () =
     manage_input input >>= fun data ->
     match parse data with
+    (* TODO: here the extracted data should be processed in a lwt promise
+       to keep the memory use low*)    
     | `Continue -> go ()
-    | `Done (header, t) -> Lwt.return_ok (header, t, stream_of_words)
+    | `Done (header, t) ->
+        decr async_emitters;
+        if !async_emitters = 0 then push_words None;
+        Lwt.return_ok (header, t, stream_of_words)
     | `Fail -> Lwt.return_error (`Msg "Invalid email")
   in
-  Lwt.finalize go (fun () ->
-      (try push_words None with Lwt_stream.Closed -> ());
-      Lwt.return ())
+  go ()
