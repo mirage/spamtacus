@@ -1,5 +1,4 @@
 type label = [ `Spam | `Ham ]
-type partial = { name : string; extracted : string list }
 type rank = float list
 type ranks = (string * rank) list
 type training_set = { spam : Fpath.t; ham : Fpath.t }
@@ -12,9 +11,9 @@ module type FEATURE = sig
   val empty : t
 
   (* Extraction functions. *)
-  val partial_extract : Mrmime.Header.t -> string -> partial option
+  val partial_extract : Mrmime.Header.t -> string -> string list
   val extract_from_header_tree : Mrmime.Header.t * unit Mrmime.Mail.t -> t
-  val add_partial : t -> partial -> t
+  val add_partial : t -> string list -> t
 
   (* Database related functions and type*)
   type db
@@ -48,13 +47,17 @@ module type DT = sig
   val classify : ranks -> label
 end
 
+type training_set = { spam : Fpath.t; ham : Fpath.t }
+type partial = { name : string; extracted : string list }
+
 module type MACHINE = functor (Features : FV) (DecisionTree : DT) -> sig
   (* Training functions *)
   val train_and_write_to_file : training_set -> output:Fpath.t -> unit
 
-  (* Ranking functions *)
+  (* Extraction functions *)
   val partial_extract : Mrmime.Header.t -> string -> partial list
 
+  (* Ranking functions *)
   val instanciate :
     ?input_dir:Fpath.t ->
     (unit -> partial option Lwt.t) ->
@@ -113,8 +116,8 @@ functor
       let rec build_feature h t = function
         | Mrmime.Mail.Leaf b -> (
             match F.partial_extract h b with
-            | Some partial -> F.add_partial t partial
-            | None -> t)
+            | [] -> t
+            | ext -> F.add_partial t ext)
         | Mrmime.Mail.Message (h, mail) -> build_feature h t mail
         | Mrmime.Mail.Multipart parts ->
             List.fold_left
@@ -160,8 +163,8 @@ functor
       List.fold_left
         (fun acc (module F : FEATURE) ->
           match F.partial_extract h str with
-          | None -> List.rev acc
-          | Some extracted -> extracted :: acc)
+          | [] -> List.rev acc
+          | extracted -> { name = F.name; extracted } :: acc)
         [] Features.vector
 
     let instanciate ?input_dir (input_stream : unit -> partial option Lwt.t)
@@ -184,10 +187,10 @@ functor
               | None ->
                   (try pusher None with Lwt_stream.Closed -> ());
                   Lwt.return ((F.name, F.rank t db) :: ranks, copy)
-              | Some ({ name; _ } as ext) ->
-                  if name = F.name then go (F.add_partial t ext)
+              | Some ({ name; extracted } as partial) ->
+                  if name = F.name then go (F.add_partial t extracted)
                   else (
-                    pusher (Some ext);
+                    pusher (Some partial);
                     go t)
             in
             go t >>= fun (ranks, copy) -> loop fvs (ranks, to_stream copy)

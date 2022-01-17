@@ -60,7 +60,13 @@ module type DT = sig
   val classify : ranks -> label
 end
 
-(** Machine *)
+type training_set = { spam : Fpath.t; ham : Fpath.t }
+
+type partial = { name : string; extracted : string list }
+(** Describes the parts extracted from received mails chunks. The
+   [name] shoud be filled with the feature name.  *)
+
+(** A Filter is the  by a feature vector defined byt the function and a decision tree   *)
 module type MACHINE = functor (Features : FV) (DecisionTree : DT) -> sig
   (* Training functions *)
   val train_and_write_to_file : training_set -> output:Fpath.t -> unit
