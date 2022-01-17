@@ -1,7 +1,6 @@
 type label = [ `Spam | `Ham ]
 type rank = float list
 type ranks = (string * rank) list
-type training_set = { spam : Fpath.t; ham : Fpath.t }
 
 module type FEATURE = sig
   val name : string
@@ -50,7 +49,7 @@ end
 type training_set = { spam : Fpath.t; ham : Fpath.t }
 type partial = { name : string; extracted : string list }
 
-module type MACHINE = functor (Features : FV) (DecisionTree : DT) -> sig
+module type FILTER = functor (Features : FV) (DecisionTree : DT) -> sig
   (* Training functions *)
   val train_and_write_to_file : training_set -> output:Fpath.t -> unit
 
@@ -70,7 +69,7 @@ module type MACHINE = functor (Features : FV) (DecisionTree : DT) -> sig
   val get_features_name : unit -> string list
 end
 
-module Machine : MACHINE =
+module Filter : FILTER =
 functor
   (Features : FV)
   (DecisionTree : DT)

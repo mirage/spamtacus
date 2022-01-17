@@ -103,7 +103,7 @@ let fv =
   |> add_feature (module BayesianSubject)
 
 module BayesianFilter =
-  Machine (struct
+  Filter (struct
       let vector = fv
     end)
     (struct
