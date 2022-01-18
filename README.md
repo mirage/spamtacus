@@ -54,7 +54,7 @@ Each feature is defined by:
 ```ocaml
   type db
   val empty_db : db
-  val train : db -> label -> t -> db
+  val train : db -> [`Ham | `Spam] -> t -> db
   val write_db : out_channel -> db -> unit
   val read_db : in_channel option -> db
 ```
@@ -100,9 +100,10 @@ Finally, a performance test for our spam filter can be done with the command
 $ dune exec ./test/test.exe
 ```
 It returns:
-- how many hams and spams habe been properly labelled (resp. true negative and true positive),
+- how many hams and spams have been properly labelled (resp. true negative and true positive),
 - how many hams have been labelled as spam (false positive),
-- how many spamls have been labelled as ham (false negative).
+- how many spams have been labelled as ham (false negative).
+- how many mails have been labelled as unknown (unconclusive result).
 
 ## State of the art
 See [here](soa.md).

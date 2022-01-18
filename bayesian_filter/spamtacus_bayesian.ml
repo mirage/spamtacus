@@ -1,3 +1,4 @@
+include Spamtacus
 (**
  Implementation of a bayesian filter applied to two features :
 
@@ -6,7 +7,7 @@
    
  - all bodies included in the mail.   
 *)
-include Spamtacus
+
 module BayesianBody = Features.BayesianBody
 module BayesianSubject = Features.BayesianSubject
 module BasicAntiVirus = Features.BasicAntiVirus
@@ -23,13 +24,13 @@ module BayesianFilter =
     end)
     (struct
       let classify ranks =
-        let antivirus_score = List.assoc BasicAntiVirus.name ranks |> List.hd in  
+        let antivirus_score = List.assoc BasicAntiVirus.name ranks |> List.hd in
         let subject_score = List.assoc BayesianSubject.name ranks |> List.hd in
         let body_score = List.assoc BayesianBody.name ranks |> List.hd in
-        if antivirus_score = 1.0 then `Spam else
-        if subject_score > 0.7 then `Spam
-        else if body_score > 0.7 then `Spam
-        else `Ham
+        if antivirus_score = 1.0 then `Spam
+        else if subject_score >= 0.7 || body_score >= 0.7 then `Spam
+        else if subject_score <= 0.3 || body_score <= 0.3 then `Ham
+        else `Unknown
     end)
 
 include BayesianFilter

@@ -32,7 +32,7 @@
 (** {1:type General types} *)
 
 (* TODO: make it user defined *)
-type label = [ `Spam | `Ham ]
+type label = [ `Spam | `Ham | `Unknown ]
 
 (* TODO: better abstraction (!) *)
 type rank = float list
@@ -95,7 +95,7 @@ module type FEATURE = sig
 
   val empty_db : db
 
-  val train : db -> label -> t -> db
+  val train : db -> [`Ham | `Spam] -> t -> db
   (** [train db label t] adds the features [t] extracted from a mail
    labelled [label] to the dababase [db]. *)
 
@@ -130,7 +130,7 @@ end
 (** A Filter is defined by a feature vector and a decision tree. *)
 module type FILTER = functor (Features : FV) (DecisionTree : DT) -> sig
   val train_and_write_to_file : training_set -> output:Fpath.t -> unit
-(** [train_and_write_to_file training_set ~output] computes the
+  (** [train_and_write_to_file training_set ~output] computes the
    combined database of each feature in [Features] from the
    [training_set] and writes it in [output]. *)
 

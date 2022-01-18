@@ -17,7 +17,7 @@ open Spamtacus
     {- Otherwise an `Unknown` label is returned.}}
 *)
 
-(** {1:bayesian_features Implemented features *)
+(** {1:bayesian_features Implemented features} *)
 module BayesianBody : Spamtacus.FEATURE with type db = Database.db
 (** Naive Bayesian filter on mail body content. *)
 
@@ -41,6 +41,7 @@ module BasicAntiVirus : Spamtacus.FEATURE
   Note: This feature does not require any machine learning algorithm nor
  a database. *)
 
+(** {1:filter_func Bayesian filter} *)
 val train_and_write_to_file : training_set -> output:Fpath.t -> unit
 (** [train_and_write_to_file training_set ~output] computes the
    combined database of each feature from the [training_set] and
