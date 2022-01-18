@@ -20,16 +20,16 @@ module BayesianBody : FEATURE with type db = Database.db = struct
 
   let empty_db = Database.create ()
 
-  let partial_extract _ (str : string) : partial option =
+  let partial_extract _ (str : string) : string list =
     let extracted =
       Extract.extract str |> fun e ->
       Extract.BagOfWords.fold (fun w _ acc -> w :: acc) e []
     in
-    match extracted with [] -> None | _ -> Some { name; extracted }
+    extracted
 
   let extract_from_header_tree _header_tree : t = Extract.BagOfWords.empty
 
-  let add_partial (t : t) ({ extracted; _ } : partial) : t =
+  let add_partial (t : t) extracted : t =
     List.fold_left (fun t word -> Extract.BagOfWords.add word t) t extracted
 
   let write_db oc db = Database.write oc db
@@ -58,7 +58,7 @@ module BayesianSubject : FEATURE with type db = Database.db = struct
     Mrmime.Header.assoc Mrmime.Field_name.subject header
     |> List.map (fun h -> Prettym.to_string Mrmime.Field.Encoder.field h)
 
-  let partial_extract _ _ = None
+  let partial_extract _ _ = []
 
   let extract_from_header_tree (header, tree) : t =
     let extract_and_add acc header =
@@ -83,7 +83,7 @@ module BayesianSubject : FEATURE with type db = Database.db = struct
     in
     go (extract_and_add Extract.BagOfWords.empty header) tree
 
-  let add_partial (t : t) ({ extracted; _ } : partial) : t =
+  let add_partial (t : t) (extracted : string list) : t =
     List.fold_left (fun t word -> Extract.BagOfWords.add word t) t extracted
 
   let write_db oc db = Database.write oc db
@@ -103,7 +103,7 @@ let fv =
   |> add_feature (module BayesianSubject)
 
 module BayesianFilter =
-  Machine (struct
+  Filter (struct
       let vector = fv
     end)
     (struct
