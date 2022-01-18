@@ -1,6 +1,6 @@
 open Spamtacus
 
-(** This filter uses tree features:
+(** This filter uses three features:
   {ul
     {- a naive bayesian algorithm that works on mail body (See {!BayesianBody}). }
     {- a naive bayesian algorithm that works on [subject] header value (See {!BayesianSubject}). }
@@ -18,6 +18,7 @@ open Spamtacus
 *)
 
 (** {1:bayesian_features Implemented features} *)
+    
 module BayesianBody : Spamtacus.FEATURE with type db = Database.db
 (** Naive Bayesian filter on mail body content. *)
 
@@ -42,6 +43,7 @@ module BasicAntiVirus : Spamtacus.FEATURE
  a database. *)
 
 (** {1:filter_func Bayesian filter} *)
+
 val train_and_write_to_file : training_set -> output:Fpath.t -> unit
 (** [train_and_write_to_file training_set ~output] computes the
    combined database of each feature from the [training_set] and
