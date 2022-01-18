@@ -46,7 +46,7 @@ Each feature is defined by:
   (** How to extract it from a mail chunk ... *)
   val extract_from_header_tree : Mrmime.Header.t * unit Mrmime.Mail.t -> t
   (** ... or from mail headers.*)
-  val add_partial : t -> partial -> t
+  val add_partial : t -> string list -> t
   (** How to convert the extracted strings into a feature. *)
 ```
 
