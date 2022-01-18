@@ -1,15 +1,111 @@
 # Spamtacus: a customizable mail filter
 
-Spamtacus provides tools to compose a customizable machine-learning filter for mails. A filter is defined by a [feature vector](https://github.com/lyrm/spamtacus/blob/499ce82991f9799a6e0a29a33330975e69ce8321/lib/spamtacus.mli#L7FEATURE) for feature definition) and a decision tree that determines how to label a mail from the rank of each feature. The [filter](https://github.com/lyrm/spamtacus/blob/499ce82991f9799a6e0a29a33330975e69ce8321/lib/spamtacus.mli#L64) functor takes care of putting together these pieces provided by the user to produce a functionning filter.
+`Spamtacus` provides tools to build a customizable mail filter. It
+contains three librairies:
 
-This library also provides a [naive bayesian implementation](https://github.com/lyrm/spamtacus/tree/main/bayesian_filter) and a [ranking function]([https://github.com/lyrm/spamtacus/tree/main/mirage) for MirageOS unikernel.
+- (1) A [filter abstraction](https://github.com/lyrm/spamtacus/tree/main/lib) based on [supervized learning
+model](https://en.wikipedia.org/wiki/Supervised_learning),
+- (2) An [implementation](https://github.com/lyrm/spamtacus/tree/main/bayesian_filter) of this abstraction composed of a naive bayesian algorithm and
+an attachment checker that can be seen as a basic antivirus,
+- (3) A [specific application](https://github.com/lyrm/spamtacus/tree/main/mirage) for [`MirageOS
+unikernel`](https://github.com/dinosaure/ptt/tree/master/unikernel/spamfilter)
+with serialization of the database to a static value.
 
-# About the Bayesian unikernels 
-The Bayesian unikernel works in two stages: pre-deployment, when the Bayesian unikernel is trained to detect spam, and deployment, when the Bayesian unikernel is integrated into the SMTP receiver architecture of unikernels to filter the spam emails. Nevertheless, if is worth mentioning that the Bayesian unikernel can be used independently as an individual antispam tool. Next we present details regarding the implementation for these two stages.
+## Filter abstraction or how to build your own spam filter
 
-In the pre-deployment stage we use an English training set containing the spam/ham classification of emails provided by [SpamAssasin's public corpus](https://spamassassin.apache.org/old/publiccorpus/readme.html) where we can find 6000 messages, with about a 31\% spam ratio. We note that the GDPR regulations are preserved by the [training set](https://github.com/lyrm/spaml/tree/main/bayesian_filter/database) as all these messages were posted to public fora, were sent in the knowledge that they may be made public, or originated as newsletters from public news web sites. This training set is used to compute a database based on the [bag of words](https://github.com/lyrm/spaml/blob/main/bayesian_filter/database.mli) method. Namely, we compute the frequency vector that associates to each word that appears in the training set both its frequency in spams and in hams.  In our case, the number of extracted words is approximately 50,000 in 3,000 mails of the training set. Next we select only the words with high occurence on the training set to define a [static database](https://github.com/lyrm/spaml/tree/main/bayesian_filter/database) that is then directly incorporated into our spam filter unikernel. In brief, the static database defines the key words, namely words that appear a lot in mails and describes how frequent they are in spam and ham.
+We have built our [filter
+abstraction](https://github.com/lyrm/spamtacus/tree/main/lib) on the
+supervized learning model, meaning a mail is labelled based on
+examples: a static set of pre-labelled mails -called a training set-
+is used to train a machine learning algorithm. This training is
+basically converted into a database and for every incoming mail, the
+algorithm extracts the pertinent parts of the mail, compares it to the
+database (its examples) and ranks the mail.
 
-In deployment phase an incoming mail is split into words and we compute each of their spaminess. A word with a high frequency in spam and a low one in ham will have a high spaminess. It is a good indicator that a mail is a spam.  We extract the frequencies of each word from the static database that we computed in pre-deployment phase. Next we keep the extracted words with the higher spaminess to form a feature vector and compute the mail probability of beeing a spam following the Bayes formula and the [Graham](http://paulgraham.com/spam.html) approach to avoid floating-point underflow vulnerabilities. Finally, our classifier partitions the probability interval [0, 1] into three segments [0, C1, C2, 1], where: 
-- the emails with the Graham probability p greater than C2 are labeled spam,
-- the emails with the Graham probability p smaller than C1 are labeled ham,
-- the emails with the Graham probability p in the [C1,C2] interval are labeled unknown In our choice, the threshold values are C1=0.3 and C2=0.7.
+The *pertinent parts* extracted from an incoming mail are called
+features. To build a filter, features have to be provided as well as a
+`classify` function -basically a decision tree that translates ranks
+computed for every feature into a label.
+
+```ocaml
+module type FILTER = functor (Features : FV) (DecisionTree : DT)
+```
+
+Each feature is defined by:
+- an unique identifier
+```ocaml
+  val name: string
+```
+
+- what to extract from incoming mail chunks and headers and how to extract it
+```ocaml
+  type t
+  (** Type of extracted mail parts. *)
+  val empty : t
+  val partial_extract : Mrmime.Header.t -> string -> string list
+  (** How to extract it from a mail chunk ... *)
+  val extract_from_header_tree : Mrmime.Header.t * unit Mrmime.Mail.t -> t
+  (** ... or from mail headers.*)
+  val add_partial : t -> partial -> t
+  (** How to convert the extracted strings into a feature. *)
+```
+
+- a description of this specific feature database and how to train, read and write it
+```ocaml
+  type db
+  val empty_db : db
+  val train : db -> label -> t -> db
+  val write_db : out_channel -> db -> unit
+  val read_db : in_channel option -> db
+```
+- and finally, an algorithm to rank an incoming mail from the extracted parts and a pre-computed database.
+```ocaml
+  val rank : t -> db -> rank
+```
+
+## Filter implementation
+
+As explained above, to implement a filter, one needs to provide two thinks: some features and a
+decision tree. Our [provided implementation](https://github.com/lyrm/spamtacus/tree/main/bayesian_filter) contains three features:
+- a naive Bayesian filter on mail body content
+- a naive Bayesian filter on values of `subject` headers
+- a basic antivirus that rejects mails with forbidden attachment (`.exe` files for example)
+
+The decision tree is pretty simple:
+- A mail is labelled as `Spam` if it contains a forbidden attachment or if the probability of beeing a spam computed by any of the two bayesian filters is greater than 0.7.
+- If no forbidden attachment has been found and both probabilities of beeing a spam are lower than 0.3, it is labelled as `Ham`.
+- Otherwise an `Unknown` label is returned.
+ 
+## Application for MirageOS
+
+One of the primary purpose of this library is to provide every tools
+necessary to build a spam filter for a MirageOs unikernel. For that,
+we add a few things to our spam filter implementation. We need:
+- to be able to serialize the database into a static value, as
+MirageOS does not provide a file system.
+- to provide a function that ranks an incoming stream mail and
+  returns it appended with proper spam header.
+
+Serialization, as well as training, as to be done in a pre-deployment
+phase using the command below:
+```sh
+$ dune exec ./bin/generate.exe [training_set_directory]
+```
+A pre-computed database is already provided. It had been computed with
+a publicly available mail database ([SpamAssasin's public
+corpus](https://spamassassin.apache.org/old/publiccorpus/readme.html)).
+
+Finally, a performance test for our spam filter can be done with the command 
+```sh
+$ dune exec ./test/test.exe
+```
+It returns:
+- how many hams and spams habe been properly labelled (resp. true negative and true positive),
+- how many hams have been labelled as spam (false positive),
+- how many spamls have been labelled as ham (false negative).
+
+## State of the art
+See [here](soa.md).
+## Fundings
+`Spamtacus` has received funding from the Next Generation Internet Initiative
+(NGI) within the framework of the DAPSI Project.
