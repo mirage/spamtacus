@@ -65,7 +65,7 @@ Each feature is defined by:
 
 ## Filter implementation
 
-As explained above, to implement a filter, one needs to provide two thinks: some features and a
+As explained above, to implement a filter, one needs to provide two things: some features and a
 decision tree. Our [provided implementation](https://github.com/lyrm/spamtacus/tree/main/bayesian_filter) contains three features:
 - a naive Bayesian filter on mail body content
 - a naive Bayesian filter on values of `subject` headers
