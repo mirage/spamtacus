@@ -1,3 +1,9 @@
 (executable
- (name test)
+ (name test_stream)
+ (modules test_stream)
  (libraries spamtacus_mirage lwt.unix ))
+
+(executable
+ (name test_features)
+ (modules test_features)
+ (libraries spamtacus_mirage mrmime))
