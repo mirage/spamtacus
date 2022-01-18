@@ -1,4 +1,4 @@
 
 let bayesianBody = Database.create ()
 
-let bayesianMainSubject = Database.create ()
+let bayesianSubject = Database.create ()

@@ -1,4 +1,7 @@
 open Spamtacus
+module BayesianBody : FEATURE
+module BayesianSubject : FEATURE
+module BasicAntiVirus : FEATURE
 
 (** This filter uses two features:
   {ul
