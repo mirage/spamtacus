@@ -1,11 +1,15 @@
-# In brief
-The abstraction 
-- features
+# Spamtacus: a customizable mail filter
 
-# The implementation
-- computation of the database
-- labelling a mail 
+Spamtacus provides tools to compose a customizable machine-learning filter for mails. A filter is defined by a [feature vector](https://github.com/lyrm/spamtacus/blob/499ce82991f9799a6e0a29a33330975e69ce8321/lib/spamtacus.mli#L7FEATURE) for feature definition) and a decision tree that determines how to label a mail from the rank of each feature. The [filter](https://github.com/lyrm/spamtacus/blob/499ce82991f9799a6e0a29a33330975e69ce8321/lib/spamtacus.mli#L64) functor takes care of putting together these pieces provided by the user to produce a functionning filter.
 
-# For mirage
-Static value
-Serializing the database 
+This library also provides a [naive bayesian implementation](https://github.com/lyrm/spamtacus/tree/main/bayesian_filter) and a [ranking function]([https://github.com/lyrm/spamtacus/tree/main/mirage) for MirageOS unikernel.
+
+# About the Bayesian unikernels 
+The Bayesian unikernel works in two stages: pre-deployment, when the Bayesian unikernel is trained to detect spam, and deployment, when the Bayesian unikernel is integrated into the SMTP receiver architecture of unikernels to filter the spam emails. Nevertheless, if is worth mentioning that the Bayesian unikernel can be used independently as an individual antispam tool. Next we present details regarding the implementation for these two stages.
+
+In the pre-deployment stage we use an English training set containing the spam/ham classification of emails provided by [SpamAssasin's public corpus](https://spamassassin.apache.org/old/publiccorpus/readme.html) where we can find 6000 messages, with about a 31\% spam ratio. We note that the GDPR regulations are preserved by the [training set](https://github.com/lyrm/spaml/tree/main/bayesian_filter/database) as all these messages were posted to public fora, were sent in the knowledge that they may be made public, or originated as newsletters from public news web sites. This training set is used to compute a database based on the [bag of words](https://github.com/lyrm/spaml/blob/main/bayesian_filter/database.mli) method. Namely, we compute the frequency vector that associates to each word that appears in the training set both its frequency in spams and in hams.  In our case, the number of extracted words is approximately 50,000 in 3,000 mails of the training set. Next we select only the words with high occurence on the training set to define a [static database](https://github.com/lyrm/spaml/tree/main/bayesian_filter/database) that is then directly incorporated into our spam filter unikernel. In brief, the static database defines the key words, namely words that appear a lot in mails and describes how frequent they are in spam and ham.
+
+In deployment phase an incoming mail is split into words and we compute each of their spaminess. A word with a high frequency in spam and a low one in ham will have a high spaminess. It is a good indicator that a mail is a spam.  We extract the frequencies of each word from the static database that we computed in pre-deployment phase. Next we keep the extracted words with the higher spaminess to form a feature vector and compute the mail probability of beeing a spam following the Bayes formula and the [Graham](http://paulgraham.com/spam.html) approach to avoid floating-point underflow vulnerabilities. Finally, our classifier partitions the probability interval [0, 1] into three segments [0, C1, C2, 1], where: 
+- the emails with the Graham probability p greater than C2 are labeled spam,
+- the emails with the Graham probability p smaller than C1 are labeled ham,
+- the emails with the Graham probability p in the [C1,C2] interval are labeled unknown In our choice, the threshold values are C1=0.3 and C2=0.7.

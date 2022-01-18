@@ -35,9 +35,6 @@ let create_fv () : feature_vector = []
 let add_feature (f : (module FEATURE)) (fv : feature_vector) : feature_vector =
   f :: fv
 
-let map_features (f : (module FEATURE) -> 'a) (fv : feature_vector) : 'a list =
-  List.map f fv
-
 module type FV = sig
   val vector : feature_vector
 end

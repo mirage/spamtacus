@@ -1,4 +1,4 @@
-(** Spamtacus provides tools to compose a personnalized
+(** Spamtacus provides tools to compose a customizable
    machine-learning filter for mails. A filter is defined by a {b
    feature vector} (See {!FEATURE} for feature definition) and a {b
    classify} function (See {!DT}). The {!Filter} functor takes care of
@@ -29,6 +29,8 @@
    {!Filter.instanciate}) and features are extracted chunk by chunk
    (see {!FEATURE.partial_extract}).  *)
 
+(** {1:type General types} *)
+
 (* TODO: make it user defined *)
 type label = [ `Spam | `Ham ]
 
@@ -39,6 +41,14 @@ type rank = float list
 
 type ranks = (string * rank) list
 (** A list of named feature scores.*)
+
+type training_set = { spam : Fpath.t; ham : Fpath.t }
+
+type partial = { name : string; extracted : string list }
+(** Describes the parts extracted from received mails chunks. The
+   [name] shoud be filled with the feature name.  *)
+
+(** {1:feature Feature} *)
 
 (** A feature describes what part of a mail is extracted and processed
    to rank it, as well as how to extract and the algorithm used to
@@ -57,13 +67,13 @@ module type FEATURE = sig
   (** A unique identifier.*)
 
   type t
-  (** Describe the part of the mail that is extracted and studied by the
+  (** Describes the part of the mail that is extracted and studied by the
    classification ML algorithm. *)
 
   val empty : t
 
   val partial_extract : Mrmime.Header.t -> string -> string list
-(** [partial_extract header chunk] defines how to extract the
+  (** [partial_extract header chunk] defines how to extract the
    important parts of a [chunk], depending of the corresponding
    [header]. The extracted strings are combined to form the feature by
    [add_partial].
@@ -73,69 +83,77 @@ module type FEATURE = sig
    associated to it. Use [extract_from_header_tree] instead.  *)
 
   val extract_from_header_tree : Mrmime.Header.t * unit Mrmime.Mail.t -> t
-(** [extract_from_header_tree (headers, tree)] can be used to extract
+  (** [extract_from_header_tree (headers, tree)] can be used to extract
    feature from [headers]. [tree] describes the structure of the mail
    and can be traversed to access headers of multipart mail. *)
 
   val add_partial : t -> string list -> t
 
   type db
-  (** [db] defines the database that needs to be registered for the
+  (** Defines the database that needs to be registered for the
    feature. *)
 
   val empty_db : db
 
   val train : db -> label -> t -> db
-(** [train db label t] adds the features [t] extracted from a mail
+  (** [train db label t] adds the features [t] extracted from a mail
    labelled [label] to the dababase [db]. *)
 
   val write_db : out_channel -> db -> unit
   val read_db : in_channel option -> db
-
   val rank : t -> db -> rank
 end
 
+(** {1:feature_vect Feature vector} *)
+
 type feature_vector
-(** FEATURE VECTOR *)
+(** List of {!FEATURE} module. See {!create_fv} and {!add_feature} to build it. *)
 
 val create_fv : unit -> feature_vector
 val add_feature : (module FEATURE) -> feature_vector -> feature_vector
-val map_features : ((module FEATURE) -> 'a) -> feature_vector -> 'a list
 
+(** Module container to pass the user-defined {!feature_vector}. *)
 module type FV = sig
   val vector : feature_vector
 end
 
-(** Decision Tree *)
+(** {1:decision_tree Decision Tree} *)
+
+(** The decision tree [DT] must defined what label to assign
+   depending on input ranks. *)
 module type DT = sig
   val classify : ranks -> label
 end
 
-type training_set = { spam : Fpath.t; ham : Fpath.t }
+(** {1:filter Filter} *)
 
-type partial = { name : string; extracted : string list }
-(** Describes the parts extracted from received mails chunks. The
-   [name] shoud be filled with the feature name.  *)
-
-(** A Filter is the  by a feature vector defined byt the function and a decision tree   *)
+(** A Filter is defined by a feature vector and a decision tree. *)
 module type FILTER = functor (Features : FV) (DecisionTree : DT) -> sig
-  (* Training functions *)
   val train_and_write_to_file : training_set -> output:Fpath.t -> unit
+(** [train_and_write_to_file training_set ~output] computes the
+   combined database of each feature in [Features] from the
+   [training_set] and writes it in [output]. *)
 
-  (* Extraction functions *)
   val partial_extract : Mrmime.Header.t -> string -> partial list
+  (** [partial_extract header data]*)
 
-  (* Ranking functions *)
   val instanciate :
     ?input_dir:Fpath.t ->
     (unit -> partial option Lwt.t) ->
     Mrmime.Header.t * unit Mrmime.Mail.t ->
     ranks Lwt.t
+  (** [instanciate ~input_dir stream (header, tree)] ranks each feature
+   of the functor parameter [Features] from an incoming mail [stream]
+   mail and its header [(header, tree)]. The [input_dir] must contain
+   the dabatase built with {!train_and_write_to_file}. *)
 
   val classify : ranks -> label
+  (** [classify] defines how to assign a label depending on input
+   ranks. *)
 
-  (* Utilitary function *)
   val get_features_name : unit -> string list
+  (** [get_geatures_name] returns each feature identifier
+   {!FEATURE.name}. *)
 end
 
 module Filter : FILTER
