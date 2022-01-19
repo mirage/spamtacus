@@ -1,4 +1,4 @@
 (library
  (name spamtacus_mirage)
  (public_name spamtacus-mirage)
- (libraries spamtacus_bayesian))
+ (libraries spamtacus-bayesian))
