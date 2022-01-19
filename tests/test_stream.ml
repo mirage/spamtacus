@@ -58,19 +58,18 @@ let ranks (labelled_filenames : ([ `Ham | `Spam ] * string) list) :
     labelled_filenames
 
 (* Extract all filenames in the training set directory.*)
-let extract_filenames () =
+let extract_filenames dir =
   let readdir label dirpath =
     let dirpath' = Fpath.to_string dirpath in
     if Sys.is_directory dirpath' then
       Sys.readdir dirpath'
       |> Array.to_list
-      |> List.map (fun f -> (label, dirpath' ^ f))
+      |> List.map (fun f -> (label, dirpath' ^ "/" ^ f))
     else failwith "todo"
   in
-  let spam = readdir `Spam (Fpath.of_string "mails/spam/" |> Result.get_ok) in
-  let ham = readdir `Ham (Fpath.of_string "mails/ham/" |> Result.get_ok) in
+  let spam = readdir `Spam (Fpath.add_seg dir "spam") in
+  let ham = readdir `Ham (Fpath.add_seg dir "ham") in
   let filenames = spam @ ham in
-  Format.printf "Number of files : %d@." (List.length filenames);
   filenames
 
 (* Count the wrongfully labelled mails *)
@@ -105,20 +104,69 @@ let get_perf result =
     { u = 0; tp = 0; fp = 0; tn = 0; fn = 0; e = 0; spam = 0; ham = 0 }
     result
 
-let print_res { e; u; tp; fp; tn; fn; spam; ham } =
-  Format.printf "Spam %d and hams %d\n" spam ham;
-  Format.printf "Error : %d\n" e;
-  Format.printf "Unknown : %d\n" u;
-  Format.printf "False positive : %d\n" fp;
-  Format.printf "True positive : %d\n" tp;
-  Format.printf "False negative : %d\n" fn;
-  Format.printf "True negative : %d@." tn
+let percent a b = float_of_int a /. float_of_int b *. 100.
 
-let main () =
+let print_res { e; u; tp; fp; tn; fn; spam; ham } =
+  Format.printf "\nTotal number of mails : %d (%d spams and %d)\n" (spam + ham)
+    spam ham;
+  Format.printf "Errors                : %d (unprocessed mails)\n" e;
+  Format.printf "Unknowns              : %d (unconclusive filter score)\n" u;
+  Format.printf "False positives       : %d (%0.2f %% of hams)\n" fp
+    (percent fp ham);
+  Format.printf "True positives        : %d (%0.2f %% of spams)\n" tp
+    (percent tp spam);
+  Format.printf "False negatives       : %d (%0.2f %% of spams)\n" fn
+    (percent fn spam);
+  Format.printf "True negatives        : %d (%0.2f %% of hams)@." tn
+    (percent tn ham)
+
+let run_ dir =
   Lwt_main.run
-    ( ranks (*[ (`Ham, "mail") ]*) (extract_filenames ()) >>= fun res ->
+    ( ranks (extract_filenames dir) >>= fun res ->
       get_perf res |> print_res;
       Lwt.return () )
-;;
 
-main ()
+let training_set_dir = "../Mails_corpus/ts1" |> Fpath.of_string |> Result.get_ok
+
+let easy_test_dir =
+  "../Mails_corpus/easy_test_corpus" |> Fpath.of_string |> Result.get_ok
+
+let hard_test_dir =
+  "../Mails_corpus/hard_test_corpus" |> Fpath.of_string |> Result.get_ok
+
+let default_run () =
+  Format.printf "## On training corpus ##@.";
+  run_ training_set_dir;
+  Format.printf "\n\n## On easy corpus ##@.";
+  run_ easy_test_dir;
+  Format.printf "\n\n## On hard corpus ##@.";
+  run_ hard_test_dir
+
+let run dir =
+  (match dir with Some dir -> run_ dir | None -> default_run ());
+  `Ok 0
+
+open Cmdliner
+
+let testing_corpus_dir =
+  let filename = Arg.conv (Fpath.of_string, Fpath.pp) in
+  let doc =
+    "The directory where the training set can be found. It must be divided \
+     into two sub-directories $(i,spam) and $(i,ham)."
+  in
+  Arg.(
+    value
+    & pos ~rev:true 0 (some filename) None
+    & info [] ~doc ~docv:"TRAINING_SET_PATH")
+
+let cmd =
+  let doc = "todo" in
+  let man =
+    [
+      `S Manpage.s_description;
+      `P "$(tname) generate $(i,bayesian_filter/database/static_database.ml).";
+    ]
+  in
+  (Term.(ret (const run $ testing_corpus_dir)), Term.info "generate" ~doc ~man)
+
+let () = Term.(exit_status @@ eval cmd)
