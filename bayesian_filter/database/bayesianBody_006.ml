@@ -239,7 +239,7 @@ let db = db
 |> Map.add "rip" { in_spam=0; in_ham=6}
 |> Map.add "ripped" { in_spam=6; in_ham=5}
 |> Map.add "rise" { in_spam=2; in_ham=14}
-|> Map.add "risk" { in_spam=51; in_ham=23}
+|> Map.add "risk" { in_spam=52; in_ham=23}
 |> Map.add "risks" { in_spam=5; in_ham=8}
 |> Map.add "rival" { in_spam=0; in_ham=10}
 |> Map.add "rivals" { in_spam=0; in_ham=10}
@@ -646,7 +646,7 @@ let db = db
 |> Map.add "singapore" { in_spam=2; in_ham=7}
 |> Map.add "singing" { in_spam=0; in_ham=5}
 |> Map.add "single" { in_spam=8; in_ham=103}
-|> Map.add "singles" { in_spam=7; in_ham=3}
+|> Map.add "singles" { in_spam=8; in_ham=3}
 |> Map.add "sir" { in_spam=31; in_ham=3}
 |> Map.add "sister" { in_spam=7; in_ham=9}
 |> Map.add "sit" { in_spam=2; in_ham=19}
@@ -677,7 +677,7 @@ let db = db
 |> Map.add "slick" { in_spam=4; in_ham=4}
 |> Map.add "slight" { in_spam=0; in_ham=13}
 |> Map.add "slightly" { in_spam=1; in_ham=30}
-|> Map.add "slim" { in_spam=13; in_ham=7}
+|> Map.add "slim" { in_spam=14; in_ham=7}
 |> Map.add "slip" { in_spam=3; in_ham=6}
 |> Map.add "slipcon" { in_spam=0; in_ham=6}
 |> Map.add "slow" { in_spam=5; in_ham=48}
@@ -870,7 +870,7 @@ let db = db
 |> Map.add "stanza" { in_spam=0; in_ham=9}
 |> Map.add "star" { in_spam=2; in_ham=13}
 |> Map.add "stars" { in_spam=0; in_ham=7}
-|> Map.add "start" { in_spam=50; in_ham=122}
+|> Map.add "start" { in_spam=51; in_ham=122}
 |> Map.add "start-up" { in_spam=2; in_ham=6}
 |> Map.add "start-ups" { in_spam=0; in_ham=8}
 |> Map.add "started" { in_spam=28; in_ham=62}

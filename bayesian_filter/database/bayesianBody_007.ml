@@ -50,7 +50,7 @@ let db = db
 |> Map.add "supplied" { in_spam=1; in_ham=225}
 |> Map.add "supplies" { in_spam=9; in_ham=8}
 |> Map.add "supply" { in_spam=8; in_ham=19}
-|> Map.add "support" { in_spam=43; in_ham=154}
+|> Map.add "support" { in_spam=44; in_ham=154}
 |> Map.add "supported" { in_spam=7; in_ham=29}
 |> Map.add "supporters" { in_spam=2; in_ham=5}
 |> Map.add "supporting" { in_spam=1; in_ham=21}
@@ -231,7 +231,7 @@ let db = db
 |> Map.add "that'll" { in_spam=2; in_ham=6}
 |> Map.add "that's" { in_spam=39; in_ham=284}
 |> Map.add "thats" { in_spam=0; in_ham=26}
-|> Map.add "the" { in_spam=440; in_ham=2206}
+|> Map.add "the" { in_spam=441; in_ham=2206}
 |> Map.add "theadmanager" { in_spam=15; in_ham=0}
 |> Map.add "theater" { in_spam=1; in_ham=11}
 |> Map.add "theatre" { in_spam=0; in_ham=5}
@@ -271,7 +271,7 @@ let db = db
 |> Map.add "third" { in_spam=16; in_ham=51}
 |> Map.add "third-party" { in_spam=0; in_ham=6}
 |> Map.add "thirty" { in_spam=9; in_ham=7}
-|> Map.add "this" { in_spam=381; in_ham=1431}
+|> Map.add "this" { in_spam=382; in_ham=1431}
 |> Map.add "tho" { in_spam=0; in_ham=9}
 |> Map.add "thomas" { in_spam=2; in_ham=27}
 |> Map.add "thoroughly" { in_spam=1; in_ham=5}
@@ -433,7 +433,7 @@ let db = db
 |> Map.add "tries" { in_spam=0; in_ham=17}
 |> Map.add "trigger" { in_spam=0; in_ham=10}
 |> Map.add "triggered" { in_spam=0; in_ham=6}
-|> Map.add "trim" { in_spam=14; in_ham=3}
+|> Map.add "trim" { in_spam=15; in_ham=3}
 |> Map.add "trip" { in_spam=8; in_ham=12}
 |> Map.add "trips" { in_spam=1; in_ham=7}
 |> Map.add "trivial" { in_spam=0; in_ham=24}
@@ -585,7 +585,7 @@ let db = db
 |> Map.add "usage" { in_spam=3; in_ham=17}
 |> Map.add "usb" { in_spam=1; in_ham=11}
 |> Map.add "usd" { in_spam=11; in_ham=2}
-|> Map.add "use" { in_spam=101; in_ham=603}
+|> Map.add "use" { in_spam=102; in_ham=603}
 |> Map.add "used" { in_spam=38; in_ham=275}
 |> Map.add "useful" { in_spam=3; in_ham=73}
 |> Map.add "usefulness" { in_spam=0; in_ham=39}
@@ -792,7 +792,7 @@ let db = db
 |> Map.add "wears" { in_spam=1; in_ham=7}
 |> Map.add "weather" { in_spam=0; in_ham=23}
 |> Map.add "web" { in_spam=68; in_ham=152}
-|> Map.add "web's" { in_spam=11; in_ham=3}
+|> Map.add "web's" { in_spam=12; in_ham=3}
 |> Map.add "web-based" { in_spam=0; in_ham=6}
 |> Map.add "webforms" { in_spam=0; in_ham=6}
 |> Map.add "weblog" { in_spam=0; in_ham=45}
@@ -893,7 +893,7 @@ let db = db
 |> Map.add "wisdom" { in_spam=0; in_ham=16}
 |> Map.add "wise" { in_spam=0; in_ham=10}
 |> Map.add "wisely" { in_spam=3; in_ham=4}
-|> Map.add "wish" { in_spam=173; in_ham=43}
+|> Map.add "wish" { in_spam=174; in_ham=43}
 |> Map.add "wishes" { in_spam=2; in_ham=9}
 |> Map.add "wishful" { in_spam=0; in_ham=5}
 |> Map.add "with" { in_spam=305; in_ham=1213}
@@ -912,7 +912,7 @@ let db = db
 |> Map.add "won't" { in_spam=11; in_ham=91}
 |> Map.add "wonder" { in_spam=5; in_ham=42}
 |> Map.add "wondered" { in_spam=8; in_ham=13}
-|> Map.add "wonderful" { in_spam=18; in_ham=27}
+|> Map.add "wonderful" { in_spam=19; in_ham=27}
 |> Map.add "wondering" { in_spam=2; in_ham=23}
 |> Map.add "wood" { in_spam=1; in_ham=12}
 |> Map.add "woody" { in_spam=0; in_ham=5}
@@ -959,7 +959,7 @@ let db = db
 |> Map.add "wrt" { in_spam=0; in_ham=9}
 |> Map.add "wsmf" { in_spam=0; in_ham=5}
 |> Map.add "wtf" { in_spam=0; in_ham=11}
-|> Map.add "www" { in_spam=312; in_ham=1413}
+|> Map.add "www" { in_spam=313; in_ham=1413}
 |> Map.add "wybe" { in_spam=0; in_ham=5}
 |> Map.add "x-from" { in_spam=0; in_ham=7}
 |> Map.add "x-mailer" { in_spam=1; in_ham=11}

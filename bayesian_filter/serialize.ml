@@ -87,7 +87,7 @@ let serialize oc output_dir name db =
         db with
         freqs =
           Map.filter
-            (fun _ { in_spam; in_ham } -> in_spam + (2 * in_ham) >= 15)
+            (fun _ { in_spam; in_ham } -> in_spam + (2 * in_ham) >= 10)
             db.freqs;
       }
   in

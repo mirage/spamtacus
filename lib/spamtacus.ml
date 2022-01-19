@@ -108,7 +108,7 @@ functor
       (header, build m)
 
     (* to improve *)
-    let add_mail (module F : FEATURE) training_set output =
+    let add_training_set (module F : FEATURE) training_set output =
       let rec build_feature h t = function
         | Mrmime.Mail.Leaf b -> (
             match F.partial_extract h b with
@@ -121,7 +121,7 @@ functor
                 match body with None -> t | Some m -> build_feature h t m)
               t parts
       in
-      (* [add_to_db] add one-by-one the extracted partos of each email
+      (* [add_to_db] add one-by-one the extracted parts of each email
          of the training set to the in-construction database *)
       let rec add_to_db db = function
         | [] -> db
@@ -149,7 +149,7 @@ functor
         | [] -> ()
         | (module F : FEATURE) :: fvs ->
             let oc = open_out (build_filename output (module F)) in
-            add_mail (module F) training_set oc;
+            add_training_set (module F) training_set oc;
             close_out oc;
             go fvs
       in
