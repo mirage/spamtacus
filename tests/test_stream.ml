@@ -64,7 +64,7 @@ let extract_filenames dir =
     if Sys.is_directory dirpath' then
       Sys.readdir dirpath'
       |> Array.to_list
-      |> List.map (fun f -> (label, dirpath' ^ "/" ^f))
+      |> List.map (fun f -> (label, dirpath' ^ "/" ^ f))
     else failwith "todo"
   in
   let spam = readdir `Spam (Fpath.add_seg dir "spam") in
@@ -107,13 +107,18 @@ let get_perf result =
 let percent a b = float_of_int a /. float_of_int b *. 100.
 
 let print_res { e; u; tp; fp; tn; fn; spam; ham } =
-  Format.printf "\nTotal number of mails : %d (%d spams and %d)\n" (spam+ham) spam ham;
-  Format.printf   "Errors                : %d (unprocessed mails)\n" e;
-  Format.printf   "Unknowns              : %d (unconclusive filter score)\n" u;
-  Format.printf   "False positives       : %d (%0.2f %% of hams)\n" fp (percent fp ham);
-  Format.printf   "True positives        : %d (%0.2f %% of spams)\n" tp (percent tp spam);
-  Format.printf   "False negatives       : %d (%0.2f %% of spams)\n" fn (percent fn spam);
-  Format.printf   "True negatives        : %d (%0.2f %% of hams)@." tn (percent tn ham)
+  Format.printf "\nTotal number of mails : %d (%d spams and %d)\n" (spam + ham)
+    spam ham;
+  Format.printf "Errors                : %d (unprocessed mails)\n" e;
+  Format.printf "Unknowns              : %d (unconclusive filter score)\n" u;
+  Format.printf "False positives       : %d (%0.2f %% of hams)\n" fp
+    (percent fp ham);
+  Format.printf "True positives        : %d (%0.2f %% of spams)\n" tp
+    (percent tp spam);
+  Format.printf "False negatives       : %d (%0.2f %% of spams)\n" fn
+    (percent fn spam);
+  Format.printf "True negatives        : %d (%0.2f %% of hams)@." tn
+    (percent tn ham)
 
 let run_ dir =
   Lwt_main.run

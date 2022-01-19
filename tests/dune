@@ -1,7 +1,7 @@
 (executable
  (name test_stream)
  (modules test_stream)
- (libraries spamtacus_mirage lwt.unix cmdliner ))
+ (libraries spamtacus_mirage lwt.unix cmdliner))
 
 (executable
  (name test_features)
