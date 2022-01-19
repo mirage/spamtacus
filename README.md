@@ -95,18 +95,64 @@ A pre-computed database is already provided. It had been computed with
 a publicly available mail database ([SpamAssasin's public
 corpus](https://spamassassin.apache.org/old/publiccorpus/readme.html)).
 
-Finally, a performance test for our spam filter can be done with the command 
+## Filter performances
+
+We have built a simple performance test to evaluate how good (or bad!) our
+bayesian filter is at filtering spams. The two important numbers we
+will be looking at are:
+- the percentage of hams labelled as spam (i.e. false positives)
+- the percentage of spams labelled as ham (i.e. false negatives). 
+
+### How to launch the tests
+The performances tests can be launch with the command:
 ```sh
-$ dune exec ./test/test.exe
+$ dune exec ./test/test_stream.exe [testing_corpus_directory]
 ```
-It returns:
-- how many hams and spams have been properly labelled (resp. true negative and true positive),
-- how many hams have been labelled as spam (false positive),
-- how many spams have been labelled as ham (false negative).
-- how many mails have been labelled as unknown (unconclusive result).
+
+It prints in return all the important statistics like the number of
+false negatives and false positives.
+
+### Performances of our bayesian spam filter
+
+We used mail corpus available
+[here](https://spamassassin.apache.org/old/publiccorpus/readme.html). Mails
+are sorted in three categories: easy ham, hard ham and spam. To
+evaluate our filter, we built several training sets with:
+- various sizes,
+- different proportions of spams versus hams,
+- with ou without hard hams in it.
+
+Then we computed statistics by testing the resulting filters on two
+mails corpus: once with easy hams only and another with hard hams. No
+mails present in the testing corpus are in a training set. In a
+nutshell here are the important results:
+- a **balanced** training set (same numbers of spam and ham) results in
+a filter that is very good at filtering spams (< 2% of spams are not filtered) but also tends
+  to filter a lot of hams (> 15% even with a large training set).  
+- a training set with **many more hams than spams** create a filter that almost never
+  blocks hams (< 1%) but lets around 12% of spam go though. In
+  our opinion, it is the best compromise.
+- **hard hams** are ... hard to not filter. If they are added to the
+  training set, they weaken the filter that lets more than 40% of
+  spams go though.
+
+To conclude, as expected, we most certainly need to improve our filter
+by implementing new features. Improved features could for example
+take into account html elements, other headers, other languages etc..
+
+#### Important notes
+
+Only the first feature (naive bayesian filter on body content)
+actually has an impact on the results below. No forbidden attachments
+are present in the corpus and the filter on subject header returns
+unconclusive probabilities and need to be improved.
+
+No intern feature parameters have been changed for theses tests nor the
+[classify] function of the filter. 
 
 ## State of the art
 See [here](soa.md).
+
 ## Fundings
 `Spamtacus` has received funding from the Next Generation Internet Initiative
 (NGI) within the framework of the DAPSI Project.
