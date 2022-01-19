@@ -95,7 +95,7 @@ module type FEATURE = sig
 
   val empty_db : db
 
-  val train : db -> [`Ham | `Spam] -> t -> db
+  val train : db -> [ `Ham | `Spam ] -> t -> db
   (** [train db label t] adds the features [t] extracted from a mail
    labelled [label] to the dababase [db]. *)
 

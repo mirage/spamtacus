@@ -18,7 +18,7 @@ open Spamtacus
 *)
 
 (** {1:bayesian_features Implemented features} *)
-    
+
 module BayesianBody : Spamtacus.FEATURE with type db = Database.db
 (** Naive Bayesian filter on mail body content. *)
 
@@ -50,9 +50,8 @@ val train_and_write_to_file : training_set -> output:Fpath.t -> unit
    writes it in [output]. *)
 
 val partial_extract : Mrmime.Header.t -> string -> partial list
-
 val classify : ranks -> label
-    
+
 val instanciate :
   ?input_dir:Fpath.t ->
   (unit -> partial option Lwt.t) ->
@@ -62,5 +61,5 @@ val instanciate :
    from an incoming mail [stream] mail and its header
    [(header,tree)]. The [input_dir] must contain the dabatase built
    with {!train_and_write_to_file}. *)
-    
+
 val serialize : Fpath.t -> string -> unit

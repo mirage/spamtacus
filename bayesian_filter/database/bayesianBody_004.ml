@@ -1,1004 +1,1005 @@
 open Database
 open BayesianBody_003
-let db = db 
-|> Map.add "inquiry" { in_spam=35; in_ham=7}
-|> Map.add "insane" { in_spam=0; in_ham=14}
-|> Map.add "insecure" { in_spam=0; in_ham=8}
-|> Map.add "insert" { in_spam=8; in_ham=28}
-|> Map.add "inserted" { in_spam=3; in_ham=9}
-|> Map.add "inserts" { in_spam=0; in_ham=8}
-|> Map.add "inside" { in_spam=7; in_ham=51}
-|> Map.add "insider's" { in_spam=9; in_ham=3}
-|> Map.add "insidious" { in_spam=1; in_ham=5}
-|> Map.add "insiq" { in_spam=20; in_ham=0}
-|> Map.add "insist" { in_spam=3; in_ham=16}
-|> Map.add "inspect" { in_spam=0; in_ham=9}
-|> Map.add "inspected" { in_spam=0; in_ham=6}
-|> Map.add "inspection" { in_spam=2; in_ham=10}
-|> Map.add "inspections" { in_spam=0; in_ham=6}
-|> Map.add "inspired" { in_spam=1; in_ham=11}
-|> Map.add "install" { in_spam=1; in_ham=102}
-|> Map.add "install'" { in_spam=0; in_ham=5}
-|> Map.add "installation" { in_spam=3; in_ham=32}
-|> Map.add "installed" { in_spam=2; in_ham=113}
-|> Map.add "installing" { in_spam=3; in_ham=30}
-|> Map.add "installs" { in_spam=1; in_ham=9}
-|> Map.add "instance" { in_spam=5; in_ham=29}
-|> Map.add "instances" { in_spam=0; in_ham=13}
-|> Map.add "instant" { in_spam=23; in_ham=18}
-|> Map.add "instantly" { in_spam=14; in_ham=18}
-|> Map.add "instead" { in_spam=70; in_ham=154}
-|> Map.add "institute" { in_spam=1; in_ham=17}
-|> Map.add "institution" { in_spam=1; in_ham=5}
-|> Map.add "instructed" { in_spam=13; in_ham=1}
-|> Map.add "instruction" { in_spam=14; in_ham=1}
-|> Map.add "instructions" { in_spam=33; in_ham=11}
-|> Map.add "insufficient" { in_spam=0; in_ham=5}
-|> Map.add "insult" { in_spam=2; in_ham=5}
-|> Map.add "insurance" { in_spam=79; in_ham=11}
-|> Map.add "insuranceiq" { in_spam=58; in_ham=0}
-|> Map.add "int" { in_spam=2; in_ham=15}
-|> Map.add "integer" { in_spam=2; in_ham=4}
-|> Map.add "integral" { in_spam=16; in_ham=4}
-|> Map.add "integrate" { in_spam=0; in_ham=15}
-|> Map.add "integrated" { in_spam=1; in_ham=12}
-|> Map.add "integrating" { in_spam=0; in_ham=9}
-|> Map.add "integration" { in_spam=0; in_ham=21}
-|> Map.add "integrity" { in_spam=5; in_ham=4}
-|> Map.add "intel" { in_spam=1; in_ham=11}
-|> Map.add "intel's" { in_spam=0; in_ham=5}
-|> Map.add "intellectual" { in_spam=0; in_ham=17}
-|> Map.add "intelligence" { in_spam=11; in_ham=26}
-|> Map.add "intelligent" { in_spam=2; in_ham=9}
-|> Map.add "intend" { in_spam=8; in_ham=5}
-|> Map.add "intended" { in_spam=20; in_ham=17}
-|> Map.add "intense" { in_spam=1; in_ham=11}
-|> Map.add "intent" { in_spam=1; in_ham=5}
-|> Map.add "intention" { in_spam=2; in_ham=8}
-|> Map.add "inter-and" { in_spam=0; in_ham=6}
-|> Map.add "interact" { in_spam=0; in_ham=11}
-|> Map.add "interaction" { in_spam=1; in_ham=14}
-|> Map.add "interactions" { in_spam=0; in_ham=8}
-|> Map.add "interactive" { in_spam=12; in_ham=53}
-|> Map.add "interest" { in_spam=57; in_ham=41}
-|> Map.add "interested" { in_spam=30; in_ham=49}
-|> Map.add "interesting" { in_spam=0; in_ham=98}
-|> Map.add "interests" { in_spam=5; in_ham=17}
-|> Map.add "interface" { in_spam=2; in_ham=39}
-|> Map.add "interfaces" { in_spam=0; in_ham=7}
-|> Map.add "interference" { in_spam=0; in_ham=6}
-|> Map.add "interject" { in_spam=0; in_ham=7}
-|> Map.add "interlink" { in_spam=0; in_ham=8}
-|> Map.add "internal" { in_spam=4; in_ham=24}
-|> Map.add "internally" { in_spam=0; in_ham=5}
-|> Map.add "internet" { in_spam=82; in_ham=147}
-|> Map.add "internet's" { in_spam=0; in_ham=6}
-|> Map.add "interoperate" { in_spam=0; in_ham=5}
-|> Map.add "interpret" { in_spam=0; in_ham=5}
-|> Map.add "interpreter" { in_spam=0; in_ham=11}
-|> Map.add "intervention" { in_spam=7; in_ham=9}
-|> Map.add "interview" { in_spam=5; in_ham=17}
-|> Map.add "interviewed" { in_spam=0; in_ham=11}
-|> Map.add "interviews" { in_spam=0; in_ham=6}
-|> Map.add "intimate" { in_spam=4; in_ham=4}
-|> Map.add "into" { in_spam=78; in_ham=424}
-|> Map.add "introduce" { in_spam=15; in_ham=10}
-|> Map.add "introduced" { in_spam=3; in_ham=18}
-|> Map.add "introduction" { in_spam=4; in_ham=14}
-|> Map.add "intuition" { in_spam=1; in_ham=5}
-|> Map.add "invalid" { in_spam=1; in_ham=9}
-|> Map.add "invaluable" { in_spam=7; in_ham=4}
-|> Map.add "invasion" { in_spam=1; in_ham=5}
-|> Map.add "invent" { in_spam=0; in_ham=9}
-|> Map.add "invented" { in_spam=0; in_ham=15}
-|> Map.add "invest" { in_spam=23; in_ham=7}
-|> Map.add "invested" { in_spam=5; in_ham=5}
-|> Map.add "investigate" { in_spam=2; in_ham=8}
-|> Map.add "investing" { in_spam=12; in_ham=3}
-|> Map.add "investment" { in_spam=55; in_ham=26}
-|> Map.add "investments" { in_spam=11; in_ham=10}
-|> Map.add "investor" { in_spam=6; in_ham=2}
-|> Map.add "investors" { in_spam=18; in_ham=17}
-|> Map.add "invisible" { in_spam=0; in_ham=13}
-|> Map.add "invite" { in_spam=5; in_ham=6}
-|> Map.add "invited" { in_spam=1; in_ham=9}
-|> Map.add "invoke" { in_spam=0; in_ham=11}
-|> Map.add "invoked" { in_spam=0; in_ham=20}
-|> Map.add "invoking" { in_spam=0; in_ham=5}
-|> Map.add "involve" { in_spam=3; in_ham=13}
-|> Map.add "involved" { in_spam=20; in_ham=43}
-|> Map.add "involvement" { in_spam=1; in_ham=6}
-|> Map.add "involves" { in_spam=1; in_ham=12}
-|> Map.add "involving" { in_spam=2; in_ham=5}
-|> Map.add "ipo" { in_spam=0; in_ham=6}
-|> Map.add "ips" { in_spam=1; in_ham=7}
-|> Map.add "iqa" { in_spam=0; in_ham=9}
-|> Map.add "ira" { in_spam=0; in_ham=5}
-|> Map.add "iran" { in_spam=1; in_ham=6}
-|> Map.add "iraq" { in_spam=2; in_ham=30}
-|> Map.add "irc" { in_spam=0; in_ham=6}
-|> Map.add "ireland" { in_spam=5; in_ham=20}
-|> Map.add "irish" { in_spam=48; in_ham=101}
-|> Map.add "iron" { in_spam=1; in_ham=5}
-|> Map.add "ironic" { in_spam=0; in_ham=5}
-|> Map.add "irony" { in_spam=0; in_ham=8}
-|> Map.add "irregulars" { in_spam=0; in_ham=5}
-|> Map.add "irrelevant" { in_spam=0; in_ham=8}
-|> Map.add "irs" { in_spam=1; in_ham=5}
-|> Map.add "irtf" { in_spam=0; in_ham=6}
-|> Map.add "irvine" { in_spam=2; in_ham=10}
-|> Map.add "islam" { in_spam=0; in_ham=7}
-|> Map.add "island" { in_spam=5; in_ham=10}
-|> Map.add "islands" { in_spam=4; in_ham=4}
-|> Map.add "isn't" { in_spam=13; in_ham=168}
-|> Map.add "isnt" { in_spam=0; in_ham=5}
-|> Map.add "iso" { in_spam=0; in_ham=9}
-|> Map.add "iso-" { in_spam=71; in_ham=10}
-|> Map.add "isp" { in_spam=5; in_ham=15}
-|> Map.add "isps" { in_spam=0; in_ham=13}
-|> Map.add "israel" { in_spam=2; in_ham=17}
-|> Map.add "israeli" { in_spam=0; in_ham=5}
-|> Map.add "israelis" { in_spam=0; in_ham=6}
-|> Map.add "issue" { in_spam=18; in_ham=129}
-|> Map.add "issued" { in_spam=17; in_ham=9}
-|> Map.add "issues" { in_spam=4; in_ham=81}
-|> Map.add "ist" { in_spam=2; in_ham=4}
-|> Map.add "it'd" { in_spam=0; in_ham=16}
-|> Map.add "it'll" { in_spam=0; in_ham=24}
-|> Map.add "it's" { in_spam=61; in_ham=571}
-|> Map.add "italian" { in_spam=0; in_ham=7}
-|> Map.add "italy" { in_spam=3; in_ham=4}
-|> Map.add "item" { in_spam=3; in_ham=19}
-|> Map.add "itemid" { in_spam=0; in_ham=10}
-|> Map.add "items" { in_spam=5; in_ham=22}
-|> Map.add "itmeaa" { in_spam=0; in_ham=6}
-|> Map.add "its" { in_spam=35; in_ham=339}
-|> Map.add "itself" { in_spam=6; in_ham=68}
-|> Map.add "ive" { in_spam=0; in_ham=8}
-|> Map.add "ivh" { in_spam=0; in_ham=8}
-|> Map.add "ivy" { in_spam=0; in_ham=7}
-|> Map.add "jabber" { in_spam=0; in_ham=47}
-|> Map.add "jack" { in_spam=0; in_ham=15}
-|> Map.add "jacob" { in_spam=0; in_ham=9}
-|> Map.add "jacques" { in_spam=0; in_ham=7}
-|> Map.add "jaguar" { in_spam=0; in_ham=6}
-|> Map.add "jail" { in_spam=0; in_ham=7}
-|> Map.add "jailed" { in_spam=0; in_ham=5}
-|> Map.add "james" { in_spam=3; in_ham=53}
-|> Map.add "jamesr" { in_spam=0; in_ham=28}
-|> Map.add "january" { in_spam=9; in_ham=17}
-|> Map.add "japan" { in_spam=3; in_ham=9}
-|> Map.add "japanese" { in_spam=5; in_ham=12}
-|> Map.add "jar" { in_spam=1; in_ham=8}
-|> Map.add "jason" { in_spam=1; in_ham=12}
-|> Map.add "java" { in_spam=3; in_ham=47}
-|> Map.add "javaone" { in_spam=0; in_ham=6}
-|> Map.add "javapro" { in_spam=0; in_ham=6}
-|> Map.add "javascript" { in_spam=7; in_ham=6}
-|> Map.add "jay" { in_spam=0; in_ham=5}
-|> Map.add "jdk" { in_spam=1; in_ham=7}
-|> Map.add "jealous" { in_spam=0; in_ham=5}
-|> Map.add "jeb" { in_spam=0; in_ham=5}
-|> Map.add "jeff" { in_spam=1; in_ham=11}
-|> Map.add "jeffrey" { in_spam=0; in_ham=6}
-|> Map.add "jennifer" { in_spam=8; in_ham=1}
-|> Map.add "jeremy" { in_spam=1; in_ham=64}
-|> Map.add "jersey" { in_spam=12; in_ham=4}
-|> Map.add "jesse" { in_spam=0; in_ham=14}
-|> Map.add "jesus" { in_spam=1; in_ham=9}
-|> Map.add "jewish" { in_spam=3; in_ham=4}
-|> Map.add "jid" { in_spam=0; in_ham=9}
-|> Map.add "jim" { in_spam=0; in_ham=55}
-|> Map.add "jit" { in_spam=0; in_ham=6}
-|> Map.add "jkeating" { in_spam=0; in_ham=8}
-|> Map.add "jmason" { in_spam=7; in_ham=20}
-|> Map.add "job" { in_spam=19; in_ham=96}
-|> Map.add "jobs" { in_spam=4; in_ham=19}
-|> Map.add "joe" { in_spam=7; in_ham=37}
-|> Map.add "joel" { in_spam=0; in_ham=6}
-|> Map.add "john" { in_spam=10; in_ham=104}
-|> Map.add "johnhall" { in_spam=0; in_ham=18}
-|> Map.add "johnston" { in_spam=0; in_ham=6}
-|> Map.add "join" { in_spam=33; in_ham=79}
-|> Map.add "joined" { in_spam=13; in_ham=19}
-|> Map.add "joining" { in_spam=5; in_ham=7}
-|> Map.add "joint" { in_spam=1; in_ham=14}
-|> Map.add "jointly" { in_spam=0; in_ham=5}
-|> Map.add "joke" { in_spam=1; in_ham=23}
-|> Map.add "jokes" { in_spam=0; in_ham=6}
-|> Map.add "joking" { in_spam=0; in_ham=6}
-|> Map.add "jolt" { in_spam=0; in_ham=6}
-|> Map.add "jon" { in_spam=0; in_ham=12}
-|> Map.add "jones" { in_spam=1; in_ham=11}
-|> Map.add "jordan" { in_spam=2; in_ham=7}
-|> Map.add "joseph" { in_spam=10; in_ham=25}
-|> Map.add "josh" { in_spam=0; in_ham=6}
-|> Map.add "journal" { in_spam=8; in_ham=35}
-|> Map.add "journalism" { in_spam=1; in_ham=6}
-|> Map.add "journalist" { in_spam=1; in_ham=10}
-|> Map.add "jpg" { in_spam=74; in_ham=32}
-|> Map.add "jsp" { in_spam=7; in_ham=10}
-|> Map.add "judge" { in_spam=1; in_ham=19}
-|> Map.add "judged" { in_spam=0; in_ham=5}
-|> Map.add "judgment" { in_spam=0; in_ham=5}
-|> Map.add "jul" { in_spam=3; in_ham=14}
-|> Map.add "julian" { in_spam=0; in_ham=9}
-|> Map.add "julius" { in_spam=0; in_ham=6}
-|> Map.add "july" { in_spam=4; in_ham=23}
-|> Map.add "jump" { in_spam=4; in_ham=23}
-|> Map.add "jumped" { in_spam=7; in_ham=3}
-|> Map.add "june" { in_spam=6; in_ham=17}
-|> Map.add "junior" { in_spam=1; in_ham=5}
-|> Map.add "juniper" { in_spam=0; in_ham=6}
-|> Map.add "junk" { in_spam=7; in_ham=15}
-|> Map.add "just" { in_spam=126; in_ham=764}
-|> Map.add "justice" { in_spam=1; in_ham=21}
-|> Map.add "justify" { in_spam=6; in_ham=13}
-|> Map.add "justin" { in_spam=0; in_ham=60}
-|> Map.add "jwz" { in_spam=0; in_ham=11}
-|> Map.add "karl" { in_spam=0; in_ham=7}
-|> Map.add "kassabgi" { in_spam=0; in_ham=6}
-|> Map.add "kate" { in_spam=0; in_ham=6}
-|> Map.add "kazaa" { in_spam=0; in_ham=6}
-|> Map.add "kde" { in_spam=0; in_ham=9}
-|> Map.add "kearney" { in_spam=0; in_ham=8}
-|> Map.add "keating" { in_spam=0; in_ham=10}
-|> Map.add "keen" { in_spam=0; in_ham=7}
-|> Map.add "keep" { in_spam=55; in_ham=153}
-|> Map.add "keeping" { in_spam=3; in_ham=36}
-|> Map.add "keeps" { in_spam=6; in_ham=8}
-|> Map.add "kelly" { in_spam=2; in_ham=12}
-|> Map.add "kelly's" { in_spam=0; in_ham=7}
-|> Map.add "ken" { in_spam=2; in_ham=19}
-|> Map.add "kenny" { in_spam=0; in_ham=5}
-|> Map.add "kenya" { in_spam=4; in_ham=4}
-|> Map.add "kept" { in_spam=7; in_ham=28}
-|> Map.add "kernel" { in_spam=0; in_ham=88}
-|> Map.add "kernel-" { in_spam=0; in_ham=5}
-|> Map.add "kernel-smp" { in_spam=0; in_ham=6}
-|> Map.add "kernels" { in_spam=0; in_ham=14}
-|> Map.add "kevin" { in_spam=3; in_ham=31}
-|> Map.add "key" { in_spam=28; in_ham=101}
-|> Map.add "keyboard" { in_spam=1; in_ham=21}
-|> Map.add "keys" { in_spam=0; in_ham=27}
-|> Map.add "keyserver" { in_spam=0; in_ham=10}
-|> Map.add "keystroke" { in_spam=0; in_ham=5}
-|> Map.add "keywords" { in_spam=6; in_ham=6}
-|> Map.add "khare" { in_spam=0; in_ham=24}
-|> Map.add "kick" { in_spam=2; in_ham=17}
-|> Map.add "kid" { in_spam=4; in_ham=10}
-|> Map.add "kiddies" { in_spam=0; in_ham=7}
-|> Map.add "kidding" { in_spam=5; in_ham=3}
-|> Map.add "kids" { in_spam=4; in_ham=35}
-|> Map.add "kieran" { in_spam=0; in_ham=6}
-|> Map.add "kill" { in_spam=2; in_ham=30}
-|> Map.add "killed" { in_spam=6; in_ham=31}
-|> Map.add "killer" { in_spam=0; in_ham=16}
-|> Map.add "killing" { in_spam=1; in_ham=13}
-|> Map.add "kills" { in_spam=0; in_ham=10}
-|> Map.add "kind" { in_spam=16; in_ham=107}
-|> Map.add "kinda" { in_spam=0; in_ham=14}
-|> Map.add "kindly" { in_spam=21; in_ham=2}
-|> Map.add "kinds" { in_spam=0; in_ham=16}
-|> Map.add "king" { in_spam=3; in_ham=18}
-|> Map.add "kings" { in_spam=0; in_ham=6}
-|> Map.add "kiss" { in_spam=2; in_ham=4}
-|> Map.add "kit" { in_spam=5; in_ham=5}
-|> Map.add "kitchen" { in_spam=0; in_ham=7}
-|> Map.add "kloiber" { in_spam=0; in_ham=7}
-|> Map.add "knew" { in_spam=5; in_ham=36}
-|> Map.add "knife" { in_spam=4; in_ham=3}
-|> Map.add "knock" { in_spam=0; in_ham=5}
-|> Map.add "know" { in_spam=71; in_ham=390}
-|> Map.add "knowing" { in_spam=3; in_ham=9}
-|> Map.add "knowledge" { in_spam=22; in_ham=44}
-|> Map.add "known" { in_spam=13; in_ham=84}
-|> Map.add "knows" { in_spam=2; in_ham=48}
-|> Map.add "kragen" { in_spam=0; in_ham=11}
-|> Map.add "kre" { in_spam=0; in_ham=37}
-|> Map.add "krpm" { in_spam=0; in_ham=5}
-|> Map.add "ktmeaa" { in_spam=0; in_ham=7}
-|> Map.add "kunskap" { in_spam=0; in_ham=9}
-|> Map.add "kuznetsov" { in_spam=0; in_ham=6}
-|> Map.add "kuznetsov's" { in_spam=0; in_ham=6}
-|> Map.add "l-k" { in_spam=0; in_ham=6}
-|> Map.add "lab" { in_spam=0; in_ham=6}
-|> Map.add "label" { in_spam=1; in_ham=11}
-|> Map.add "labeled" { in_spam=1; in_ham=5}
-|> Map.add "labels" { in_spam=2; in_ham=5}
-|> Map.add "labor" { in_spam=0; in_ham=19}
-|> Map.add "laboratories" { in_spam=0; in_ham=6}
-|> Map.add "labour" { in_spam=1; in_ham=10}
-|> Map.add "lack" { in_spam=4; in_ham=35}
-|> Map.add "lacks" { in_spam=0; in_ham=6}
-|> Map.add "laden" { in_spam=0; in_ham=6}
-|> Map.add "ladies" { in_spam=0; in_ham=5}
-|> Map.add "lady" { in_spam=2; in_ham=11}
-|> Map.add "laid" { in_spam=0; in_ham=10}
-|> Map.add "lake" { in_spam=4; in_ham=5}
-|> Map.add "lame" { in_spam=1; in_ham=13}
-|> Map.add "lan" { in_spam=2; in_ham=11}
-|> Map.add "lance" { in_spam=0; in_ham=14}
-|> Map.add "land" { in_spam=10; in_ham=24}
-|> Map.add "landed" { in_spam=2; in_ham=7}
-|> Map.add "lang" { in_spam=16; in_ham=7}
-|> Map.add "language" { in_spam=6; in_ham=53}
-|> Map.add "languages" { in_spam=0; in_ham=24}
-|> Map.add "langurs" { in_spam=0; in_ham=5}
-|> Map.add "laptop" { in_spam=1; in_ham=31}
-|> Map.add "laptops" { in_spam=1; in_ham=6}
-|> Map.add "large" { in_spam=31; in_ham=110}
-|> Map.add "largely" { in_spam=1; in_ham=17}
-|> Map.add "larger" { in_spam=16; in_ham=35}
-|> Map.add "largest" { in_spam=8; in_ham=46}
-|> Map.add "larry" { in_spam=0; in_ham=16}
-|> Map.add "last" { in_spam=49; in_ham=227}
-|> Map.add "lasted" { in_spam=0; in_ham=5}
-|> Map.add "late" { in_spam=29; in_ham=43}
-|> Map.add "lately" { in_spam=7; in_ham=11}
-|> Map.add "later" { in_spam=30; in_ham=73}
-|> Map.add "latest" { in_spam=7; in_ham=96}
-|> Map.add "lathe" { in_spam=0; in_ham=5}
-|> Map.add "latter" { in_spam=1; in_ham=21}
-|> Map.add "laugh" { in_spam=8; in_ham=11}
-|> Map.add "laughed" { in_spam=3; in_ham=5}
-|> Map.add "laughing" { in_spam=3; in_ham=12}
-|> Map.add "launch" { in_spam=2; in_ham=21}
-|> Map.add "launched" { in_spam=8; in_ham=18}
-|> Map.add "launching" { in_spam=2; in_ham=12}
-|> Map.add "laurance" { in_spam=0; in_ham=6}
-|> Map.add "laurent" { in_spam=8; in_ham=1}
-|> Map.add "law" { in_spam=14; in_ham=76}
-|> Map.add "lawful" { in_spam=6; in_ham=4}
-|> Map.add "lawrence" { in_spam=0; in_ham=96}
-|> Map.add "laws" { in_spam=21; in_ham=22}
-|> Map.add "lawsuits" { in_spam=0; in_ham=15}
-|> Map.add "lawyer" { in_spam=1; in_ham=12}
-|> Map.add "lawyers" { in_spam=2; in_ham=7}
-|> Map.add "lay" { in_spam=7; in_ham=6}
-|> Map.add "layer" { in_spam=3; in_ham=21}
-|> Map.add "laying" { in_spam=4; in_ham=6}
-|> Map.add "layout" { in_spam=0; in_ham=5}
-|> Map.add "lazy" { in_spam=2; in_ham=6}
-|> Map.add "lbs" { in_spam=21; in_ham=2}
-|> Map.add "lcd" { in_spam=0; in_ham=6}
-|> Map.add "leaa" { in_spam=0; in_ham=13}
-|> Map.add "lead" { in_spam=8; in_ham=43}
-|> Map.add "leader" { in_spam=12; in_ham=22}
-|> Map.add "leaders" { in_spam=1; in_ham=20}
-|> Map.add "leadership" { in_spam=4; in_ham=15}
-|> Map.add "leading" { in_spam=7; in_ham=24}
-|> Map.add "leading-edge" { in_spam=0; in_ham=6}
-|> Map.add "leads" { in_spam=7; in_ham=13}
-|> Map.add "league" { in_spam=0; in_ham=8}
-|> Map.add "leak" { in_spam=0; in_ham=5}
-|> Map.add "lean" { in_spam=4; in_ham=3}
-|> Map.add "learn" { in_spam=37; in_ham=54}
-|> Map.add "learned" { in_spam=6; in_ham=19}
-|> Map.add "learning" { in_spam=9; in_ham=13}
-|> Map.add "least" { in_spam=25; in_ham=159}
-|> Map.add "leather" { in_spam=0; in_ham=6}
-|> Map.add "leave" { in_spam=16; in_ham=60}
-|> Map.add "leaves" { in_spam=0; in_ham=6}
-|> Map.add "leaving" { in_spam=4; in_ham=28}
-|> Map.add "led" { in_spam=2; in_ham=35}
-|> Map.add "lee" { in_spam=7; in_ham=5}
-|> Map.add "left" { in_spam=83; in_ham=90}
-|> Map.add "leftmargin" { in_spam=21; in_ham=0}
-|> Map.add "leg" { in_spam=1; in_ham=6}
-|> Map.add "legacy" { in_spam=1; in_ham=7}
-|> Map.add "legal" { in_spam=95; in_ham=57}
-|> Map.add "legality" { in_spam=8; in_ham=2}
-|> Map.add "legally" { in_spam=17; in_ham=11}
-|> Map.add "legendary" { in_spam=0; in_ham=7}
-|> Map.add "legislation" { in_spam=2; in_ham=6}
-|> Map.add "legit" { in_spam=0; in_ham=10}
-|> Map.add "legitimate" { in_spam=9; in_ham=13}
-|> Map.add "legs" { in_spam=0; in_ham=11}
-|> Map.add "leitl" { in_spam=0; in_ham=15}
-|> Map.add "len" { in_spam=0; in_ham=5}
-|> Map.add "lenders" { in_spam=13; in_ham=0}
-|> Map.add "length" { in_spam=4; in_ham=16}
-|> Map.add "lengthy" { in_spam=0; in_ham=5}
-|> Map.add "les" { in_spam=2; in_ham=6}
-|> Map.add "less" { in_spam=48; in_ham=161}
-|> Map.add "lesson" { in_spam=4; in_ham=5}
-|> Map.add "lessons" { in_spam=10; in_ham=2}
-|> Map.add "let" { in_spam=38; in_ham=123}
-|> Map.add "let's" { in_spam=14; in_ham=42}
-|> Map.add "lethal" { in_spam=0; in_ham=5}
-|> Map.add "lets" { in_spam=6; in_ham=19}
-|> Map.add "letter" { in_spam=24; in_ham=23}
-|> Map.add "letters" { in_spam=1; in_ham=15}
-|> Map.add "letting" { in_spam=0; in_ham=7}
-|> Map.add "level" { in_spam=21; in_ham=63}
-|> Map.add "levels" { in_spam=2; in_ham=17}
-|> Map.add "leverage" { in_spam=3; in_ham=12}
-|> Map.add "leveraging" { in_spam=1; in_ham=6}
-|> Map.add "lewis" { in_spam=0; in_ham=5}
-|> Map.add "liability" { in_spam=1; in_ham=8}
-|> Map.add "liable" { in_spam=0; in_ham=8}
-|> Map.add "lib" { in_spam=0; in_ham=75}
-|> Map.add "libasound" { in_spam=0; in_ham=6}
-|> Map.add "libdv" { in_spam=0; in_ham=7}
-|> Map.add "liberal" { in_spam=2; in_ham=22}
-|> Map.add "liberalism" { in_spam=0; in_ham=5}
-|> Map.add "liberated" { in_spam=0; in_ham=5}
-|> Map.add "libertatem" { in_spam=0; in_ham=9}
-|> Map.add "liberties" { in_spam=0; in_ham=5}
-|> Map.add "liberty" { in_spam=0; in_ham=12}
-|> Map.add "liblit" { in_spam=0; in_ham=5}
-|> Map.add "libraries" { in_spam=0; in_ham=30}
-|> Map.add "library" { in_spam=2; in_ham=26}
-|> Map.add "libs" { in_spam=0; in_ham=6}
-|> Map.add "licence" { in_spam=0; in_ham=5}
-|> Map.add "licences" { in_spam=0; in_ham=5}
-|> Map.add "license" { in_spam=4; in_ham=20}
-|> Map.add "licensed" { in_spam=3; in_ham=9}
-|> Map.add "licenses" { in_spam=1; in_ham=7}
-|> Map.add "licensing" { in_spam=1; in_ham=10}
-|> Map.add "lie" { in_spam=8; in_ham=11}
-|> Map.add "lies" { in_spam=5; in_ham=7}
-|> Map.add "lieu" { in_spam=3; in_ham=8}
-|> Map.add "life" { in_spam=98; in_ham=115}
-|> Map.add "lifestyle" { in_spam=5; in_ham=5}
-|> Map.add "lifetime" { in_spam=17; in_ham=4}
-|> Map.add "lift" { in_spam=5; in_ham=9}
-|> Map.add "lifted" { in_spam=1; in_ham=7}
-|> Map.add "lig" { in_spam=0; in_ham=8}
-|> Map.add "light" { in_spam=20; in_ham=35}
-|> Map.add "lightly" { in_spam=0; in_ham=5}
-|> Map.add "lih" { in_spam=0; in_ham=7}
-|> Map.add "like" { in_spam=114; in_ham=648}
-|> Map.add "liked" { in_spam=4; in_ham=16}
-|> Map.add "likely" { in_spam=5; in_ham=75}
-|> Map.add "likes" { in_spam=1; in_ham=12}
-|> Map.add "likewise" { in_spam=1; in_ham=5}
-|> Map.add "lima" { in_spam=1; in_ham=6}
-|> Map.add "limit" { in_spam=16; in_ham=20}
-|> Map.add "limitations" { in_spam=5; in_ham=11}
-|> Map.add "limited" { in_spam=43; in_ham=33}
-|> Map.add "limits" { in_spam=2; in_ham=12}
-|> Map.add "lindex" { in_spam=0; in_ham=5}
-|> Map.add "line" { in_spam=67; in_ham=208}
-|> Map.add "lineno" { in_spam=0; in_ham=5}
-|> Map.add "lines" { in_spam=3; in_ham=69}
-|> Map.add "link" { in_spam=120; in_ham=175}
-|> Map.add "linked" { in_spam=0; in_ham=18}
-|> Map.add "linking" { in_spam=0; in_ham=8}
-|> Map.add "links" { in_spam=15; in_ham=59}
-|> Map.add "linux" { in_spam=47; in_ham=316}
-|> Map.add "linuxmafia" { in_spam=0; in_ham=5}
-|> Map.add "linuxworks" { in_spam=0; in_ham=5}
-|> Map.add "lipcon" { in_spam=0; in_ham=6}
-|> Map.add "liposuction" { in_spam=0; in_ham=6}
-|> Map.add "lirc" { in_spam=0; in_ham=10}
-|> Map.add "lisa" { in_spam=0; in_ham=5}
-|> Map.add "list" { in_spam=256; in_ham=920}
-|> Map.add "list's" { in_spam=1; in_ham=5}
-|> Map.add "listed" { in_spam=20; in_ham=25}
-|> Map.add "listen" { in_spam=5; in_ham=19}
-|> Map.add "listening" { in_spam=0; in_ham=24}
-|> Map.add "listinfo" { in_spam=51; in_ham=837}
-|> Map.add "listing" { in_spam=6; in_ham=5}
-|> Map.add "listman" { in_spam=0; in_ham=140}
-|> Map.add "listmaster" { in_spam=46; in_ham=92}
-|> Map.add "lists" { in_spam=22; in_ham=555}
-|> Map.add "literally" { in_spam=8; in_ham=17}
-|> Map.add "literature" { in_spam=0; in_ham=6}
-|> Map.add "litigation" { in_spam=5; in_ham=5}
-|> Map.add "little" { in_spam=39; in_ham=126}
-|> Map.add "live" { in_spam=33; in_ham=82}
-|> Map.add "lived" { in_spam=2; in_ham=11}
-|> Map.add "livejournal" { in_spam=0; in_ham=10}
-|> Map.add "lives" { in_spam=4; in_ham=36}
-|> Map.add "living" { in_spam=17; in_ham=50}
-|> Map.add "llc" { in_spam=9; in_ham=8}
-|> Map.add "lloyd" { in_spam=0; in_ham=5}
-|> Map.add "load" { in_spam=3; in_ham=103}
-|> Map.add "loaded" { in_spam=4; in_ham=24}
-|> Map.add "loading" { in_spam=0; in_ham=15}
-|> Map.add "loads" { in_spam=0; in_ham=8}
-|> Map.add "loan" { in_spam=23; in_ham=9}
-|> Map.add "loans" { in_spam=20; in_ham=3}
-|> Map.add "local" { in_spam=20; in_ham=124}
-|> Map.add "locale" { in_spam=2; in_ham=12}
-|> Map.add "localhost" { in_spam=0; in_ham=10}
-|> Map.add "locally" { in_spam=1; in_ham=7}
-|> Map.add "locals" { in_spam=0; in_ham=5}
-|> Map.add "locate" { in_spam=5; in_ham=14}
-|> Map.add "located" { in_spam=5; in_ham=12}
-|> Map.add "location" { in_spam=11; in_ham=24}
-|> Map.add "locations" { in_spam=0; in_ham=7}
-|> Map.add "lock" { in_spam=5; in_ham=21}
-|> Map.add "locked" { in_spam=6; in_ham=10}
-|> Map.add "locking" { in_spam=2; in_ham=9}
-|> Map.add "log" { in_spam=3; in_ham=146}
-|> Map.add "logged" { in_spam=0; in_ham=5}
-|> Map.add "logging" { in_spam=0; in_ham=7}
-|> Map.add "logic" { in_spam=0; in_ham=8}
-|> Map.add "logical" { in_spam=4; in_ham=11}
-|> Map.add "login" { in_spam=4; in_ham=14}
-|> Map.add "logo" { in_spam=25; in_ham=6}
-|> Map.add "logs" { in_spam=0; in_ham=13}
-|> Map.add "lol" { in_spam=0; in_ham=11}
-|> Map.add "london" { in_spam=4; in_ham=19}
-|> Map.add "lonely" { in_spam=0; in_ham=7}
-|> Map.add "long" { in_spam=47; in_ham=193}
-|> Map.add "long-term" { in_spam=7; in_ham=21}
-|> Map.add "longer" { in_spam=33; in_ham=53}
-|> Map.add "longest" { in_spam=1; in_ham=7}
-|> Map.add "look" { in_spam=36; in_ham=229}
-|> Map.add "looked" { in_spam=6; in_ham=54}
-|> Map.add "looking" { in_spam=39; in_ham=118}
-|> Map.add "looks" { in_spam=0; in_ham=120}
-|> Map.add "looney" { in_spam=0; in_ham=9}
-|> Map.add "loop" { in_spam=0; in_ham=8}
-|> Map.add "loose" { in_spam=5; in_ham=12}
-|> Map.add "lord" { in_spam=0; in_ham=9}
-|> Map.add "los" { in_spam=4; in_ham=13}
-|> Map.add "lose" { in_spam=41; in_ham=27}
-|> Map.add "loses" { in_spam=0; in_ham=7}
-|> Map.add "losing" { in_spam=11; in_ham=14}
-|> Map.add "loss" { in_spam=26; in_ham=20}
-|> Map.add "lost" { in_spam=13; in_ham=66}
-|> Map.add "lot" { in_spam=27; in_ham=170}
-|> Map.add "lots" { in_spam=4; in_ham=78}
-|> Map.add "lotus" { in_spam=5; in_ham=3}
-|> Map.add "loud" { in_spam=0; in_ham=7}
-|> Map.add "love" { in_spam=16; in_ham=68}
-|> Map.add "love-" { in_spam=0; in_ham=6}
-|> Map.add "loved" { in_spam=2; in_ham=9}
-|> Map.add "lovely" { in_spam=0; in_ham=8}
-|> Map.add "lover" { in_spam=3; in_ham=5}
-|> Map.add "lovers" { in_spam=2; in_ham=11}
-|> Map.add "loves" { in_spam=0; in_ham=7}
-|> Map.add "low" { in_spam=57; in_ham=32}
-|> Map.add "lower" { in_spam=16; in_ham=36}
-|> Map.add "lowering" { in_spam=4; in_ham=3}
-|> Map.add "lowest" { in_spam=31; in_ham=5}
-|> Map.add "ltd" { in_spam=12; in_ham=7}
-|> Map.add "lucas" { in_spam=0; in_ham=14}
-|> Map.add "luck" { in_spam=9; in_ham=23}
-|> Map.add "lucky" { in_spam=5; in_ham=12}
-|> Map.add "lucrative" { in_spam=3; in_ham=5}
-|> Map.add "luis" { in_spam=3; in_ham=5}
-|> Map.add "lunch" { in_spam=3; in_ham=8}
-|> Map.add "lutz" { in_spam=0; in_ham=6}
-|> Map.add "luxury" { in_spam=2; in_ham=4}
-|> Map.add "lying" { in_spam=0; in_ham=6}
-|> Map.add "lynn" { in_spam=0; in_ham=13}
-|> Map.add "lynx" { in_spam=0; in_ham=12}
-|> Map.add "mac" { in_spam=1; in_ham=35}
-|> Map.add "mach" { in_spam=0; in_ham=7}
-|> Map.add "machine" { in_spam=10; in_ham=71}
-|> Map.add "machines" { in_spam=0; in_ham=31}
-|> Map.add "macintosh" { in_spam=0; in_ham=8}
-|> Map.add "macosx" { in_spam=0; in_ham=8}
-|> Map.add "macros" { in_spam=0; in_ham=5}
-|> Map.add "mad" { in_spam=0; in_ham=11}
-|> Map.add "madam" { in_spam=17; in_ham=2}
-|> Map.add "made" { in_spam=70; in_ham=177}
-|> Map.add "mag" { in_spam=0; in_ham=5}
-|> Map.add "magazine" { in_spam=8; in_ham=19}
-|> Map.add "magazines" { in_spam=9; in_ham=3}
-|> Map.add "magic" { in_spam=1; in_ham=15}
-|> Map.add "magnesium" { in_spam=0; in_ham=56}
-|> Map.add "magnitude" { in_spam=0; in_ham=22}
-|> Map.add "maid" { in_spam=0; in_ham=9}
-|> Map.add "mail" { in_spam=86; in_ham=263}
-|> Map.add "mailbox" { in_spam=3; in_ham=11}
-|> Map.add "mailed" { in_spam=10; in_ham=4}
-|> Map.add "mailer" { in_spam=9; in_ham=34}
-|> Map.add "mailers" { in_spam=0; in_ham=8}
-|> Map.add "mailing" { in_spam=121; in_ham=706}
-|> Map.add "mailings" { in_spam=87; in_ham=3}
-|> Map.add "mailman" { in_spam=46; in_ham=584}
-|> Map.add "mails" { in_spam=2; in_ham=12}
-|> Map.add "mailscanner" { in_spam=0; in_ham=5}
-|> Map.add "mailto" { in_spam=69; in_ham=209}
-|> Map.add "main" { in_spam=16; in_ham=70}
-|> Map.add "mainly" { in_spam=0; in_ham=16}
-|> Map.add "maintain" { in_spam=7; in_ham=29}
-|> Map.add "maintained" { in_spam=5; in_ham=5}
-|> Map.add "maintainer" { in_spam=46; in_ham=96}
-|> Map.add "maintaining" { in_spam=0; in_ham=10}
-|> Map.add "maintains" { in_spam=1; in_ham=12}
-|> Map.add "maintenance" { in_spam=2; in_ham=15}
-|> Map.add "major" { in_spam=29; in_ham=75}
-|> Map.add "majordomo" { in_spam=8; in_ham=4}
-|> Map.add "majority" { in_spam=9; in_ham=21}
-|> Map.add "make" { in_spam=101; in_ham=375}
-|> Map.add "makedev" { in_spam=0; in_ham=6}
-|> Map.add "makefile" { in_spam=0; in_ham=11}
-|> Map.add "maker" { in_spam=4; in_ham=3}
-|> Map.add "makers" { in_spam=6; in_ham=12}
-|> Map.add "makes" { in_spam=23; in_ham=117}
-|> Map.add "making" { in_spam=41; in_ham=118}
-|> Map.add "male" { in_spam=20; in_ham=21}
-|> Map.add "males" { in_spam=2; in_ham=16}
-|> Map.add "malicious" { in_spam=0; in_ham=5}
-|> Map.add "malte" { in_spam=0; in_ham=9}
-|> Map.add "man" { in_spam=11; in_ham=92}
-|> Map.add "man's" { in_spam=1; in_ham=12}
-|> Map.add "manage" { in_spam=16; in_ham=29}
-|> Map.add "manageable" { in_spam=0; in_ham=5}
-|> Map.add "managed" { in_spam=2; in_ham=34}
-|> Map.add "management" { in_spam=30; in_ham=43}
-|> Map.add "manager" { in_spam=31; in_ham=38}
-|> Map.add "managers" { in_spam=6; in_ham=11}
-|> Map.add "manages" { in_spam=0; in_ham=9}
-|> Map.add "managing" { in_spam=9; in_ham=16}
-|> Map.add "mandate" { in_spam=5; in_ham=3}
-|> Map.add "mandated" { in_spam=10; in_ham=3}
-|> Map.add "mandrake" { in_spam=0; in_ham=6}
-|> Map.add "manhattan" { in_spam=6; in_ham=5}
-|> Map.add "manifest" { in_spam=1; in_ham=6}
-|> Map.add "manifesto" { in_spam=0; in_ham=5}
-|> Map.add "manner" { in_spam=4; in_ham=17}
-|> Map.add "manual" { in_spam=6; in_ham=16}
-|> Map.add "manually" { in_spam=2; in_ham=22}
-|> Map.add "many" { in_spam=46; in_ham=281}
-|> Map.add "map" { in_spam=4; in_ham=20}
-|> Map.add "mapped" { in_spam=2; in_ham=4}
-|> Map.add "maps" { in_spam=0; in_ham=11}
-|> Map.add "marc" { in_spam=0; in_ham=5}
-|> Map.add "march" { in_spam=6; in_ham=21}
-|> Map.add "margin" { in_spam=5; in_ham=9}
-|> Map.add "margin-left" { in_spam=9; in_ham=2}
-|> Map.add "margin-right" { in_spam=10; in_ham=1}
-|> Map.add "margin-top" { in_spam=13; in_ham=0}
-|> Map.add "marginal" { in_spam=0; in_ham=11}
-|> Map.add "marginheight" { in_spam=10; in_ham=0}
-|> Map.add "marginwidth" { in_spam=10; in_ham=0}
-|> Map.add "mario" { in_spam=0; in_ham=5}
-|> Map.add "mark" { in_spam=7; in_ham=88}
-|> Map.add "marked" { in_spam=12; in_ham=11}
-|> Map.add "market" { in_spam=59; in_ham=61}
-|> Map.add "marketing" { in_spam=80; in_ham=23}
-|> Map.add "marketplace" { in_spam=6; in_ham=11}
-|> Map.add "markets" { in_spam=4; in_ham=24}
-|> Map.add "marking" { in_spam=0; in_ham=6}
-|> Map.add "marks" { in_spam=5; in_ham=12}
-|> Map.add "markup" { in_spam=0; in_ham=8}
-|> Map.add "marriage" { in_spam=0; in_ham=16}
-|> Map.add "married" { in_spam=0; in_ham=12}
-|> Map.add "marry" { in_spam=0; in_ham=12}
-|> Map.add "marrying" { in_spam=0; in_ham=11}
-|> Map.add "marshall" { in_spam=2; in_ham=11}
-|> Map.add "martin" { in_spam=2; in_ham=17}
-|> Map.add "masnick" { in_spam=0; in_ham=5}
-|> Map.add "mason" { in_spam=0; in_ham=48}
-|> Map.add "mass" { in_spam=8; in_ham=31}
-|> Map.add "mass-check" { in_spam=0; in_ham=8}
-|> Map.add "masses" { in_spam=3; in_ham=11}
-|> Map.add "massive" { in_spam=1; in_ham=18}
-|> Map.add "master" { in_spam=7; in_ham=13}
-|> Map.add "mastercard" { in_spam=10; in_ham=0}
-|> Map.add "match" { in_spam=1; in_ham=26}
-|> Map.add "matched" { in_spam=0; in_ham=6}
-|> Map.add "matches" { in_spam=0; in_ham=11}
-|> Map.add "matching" { in_spam=7; in_ham=8}
-|> Map.add "mate" { in_spam=2; in_ham=7}
-|> Map.add "material" { in_spam=6; in_ham=27}
-|> Map.add "materials" { in_spam=12; in_ham=14}
-|> Map.add "math" { in_spam=2; in_ham=12}
-|> Map.add "mathematical" { in_spam=0; in_ham=6}
-|> Map.add "mathematics" { in_spam=0; in_ham=28}
-|> Map.add "mating" { in_spam=0; in_ham=6}
-|> Map.add "matt" { in_spam=1; in_ham=19}
-|> Map.add "matter" { in_spam=27; in_ham=65}
-|> Map.add "matters" { in_spam=4; in_ham=26}
-|> Map.add "matthew" { in_spam=0; in_ham=9}
-|> Map.add "matthias" { in_spam=0; in_ham=152}
-|> Map.add "max" { in_spam=2; in_ham=11}
-|> Map.add "maximize" { in_spam=2; in_ham=6}
-|> Map.add "maximum" { in_spam=9; in_ham=3}
-|> Map.add "may" { in_spam=112; in_ham=300}
-|> Map.add "maybe" { in_spam=13; in_ham=171}
-|> Map.add "mayor" { in_spam=0; in_ham=6}
-|> Map.add "mbox" { in_spam=0; in_ham=7}
-|> Map.add "mboxtest" { in_spam=0; in_ham=6}
-|> Map.add "mbps" { in_spam=0; in_ham=11}
-|> Map.add "mccarthy" { in_spam=0; in_ham=5}
-|> Map.add "mcgraw" { in_spam=0; in_ham=6}
-|> Map.add "mdt" { in_spam=0; in_ham=10}
-|> Map.add "mean" { in_spam=18; in_ham=102}
-|> Map.add "meaning" { in_spam=11; in_ham=23}
-|> Map.add "meaningful" { in_spam=0; in_ham=10}
-|> Map.add "meanings" { in_spam=0; in_ham=6}
-|> Map.add "means" { in_spam=20; in_ham=107}
-|> Map.add "meant" { in_spam=6; in_ham=30}
-|> Map.add "meantime" { in_spam=0; in_ham=9}
-|> Map.add "meanwhile" { in_spam=2; in_ham=13}
-|> Map.add "measure" { in_spam=2; in_ham=18}
-|> Map.add "measured" { in_spam=0; in_ham=11}
-|> Map.add "measurement" { in_spam=0; in_ham=5}
-|> Map.add "measurements" { in_spam=0; in_ham=6}
-|> Map.add "measures" { in_spam=1; in_ham=7}
-|> Map.add "measuring" { in_spam=1; in_ham=7}
-|> Map.add "mechanism" { in_spam=2; in_ham=13}
-|> Map.add "mechanisms" { in_spam=1; in_ham=10}
-|> Map.add "media" { in_spam=14; in_ham=57}
-|> Map.add "median" { in_spam=0; in_ham=6}
-|> Map.add "medical" { in_spam=9; in_ham=6}
-|> Map.add "medicine" { in_spam=7; in_ham=8}
-|> Map.add "medium" { in_spam=17; in_ham=7}
-|> Map.add "meet" { in_spam=14; in_ham=41}
-|> Map.add "meeting" { in_spam=8; in_ham=20}
-|> Map.add "meetings" { in_spam=3; in_ham=16}
-|> Map.add "melting" { in_spam=0; in_ham=7}
-|> Map.add "member" { in_spam=46; in_ham=27}
-|> Map.add "members" { in_spam=26; in_ham=37}
-|> Map.add "membership" { in_spam=15; in_ham=5}
-|> Map.add "memo" { in_spam=2; in_ham=4}
-|> Map.add "memorial" { in_spam=1; in_ham=8}
-|> Map.add "memories" { in_spam=2; in_ham=6}
-|> Map.add "memory" { in_spam=8; in_ham=54}
-|> Map.add "men" { in_spam=9; in_ham=51}
-|> Map.add "menlo" { in_spam=0; in_ham=7}
-|> Map.add "mental" { in_spam=0; in_ham=5}
-|> Map.add "mentally" { in_spam=0; in_ham=7}
-|> Map.add "mention" { in_spam=4; in_ham=32}
-|> Map.add "mentioned" { in_spam=3; in_ham=41}
-|> Map.add "mentioning" { in_spam=0; in_ham=11}
-|> Map.add "menu" { in_spam=1; in_ham=27}
-|> Map.add "menus" { in_spam=0; in_ham=5}
-|> Map.add "mercea" { in_spam=0; in_ham=6}
-|> Map.add "merchant" { in_spam=6; in_ham=3}
-|> Map.add "mercury" { in_spam=0; in_ham=5}
-|> Map.add "mere" { in_spam=1; in_ham=5}
-|> Map.add "merely" { in_spam=0; in_ham=17}
-|> Map.add "merge" { in_spam=0; in_ham=12}
-|> Map.add "merit" { in_spam=2; in_ham=8}
-|> Map.add "mess" { in_spam=2; in_ham=13}
-|> Map.add "message" { in_spam=150; in_ham=369}
-|> Map.add "message's" { in_spam=0; in_ham=8}
-|> Map.add "message-----" { in_spam=0; in_ham=119}
-|> Map.add "message-id" { in_spam=0; in_ham=34}
-|> Map.add "messages" { in_spam=13; in_ham=242}
-|> Map.add "messaging" { in_spam=0; in_ham=6}
-|> Map.add "messed" { in_spam=0; in_ham=8}
-|> Map.add "messenger" { in_spam=0; in_ham=16}
-|> Map.add "messing" { in_spam=0; in_ham=6}
-|> Map.add "met" { in_spam=8; in_ham=36}
-|> Map.add "meta" { in_spam=133; in_ham=8}
-|> Map.add "metal" { in_spam=1; in_ham=6}
-|> Map.add "meter" { in_spam=0; in_ham=5}
-|> Map.add "method" { in_spam=69; in_ham=63}
-|> Map.add "methods" { in_spam=12; in_ham=25}
-|> Map.add "metre" { in_spam=0; in_ham=7}
-|> Map.add "metrix" { in_spam=0; in_ham=6}
-|> Map.add "metro" { in_spam=0; in_ham=14}
-|> Map.add "mexico" { in_spam=4; in_ham=4}
-|> Map.add "mhprofile" { in_spam=0; in_ham=8}
-|> Map.add "mhreadseqs" { in_spam=0; in_ham=6}
-|> Map.add "mhseqexpand" { in_spam=0; in_ham=8}
-|> Map.add "mhz" { in_spam=2; in_ham=9}
-|> Map.add "miami" { in_spam=6; in_ham=6}
-|> Map.add "michael" { in_spam=3; in_ham=48}
-|> Map.add "michel" { in_spam=0; in_ham=9}
-|> Map.add "microsoft" { in_spam=38; in_ham=50}
-|> Map.add "microsoft's" { in_spam=0; in_ham=5}
-|> Map.add "mid" { in_spam=4; in_ham=4}
-|> Map.add "mid-" { in_spam=0; in_ham=5}
-|> Map.add "middle" { in_spam=70; in_ham=44}
-|> Map.add "midst" { in_spam=2; in_ham=5}
-|> Map.add "might" { in_spam=21; in_ham=215}
-|> Map.add "mike" { in_spam=1; in_ham=33}
-|> Map.add "mildly" { in_spam=0; in_ham=5}
-|> Map.add "mile" { in_spam=2; in_ham=11}
-|> Map.add "miles" { in_spam=10; in_ham=18}
-|> Map.add "military" { in_spam=10; in_ham=32}
-|> Map.add "mill" { in_spam=0; in_ham=5}
-|> Map.add "millennium" { in_spam=2; in_ham=13}
-|> Map.add "miller" { in_spam=0; in_ham=5}
-|> Map.add "million" { in_spam=88; in_ham=61}
-|> Map.add "millionaire" { in_spam=11; in_ham=4}
-|> Map.add "millions" { in_spam=31; in_ham=29}
-|> Map.add "milter" { in_spam=0; in_ham=8}
-|> Map.add "mime" { in_spam=1; in_ham=29}
-|> Map.add "mime-version" { in_spam=1; in_ham=9}
-|> Map.add "min" { in_spam=5; in_ham=4}
-|> Map.add "mind" { in_spam=31; in_ham=65}
-|> Map.add "minds" { in_spam=0; in_ham=6}
-|> Map.add "mine" { in_spam=5; in_ham=24}
-|> Map.add "minimal" { in_spam=14; in_ham=8}
-|> Map.add "minimize" { in_spam=0; in_ham=11}
-|> Map.add "minimum" { in_spam=12; in_ham=4}
-|> Map.add "minister" { in_spam=5; in_ham=13}
-|> Map.add "ministry" { in_spam=10; in_ham=0}
-|> Map.add "minor" { in_spam=1; in_ham=10}
-|> Map.add "minority" { in_spam=1; in_ham=8}
-|> Map.add "minute" { in_spam=23; in_ham=24}
-|> Map.add "minutes" { in_spam=21; in_ham=30}
-|> Map.add "mirror" { in_spam=0; in_ham=12}
-|> Map.add "mirrors" { in_spam=1; in_ham=13}
-|> Map.add "misc" { in_spam=1; in_ham=15}
-|> Map.add "miserable" { in_spam=0; in_ham=6}
-|> Map.add "misleading" { in_spam=6; in_ham=3}
-|> Map.add "mismatch" { in_spam=0; in_ham=5}
-|> Map.add "miss" { in_spam=14; in_ham=23}
-|> Map.add "missed" { in_spam=1; in_ham=12}
-|> Map.add "missile" { in_spam=1; in_ham=5}
-|> Map.add "missiles" { in_spam=1; in_ham=5}
-|> Map.add "missing" { in_spam=4; in_ham=46}
-|> Map.add "mission" { in_spam=3; in_ham=14}
-|> Map.add "missouri" { in_spam=3; in_ham=4}
-|> Map.add "mistake" { in_spam=2; in_ham=25}
-|> Map.add "mistakes" { in_spam=11; in_ham=6}
-|> Map.add "mit" { in_spam=1; in_ham=27}
-|> Map.add "mitchell" { in_spam=7; in_ham=2}
-|> Map.add "mithral" { in_spam=0; in_ham=38}
-|> Map.add "mix" { in_spam=2; in_ham=16}
-|> Map.add "mixed" { in_spam=2; in_ham=16}
-|> Map.add "mixer" { in_spam=0; in_ham=6}
-|> Map.add "mld" { in_spam=0; in_ham=10}
-|> Map.add "mlm" { in_spam=12; in_ham=0}
-|> Map.add "mmkay" { in_spam=0; in_ham=6}
-|> Map.add "mobile" { in_spam=8; in_ham=28}
-|> Map.add "mobius" { in_spam=0; in_ham=6}
-|> Map.add "mobiusvc" { in_spam=0; in_ham=7}
-|> Map.add "mock" { in_spam=3; in_ham=5}
-|> Map.add "mod" { in_spam=0; in_ham=9}
-|> Map.add "modalities" { in_spam=10; in_ham=0}
-|> Map.add "mode" { in_spam=2; in_ham=56}
-|> Map.add "model" { in_spam=2; in_ham=47}
-|> Map.add "models" { in_spam=2; in_ham=22}
-|> Map.add "modem" { in_spam=1; in_ham=19}
-|> Map.add "moderate" { in_spam=3; in_ham=7}
-|> Map.add "modern" { in_spam=2; in_ham=34}
-|> Map.add "modes" { in_spam=3; in_ham=9}
-|> Map.add "modest" { in_spam=3; in_ham=10}
-|> Map.add "modified" { in_spam=8; in_ham=39}
-|> Map.add "modify" { in_spam=0; in_ham=19}
-|> Map.add "modifying" { in_spam=0; in_ham=6}
-|> Map.add "module" { in_spam=0; in_ham=34}
-|> Map.add "modules" { in_spam=0; in_ham=56}
-|> Map.add "moen" { in_spam=0; in_ham=6}
-|> Map.add "mohr" { in_spam=0; in_ham=11}
-|> Map.add "molecules" { in_spam=0; in_ham=5}
-|> Map.add "mom" { in_spam=2; in_ham=7}
-|> Map.add "moment" { in_spam=21; in_ham=30}
-|> Map.add "moments" { in_spam=4; in_ham=7}
-|> Map.add "mon" { in_spam=3; in_ham=120}
-|> Map.add "moncur" { in_spam=0; in_ham=5}
-|> Map.add "monday" { in_spam=1; in_ham=99}
-|> Map.add "mondo" { in_spam=0; in_ham=10}
-|> Map.add "mondorescue" { in_spam=0; in_ham=6}
-|> Map.add "monetary" { in_spam=0; in_ham=6}
-|> Map.add "money" { in_spam=118; in_ham=106}
-|> Map.add "mongers" { in_spam=0; in_ham=5}
-|> Map.add "monitor" { in_spam=1; in_ham=14}
-|> Map.add "monitoring" { in_spam=1; in_ham=8}
-|> Map.add "monitors" { in_spam=0; in_ham=9}
-|> Map.add "monkey" { in_spam=0; in_ham=12}
-|> Map.add "monkeys" { in_spam=0; in_ham=7}
-|> Map.add "monolithic" { in_spam=0; in_ham=6}
-|> Map.add "monopolies" { in_spam=0; in_ham=5}
-|> Map.add "monopoly" { in_spam=0; in_ham=8}
-|> Map.add "montanaro" { in_spam=0; in_ham=9}
-|> Map.add "month" { in_spam=61; in_ham=71}
-|> Map.add "monthly" { in_spam=18; in_ham=4}
-|> Map.add "months" { in_spam=35; in_ham=79}
-|> Map.add "mood" { in_spam=2; in_ham=7}
-|> Map.add "moon" { in_spam=0; in_ham=6}
-|> Map.add "moral" { in_spam=1; in_ham=8}
-|> Map.add "moran" { in_spam=0; in_ham=8}
-|> Map.add "mord" { in_spam=0; in_ham=5}
-|> Map.add "more" { in_spam=217; in_ham=638}
-|> Map.add "morelikethis" { in_spam=0; in_ham=5}
-|> Map.add "moreover" { in_spam=3; in_ham=4}
-|> Map.add "morgan" { in_spam=8; in_ham=2}
-|> Map.add "morning" { in_spam=1; in_ham=31}
-|> Map.add "mortgage" { in_spam=34; in_ham=2}
-|> Map.add "most" { in_spam=82; in_ham=315}
-|> Map.add "mostly" { in_spam=5; in_ham=49}
-|> Map.add "mot" { in_spam=2; in_ham=9}
-|> Map.add "mother" { in_spam=11; in_ham=22}
-|> Map.add "mothers" { in_spam=2; in_ham=5}
-|> Map.add "motivate" { in_spam=0; in_ham=6}
-|> Map.add "motivated" { in_spam=19; in_ham=7}
-|> Map.add "motivator" { in_spam=0; in_ham=6}
-|> Map.add "motives" { in_spam=0; in_ham=6}
-|> Map.add "motor" { in_spam=0; in_ham=6}
-|> Map.add "mount" { in_spam=0; in_ham=8}
-|> Map.add "mountain" { in_spam=7; in_ham=18}
-|> Map.add "mounted" { in_spam=0; in_ham=6}
-|> Map.add "mouse" { in_spam=1; in_ham=31}
-|> Map.add "mouth" { in_spam=1; in_ham=6}
-|> Map.add "movable" { in_spam=0; in_ham=7}
-|> Map.add "move" { in_spam=28; in_ham=76}
-|> Map.add "moved" { in_spam=15; in_ham=35}
-|> Map.add "movement" { in_spam=2; in_ham=9}
-|> Map.add "moves" { in_spam=0; in_ham=13}
-|> Map.add "movie" { in_spam=15; in_ham=19}
-|> Map.add "movies" { in_spam=14; in_ham=14}
-|> Map.add "moving" { in_spam=4; in_ham=27}
-|> Map.add "moylan" { in_spam=0; in_ham=5}
-|> Map.add "mozilla" { in_spam=1; in_ham=22}
-|> Map.add "mozillazine" { in_spam=0; in_ham=8}
-|> Map.add "mph" { in_spam=0; in_ham=7}
-|> Map.add "mplayer" { in_spam=0; in_ham=26}
-|> Map.add "mrs" { in_spam=8; in_ham=5}
-|> Map.add "msec" { in_spam=0; in_ham=6}
-|> Map.add "msg" { in_spam=0; in_ham=51}
-|> Map.add "msgchange" { in_spam=0; in_ham=9}
-|> Map.add "msgid" { in_spam=4; in_ham=9}
-|> Map.add "msgids" { in_spam=0; in_ham=8}
-|> Map.add "msgs" { in_spam=0; in_ham=36}
-|> Map.add "msgshow" { in_spam=0; in_ham=5}
-|> Map.add "mshtml" { in_spam=24; in_ham=4}
-|> Map.add "msie" { in_spam=0; in_ham=5}
-|> Map.add "msn" { in_spam=3; in_ham=39}
-|> Map.add "msnbc" { in_spam=0; in_ham=9}
-|> Map.add "msquadrat" { in_spam=0; in_ham=7}
-|> Map.add "mta" { in_spam=0; in_ham=15}
-|> Map.add "much" { in_spam=68; in_ham=324}
-|> Map.add "muddied" { in_spam=0; in_ham=7}
-|> Map.add "multimedia" { in_spam=5; in_ham=4}
-|> Map.add "multipart" { in_spam=1; in_ham=11}
-|> Map.add "multiple" { in_spam=12; in_ham=55}
-|> Map.add "multiples" { in_spam=0; in_ham=7}
-|> Map.add "multiply" { in_spam=0; in_ham=5}
-|> Map.add "munnari" { in_spam=0; in_ham=11}
-|> Map.add "murcko" { in_spam=0; in_ham=11}
-|> Map.add "murder" { in_spam=0; in_ham=13}
-|> Map.add "murderous" { in_spam=0; in_ham=5}
-|> Map.add "murphy" { in_spam=0; in_ham=81}
-|> Map.add "muscle" { in_spam=7; in_ham=5}
-|> Map.add "museum" { in_spam=0; in_ham=8}
-|> Map.add "music" { in_spam=9; in_ham=50}
-|> Map.add "musical" { in_spam=0; in_ham=6}
-|> Map.add "muslim" { in_spam=0; in_ham=13}
-|> Map.add "muslims" { in_spam=0; in_ham=9}
-|> Map.add "musser" { in_spam=0; in_ham=5}
-|> Map.add "must" { in_spam=73; in_ham=115}
-|> Map.add "mutual" { in_spam=9; in_ham=10}
-|> Map.add "mvfiaa" { in_spam=0; in_ham=76}
-|> Map.add "myjabber" { in_spam=0; in_ham=9}
-|> Map.add "myself" { in_spam=12; in_ham=51}
-|> Map.add "mysql" { in_spam=1; in_ham=10}
-|> Map.add "mysterious" { in_spam=0; in_ham=7}
-|> Map.add "mystery" { in_spam=0; in_ham=7}
-|> Map.add "myth" { in_spam=0; in_ham=7}
-|> Map.add "mytokenizer" { in_spam=0; in_ham=6}
-|> Map.add "nah" { in_spam=0; in_ham=7}
-|> Map.add "naive" { in_spam=0; in_ham=6}
-|> Map.add "name" { in_spam=217; in_ham=110}
-|> Map.add "named" { in_spam=3; in_ham=33}
-|> Map.add "namely" { in_spam=2; in_ham=6}
-|> Map.add "names" { in_spam=32; in_ham=34}
-|> Map.add "namespaces" { in_spam=0; in_ham=5}
-|> Map.add "naming" { in_spam=0; in_ham=5}
-|> Map.add "napster" { in_spam=0; in_ham=6}
-|> Map.add "narrow" { in_spam=3; in_ham=12}
-|> Map.add "nasa" { in_spam=1; in_ham=9}
-|> Map.add "nasdaq" { in_spam=0; in_ham=7}
-|> Map.add "nasty" { in_spam=2; in_ham=12}
-|> Map.add "nat" { in_spam=0; in_ham=7}
-|> Map.add "nation" { in_spam=3; in_ham=15}
-|> Map.add "nation's" { in_spam=0; in_ham=10}
-|> Map.add "national" { in_spam=30; in_ham=57}
-|> Map.add "nationals" { in_spam=1; in_ham=5}
-|> Map.add "nations" { in_spam=1; in_ham=24}
-|> Map.add "nationwide" { in_spam=11; in_ham=4}
-|> Map.add "native" { in_spam=2; in_ham=12}
-|> Map.add "nato" { in_spam=1; in_ham=5}
-|> Map.add "natural" { in_spam=12; in_ham=17}
-|> Map.add "naturally" { in_spam=6; in_ham=9}
-|> Map.add "nature" { in_spam=10; in_ham=25}
-|> Map.add "nbsp" { in_spam=143; in_ham=12}
-|> Map.add "ncid" { in_spam=0; in_ham=5}
-|> Map.add "nder" { in_spam=0; in_ham=8}
-|> Map.add "neale" { in_spam=0; in_ham=13}
-|> Map.add "near" { in_spam=10; in_ham=42}
-|> Map.add "nearby" { in_spam=0; in_ham=9}
-|> Map.add "nearest" { in_spam=3; in_ham=5}
-|> Map.add "nearing" { in_spam=0; in_ham=5}
-|> Map.add "nearly" { in_spam=2; in_ham=26}
-|> Map.add "neary" { in_spam=0; in_ham=6}
-|> Map.add "neat" { in_spam=1; in_ham=13}
-|> Map.add "necessarily" { in_spam=0; in_ham=21}
-|> Map.add "necessary" { in_spam=10; in_ham=36}
 
+let db =
+  db
+  |> Map.add "inquiry" { in_spam = 35; in_ham = 7 }
+  |> Map.add "insane" { in_spam = 0; in_ham = 14 }
+  |> Map.add "insecure" { in_spam = 0; in_ham = 8 }
+  |> Map.add "insert" { in_spam = 8; in_ham = 28 }
+  |> Map.add "inserted" { in_spam = 3; in_ham = 9 }
+  |> Map.add "inserts" { in_spam = 0; in_ham = 8 }
+  |> Map.add "inside" { in_spam = 7; in_ham = 51 }
+  |> Map.add "insider's" { in_spam = 9; in_ham = 3 }
+  |> Map.add "insidious" { in_spam = 1; in_ham = 5 }
+  |> Map.add "insiq" { in_spam = 20; in_ham = 0 }
+  |> Map.add "insist" { in_spam = 3; in_ham = 16 }
+  |> Map.add "inspect" { in_spam = 0; in_ham = 9 }
+  |> Map.add "inspected" { in_spam = 0; in_ham = 6 }
+  |> Map.add "inspection" { in_spam = 2; in_ham = 10 }
+  |> Map.add "inspections" { in_spam = 0; in_ham = 6 }
+  |> Map.add "inspired" { in_spam = 1; in_ham = 11 }
+  |> Map.add "install" { in_spam = 1; in_ham = 102 }
+  |> Map.add "install'" { in_spam = 0; in_ham = 5 }
+  |> Map.add "installation" { in_spam = 3; in_ham = 32 }
+  |> Map.add "installed" { in_spam = 2; in_ham = 113 }
+  |> Map.add "installing" { in_spam = 3; in_ham = 30 }
+  |> Map.add "installs" { in_spam = 1; in_ham = 9 }
+  |> Map.add "instance" { in_spam = 5; in_ham = 29 }
+  |> Map.add "instances" { in_spam = 0; in_ham = 13 }
+  |> Map.add "instant" { in_spam = 23; in_ham = 18 }
+  |> Map.add "instantly" { in_spam = 14; in_ham = 18 }
+  |> Map.add "instead" { in_spam = 70; in_ham = 154 }
+  |> Map.add "institute" { in_spam = 1; in_ham = 17 }
+  |> Map.add "institution" { in_spam = 1; in_ham = 5 }
+  |> Map.add "instructed" { in_spam = 13; in_ham = 1 }
+  |> Map.add "instruction" { in_spam = 14; in_ham = 1 }
+  |> Map.add "instructions" { in_spam = 33; in_ham = 11 }
+  |> Map.add "insufficient" { in_spam = 0; in_ham = 5 }
+  |> Map.add "insult" { in_spam = 2; in_ham = 5 }
+  |> Map.add "insurance" { in_spam = 79; in_ham = 11 }
+  |> Map.add "insuranceiq" { in_spam = 58; in_ham = 0 }
+  |> Map.add "int" { in_spam = 2; in_ham = 15 }
+  |> Map.add "integer" { in_spam = 2; in_ham = 4 }
+  |> Map.add "integral" { in_spam = 16; in_ham = 4 }
+  |> Map.add "integrate" { in_spam = 0; in_ham = 15 }
+  |> Map.add "integrated" { in_spam = 1; in_ham = 12 }
+  |> Map.add "integrating" { in_spam = 0; in_ham = 9 }
+  |> Map.add "integration" { in_spam = 0; in_ham = 21 }
+  |> Map.add "integrity" { in_spam = 5; in_ham = 4 }
+  |> Map.add "intel" { in_spam = 1; in_ham = 11 }
+  |> Map.add "intel's" { in_spam = 0; in_ham = 5 }
+  |> Map.add "intellectual" { in_spam = 0; in_ham = 17 }
+  |> Map.add "intelligence" { in_spam = 11; in_ham = 26 }
+  |> Map.add "intelligent" { in_spam = 2; in_ham = 9 }
+  |> Map.add "intend" { in_spam = 8; in_ham = 5 }
+  |> Map.add "intended" { in_spam = 20; in_ham = 17 }
+  |> Map.add "intense" { in_spam = 1; in_ham = 11 }
+  |> Map.add "intent" { in_spam = 1; in_ham = 5 }
+  |> Map.add "intention" { in_spam = 2; in_ham = 8 }
+  |> Map.add "inter-and" { in_spam = 0; in_ham = 6 }
+  |> Map.add "interact" { in_spam = 0; in_ham = 11 }
+  |> Map.add "interaction" { in_spam = 1; in_ham = 14 }
+  |> Map.add "interactions" { in_spam = 0; in_ham = 8 }
+  |> Map.add "interactive" { in_spam = 12; in_ham = 53 }
+  |> Map.add "interest" { in_spam = 57; in_ham = 41 }
+  |> Map.add "interested" { in_spam = 30; in_ham = 49 }
+  |> Map.add "interesting" { in_spam = 0; in_ham = 98 }
+  |> Map.add "interests" { in_spam = 5; in_ham = 17 }
+  |> Map.add "interface" { in_spam = 2; in_ham = 39 }
+  |> Map.add "interfaces" { in_spam = 0; in_ham = 7 }
+  |> Map.add "interference" { in_spam = 0; in_ham = 6 }
+  |> Map.add "interject" { in_spam = 0; in_ham = 7 }
+  |> Map.add "interlink" { in_spam = 0; in_ham = 8 }
+  |> Map.add "internal" { in_spam = 4; in_ham = 24 }
+  |> Map.add "internally" { in_spam = 0; in_ham = 5 }
+  |> Map.add "internet" { in_spam = 82; in_ham = 147 }
+  |> Map.add "internet's" { in_spam = 0; in_ham = 6 }
+  |> Map.add "interoperate" { in_spam = 0; in_ham = 5 }
+  |> Map.add "interpret" { in_spam = 0; in_ham = 5 }
+  |> Map.add "interpreter" { in_spam = 0; in_ham = 11 }
+  |> Map.add "intervention" { in_spam = 7; in_ham = 9 }
+  |> Map.add "interview" { in_spam = 5; in_ham = 17 }
+  |> Map.add "interviewed" { in_spam = 0; in_ham = 11 }
+  |> Map.add "interviews" { in_spam = 0; in_ham = 6 }
+  |> Map.add "intimate" { in_spam = 4; in_ham = 4 }
+  |> Map.add "into" { in_spam = 78; in_ham = 424 }
+  |> Map.add "introduce" { in_spam = 15; in_ham = 10 }
+  |> Map.add "introduced" { in_spam = 3; in_ham = 18 }
+  |> Map.add "introduction" { in_spam = 4; in_ham = 14 }
+  |> Map.add "intuition" { in_spam = 1; in_ham = 5 }
+  |> Map.add "invalid" { in_spam = 1; in_ham = 9 }
+  |> Map.add "invaluable" { in_spam = 7; in_ham = 4 }
+  |> Map.add "invasion" { in_spam = 1; in_ham = 5 }
+  |> Map.add "invent" { in_spam = 0; in_ham = 9 }
+  |> Map.add "invented" { in_spam = 0; in_ham = 15 }
+  |> Map.add "invest" { in_spam = 23; in_ham = 7 }
+  |> Map.add "invested" { in_spam = 5; in_ham = 5 }
+  |> Map.add "investigate" { in_spam = 2; in_ham = 8 }
+  |> Map.add "investing" { in_spam = 12; in_ham = 3 }
+  |> Map.add "investment" { in_spam = 55; in_ham = 26 }
+  |> Map.add "investments" { in_spam = 11; in_ham = 10 }
+  |> Map.add "investor" { in_spam = 6; in_ham = 2 }
+  |> Map.add "investors" { in_spam = 18; in_ham = 17 }
+  |> Map.add "invisible" { in_spam = 0; in_ham = 13 }
+  |> Map.add "invite" { in_spam = 5; in_ham = 6 }
+  |> Map.add "invited" { in_spam = 1; in_ham = 9 }
+  |> Map.add "invoke" { in_spam = 0; in_ham = 11 }
+  |> Map.add "invoked" { in_spam = 0; in_ham = 20 }
+  |> Map.add "invoking" { in_spam = 0; in_ham = 5 }
+  |> Map.add "involve" { in_spam = 3; in_ham = 13 }
+  |> Map.add "involved" { in_spam = 20; in_ham = 43 }
+  |> Map.add "involvement" { in_spam = 1; in_ham = 6 }
+  |> Map.add "involves" { in_spam = 1; in_ham = 12 }
+  |> Map.add "involving" { in_spam = 2; in_ham = 5 }
+  |> Map.add "ipo" { in_spam = 0; in_ham = 6 }
+  |> Map.add "ips" { in_spam = 1; in_ham = 7 }
+  |> Map.add "iqa" { in_spam = 0; in_ham = 9 }
+  |> Map.add "ira" { in_spam = 0; in_ham = 5 }
+  |> Map.add "iran" { in_spam = 1; in_ham = 6 }
+  |> Map.add "iraq" { in_spam = 2; in_ham = 30 }
+  |> Map.add "irc" { in_spam = 0; in_ham = 6 }
+  |> Map.add "ireland" { in_spam = 5; in_ham = 20 }
+  |> Map.add "irish" { in_spam = 48; in_ham = 101 }
+  |> Map.add "iron" { in_spam = 1; in_ham = 5 }
+  |> Map.add "ironic" { in_spam = 0; in_ham = 5 }
+  |> Map.add "irony" { in_spam = 0; in_ham = 8 }
+  |> Map.add "irregulars" { in_spam = 0; in_ham = 5 }
+  |> Map.add "irrelevant" { in_spam = 0; in_ham = 8 }
+  |> Map.add "irs" { in_spam = 1; in_ham = 5 }
+  |> Map.add "irtf" { in_spam = 0; in_ham = 6 }
+  |> Map.add "irvine" { in_spam = 2; in_ham = 10 }
+  |> Map.add "islam" { in_spam = 0; in_ham = 7 }
+  |> Map.add "island" { in_spam = 5; in_ham = 10 }
+  |> Map.add "islands" { in_spam = 4; in_ham = 4 }
+  |> Map.add "isn't" { in_spam = 13; in_ham = 168 }
+  |> Map.add "isnt" { in_spam = 0; in_ham = 5 }
+  |> Map.add "iso" { in_spam = 0; in_ham = 9 }
+  |> Map.add "iso-" { in_spam = 71; in_ham = 10 }
+  |> Map.add "isp" { in_spam = 5; in_ham = 15 }
+  |> Map.add "isps" { in_spam = 0; in_ham = 13 }
+  |> Map.add "israel" { in_spam = 2; in_ham = 17 }
+  |> Map.add "israeli" { in_spam = 0; in_ham = 5 }
+  |> Map.add "israelis" { in_spam = 0; in_ham = 6 }
+  |> Map.add "issue" { in_spam = 18; in_ham = 129 }
+  |> Map.add "issued" { in_spam = 17; in_ham = 9 }
+  |> Map.add "issues" { in_spam = 4; in_ham = 81 }
+  |> Map.add "ist" { in_spam = 2; in_ham = 4 }
+  |> Map.add "it'd" { in_spam = 0; in_ham = 16 }
+  |> Map.add "it'll" { in_spam = 0; in_ham = 24 }
+  |> Map.add "it's" { in_spam = 61; in_ham = 571 }
+  |> Map.add "italian" { in_spam = 0; in_ham = 7 }
+  |> Map.add "italy" { in_spam = 3; in_ham = 4 }
+  |> Map.add "item" { in_spam = 3; in_ham = 19 }
+  |> Map.add "itemid" { in_spam = 0; in_ham = 10 }
+  |> Map.add "items" { in_spam = 5; in_ham = 22 }
+  |> Map.add "itmeaa" { in_spam = 0; in_ham = 6 }
+  |> Map.add "its" { in_spam = 35; in_ham = 339 }
+  |> Map.add "itself" { in_spam = 6; in_ham = 68 }
+  |> Map.add "ive" { in_spam = 0; in_ham = 8 }
+  |> Map.add "ivh" { in_spam = 0; in_ham = 8 }
+  |> Map.add "ivy" { in_spam = 0; in_ham = 7 }
+  |> Map.add "jabber" { in_spam = 0; in_ham = 47 }
+  |> Map.add "jack" { in_spam = 0; in_ham = 15 }
+  |> Map.add "jacob" { in_spam = 0; in_ham = 9 }
+  |> Map.add "jacques" { in_spam = 0; in_ham = 7 }
+  |> Map.add "jaguar" { in_spam = 0; in_ham = 6 }
+  |> Map.add "jail" { in_spam = 0; in_ham = 7 }
+  |> Map.add "jailed" { in_spam = 0; in_ham = 5 }
+  |> Map.add "james" { in_spam = 3; in_ham = 53 }
+  |> Map.add "jamesr" { in_spam = 0; in_ham = 28 }
+  |> Map.add "january" { in_spam = 9; in_ham = 17 }
+  |> Map.add "japan" { in_spam = 3; in_ham = 9 }
+  |> Map.add "japanese" { in_spam = 5; in_ham = 12 }
+  |> Map.add "jar" { in_spam = 1; in_ham = 8 }
+  |> Map.add "jason" { in_spam = 1; in_ham = 12 }
+  |> Map.add "java" { in_spam = 3; in_ham = 47 }
+  |> Map.add "javaone" { in_spam = 0; in_ham = 6 }
+  |> Map.add "javapro" { in_spam = 0; in_ham = 6 }
+  |> Map.add "javascript" { in_spam = 7; in_ham = 6 }
+  |> Map.add "jay" { in_spam = 0; in_ham = 5 }
+  |> Map.add "jdk" { in_spam = 1; in_ham = 7 }
+  |> Map.add "jealous" { in_spam = 0; in_ham = 5 }
+  |> Map.add "jeb" { in_spam = 0; in_ham = 5 }
+  |> Map.add "jeff" { in_spam = 1; in_ham = 11 }
+  |> Map.add "jeffrey" { in_spam = 0; in_ham = 6 }
+  |> Map.add "jennifer" { in_spam = 8; in_ham = 1 }
+  |> Map.add "jeremy" { in_spam = 1; in_ham = 64 }
+  |> Map.add "jersey" { in_spam = 12; in_ham = 4 }
+  |> Map.add "jesse" { in_spam = 0; in_ham = 14 }
+  |> Map.add "jesus" { in_spam = 1; in_ham = 9 }
+  |> Map.add "jewish" { in_spam = 3; in_ham = 4 }
+  |> Map.add "jid" { in_spam = 0; in_ham = 9 }
+  |> Map.add "jim" { in_spam = 0; in_ham = 55 }
+  |> Map.add "jit" { in_spam = 0; in_ham = 6 }
+  |> Map.add "jkeating" { in_spam = 0; in_ham = 8 }
+  |> Map.add "jmason" { in_spam = 7; in_ham = 20 }
+  |> Map.add "job" { in_spam = 19; in_ham = 96 }
+  |> Map.add "jobs" { in_spam = 4; in_ham = 19 }
+  |> Map.add "joe" { in_spam = 7; in_ham = 37 }
+  |> Map.add "joel" { in_spam = 0; in_ham = 6 }
+  |> Map.add "john" { in_spam = 10; in_ham = 104 }
+  |> Map.add "johnhall" { in_spam = 0; in_ham = 18 }
+  |> Map.add "johnston" { in_spam = 0; in_ham = 6 }
+  |> Map.add "join" { in_spam = 33; in_ham = 79 }
+  |> Map.add "joined" { in_spam = 13; in_ham = 19 }
+  |> Map.add "joining" { in_spam = 5; in_ham = 7 }
+  |> Map.add "joint" { in_spam = 1; in_ham = 14 }
+  |> Map.add "jointly" { in_spam = 0; in_ham = 5 }
+  |> Map.add "joke" { in_spam = 1; in_ham = 23 }
+  |> Map.add "jokes" { in_spam = 0; in_ham = 6 }
+  |> Map.add "joking" { in_spam = 0; in_ham = 6 }
+  |> Map.add "jolt" { in_spam = 0; in_ham = 6 }
+  |> Map.add "jon" { in_spam = 0; in_ham = 12 }
+  |> Map.add "jones" { in_spam = 1; in_ham = 11 }
+  |> Map.add "jordan" { in_spam = 2; in_ham = 7 }
+  |> Map.add "joseph" { in_spam = 10; in_ham = 25 }
+  |> Map.add "josh" { in_spam = 0; in_ham = 6 }
+  |> Map.add "journal" { in_spam = 8; in_ham = 35 }
+  |> Map.add "journalism" { in_spam = 1; in_ham = 6 }
+  |> Map.add "journalist" { in_spam = 1; in_ham = 10 }
+  |> Map.add "jpg" { in_spam = 74; in_ham = 32 }
+  |> Map.add "jsp" { in_spam = 7; in_ham = 10 }
+  |> Map.add "judge" { in_spam = 1; in_ham = 19 }
+  |> Map.add "judged" { in_spam = 0; in_ham = 5 }
+  |> Map.add "judgment" { in_spam = 0; in_ham = 5 }
+  |> Map.add "jul" { in_spam = 3; in_ham = 14 }
+  |> Map.add "julian" { in_spam = 0; in_ham = 9 }
+  |> Map.add "julius" { in_spam = 0; in_ham = 6 }
+  |> Map.add "july" { in_spam = 4; in_ham = 23 }
+  |> Map.add "jump" { in_spam = 4; in_ham = 23 }
+  |> Map.add "jumped" { in_spam = 7; in_ham = 3 }
+  |> Map.add "june" { in_spam = 6; in_ham = 17 }
+  |> Map.add "junior" { in_spam = 1; in_ham = 5 }
+  |> Map.add "juniper" { in_spam = 0; in_ham = 6 }
+  |> Map.add "junk" { in_spam = 7; in_ham = 15 }
+  |> Map.add "just" { in_spam = 126; in_ham = 764 }
+  |> Map.add "justice" { in_spam = 1; in_ham = 21 }
+  |> Map.add "justify" { in_spam = 6; in_ham = 13 }
+  |> Map.add "justin" { in_spam = 0; in_ham = 60 }
+  |> Map.add "jwz" { in_spam = 0; in_ham = 11 }
+  |> Map.add "karl" { in_spam = 0; in_ham = 7 }
+  |> Map.add "kassabgi" { in_spam = 0; in_ham = 6 }
+  |> Map.add "kate" { in_spam = 0; in_ham = 6 }
+  |> Map.add "kazaa" { in_spam = 0; in_ham = 6 }
+  |> Map.add "kde" { in_spam = 0; in_ham = 9 }
+  |> Map.add "kearney" { in_spam = 0; in_ham = 8 }
+  |> Map.add "keating" { in_spam = 0; in_ham = 10 }
+  |> Map.add "keen" { in_spam = 0; in_ham = 7 }
+  |> Map.add "keep" { in_spam = 55; in_ham = 153 }
+  |> Map.add "keeping" { in_spam = 3; in_ham = 36 }
+  |> Map.add "keeps" { in_spam = 6; in_ham = 8 }
+  |> Map.add "kelly" { in_spam = 2; in_ham = 12 }
+  |> Map.add "kelly's" { in_spam = 0; in_ham = 7 }
+  |> Map.add "ken" { in_spam = 2; in_ham = 19 }
+  |> Map.add "kenny" { in_spam = 0; in_ham = 5 }
+  |> Map.add "kenya" { in_spam = 4; in_ham = 4 }
+  |> Map.add "kept" { in_spam = 7; in_ham = 28 }
+  |> Map.add "kernel" { in_spam = 0; in_ham = 88 }
+  |> Map.add "kernel-" { in_spam = 0; in_ham = 5 }
+  |> Map.add "kernel-smp" { in_spam = 0; in_ham = 6 }
+  |> Map.add "kernels" { in_spam = 0; in_ham = 14 }
+  |> Map.add "kevin" { in_spam = 3; in_ham = 31 }
+  |> Map.add "key" { in_spam = 28; in_ham = 101 }
+  |> Map.add "keyboard" { in_spam = 1; in_ham = 21 }
+  |> Map.add "keys" { in_spam = 0; in_ham = 27 }
+  |> Map.add "keyserver" { in_spam = 0; in_ham = 10 }
+  |> Map.add "keystroke" { in_spam = 0; in_ham = 5 }
+  |> Map.add "keywords" { in_spam = 6; in_ham = 6 }
+  |> Map.add "khare" { in_spam = 0; in_ham = 24 }
+  |> Map.add "kick" { in_spam = 2; in_ham = 17 }
+  |> Map.add "kid" { in_spam = 4; in_ham = 10 }
+  |> Map.add "kiddies" { in_spam = 0; in_ham = 7 }
+  |> Map.add "kidding" { in_spam = 5; in_ham = 3 }
+  |> Map.add "kids" { in_spam = 4; in_ham = 35 }
+  |> Map.add "kieran" { in_spam = 0; in_ham = 6 }
+  |> Map.add "kill" { in_spam = 2; in_ham = 30 }
+  |> Map.add "killed" { in_spam = 6; in_ham = 31 }
+  |> Map.add "killer" { in_spam = 0; in_ham = 16 }
+  |> Map.add "killing" { in_spam = 1; in_ham = 13 }
+  |> Map.add "kills" { in_spam = 0; in_ham = 10 }
+  |> Map.add "kind" { in_spam = 16; in_ham = 107 }
+  |> Map.add "kinda" { in_spam = 0; in_ham = 14 }
+  |> Map.add "kindly" { in_spam = 21; in_ham = 2 }
+  |> Map.add "kinds" { in_spam = 0; in_ham = 16 }
+  |> Map.add "king" { in_spam = 3; in_ham = 18 }
+  |> Map.add "kings" { in_spam = 0; in_ham = 6 }
+  |> Map.add "kiss" { in_spam = 2; in_ham = 4 }
+  |> Map.add "kit" { in_spam = 5; in_ham = 5 }
+  |> Map.add "kitchen" { in_spam = 0; in_ham = 7 }
+  |> Map.add "kloiber" { in_spam = 0; in_ham = 7 }
+  |> Map.add "knew" { in_spam = 5; in_ham = 36 }
+  |> Map.add "knife" { in_spam = 4; in_ham = 3 }
+  |> Map.add "knock" { in_spam = 0; in_ham = 5 }
+  |> Map.add "know" { in_spam = 71; in_ham = 390 }
+  |> Map.add "knowing" { in_spam = 3; in_ham = 9 }
+  |> Map.add "knowledge" { in_spam = 22; in_ham = 44 }
+  |> Map.add "known" { in_spam = 13; in_ham = 84 }
+  |> Map.add "knows" { in_spam = 2; in_ham = 48 }
+  |> Map.add "kragen" { in_spam = 0; in_ham = 11 }
+  |> Map.add "kre" { in_spam = 0; in_ham = 37 }
+  |> Map.add "krpm" { in_spam = 0; in_ham = 5 }
+  |> Map.add "ktmeaa" { in_spam = 0; in_ham = 7 }
+  |> Map.add "kunskap" { in_spam = 0; in_ham = 9 }
+  |> Map.add "kuznetsov" { in_spam = 0; in_ham = 6 }
+  |> Map.add "kuznetsov's" { in_spam = 0; in_ham = 6 }
+  |> Map.add "l-k" { in_spam = 0; in_ham = 6 }
+  |> Map.add "lab" { in_spam = 0; in_ham = 6 }
+  |> Map.add "label" { in_spam = 1; in_ham = 11 }
+  |> Map.add "labeled" { in_spam = 1; in_ham = 5 }
+  |> Map.add "labels" { in_spam = 2; in_ham = 5 }
+  |> Map.add "labor" { in_spam = 0; in_ham = 19 }
+  |> Map.add "laboratories" { in_spam = 0; in_ham = 6 }
+  |> Map.add "labour" { in_spam = 1; in_ham = 10 }
+  |> Map.add "lack" { in_spam = 4; in_ham = 35 }
+  |> Map.add "lacks" { in_spam = 0; in_ham = 6 }
+  |> Map.add "laden" { in_spam = 0; in_ham = 6 }
+  |> Map.add "ladies" { in_spam = 0; in_ham = 5 }
+  |> Map.add "lady" { in_spam = 2; in_ham = 11 }
+  |> Map.add "laid" { in_spam = 0; in_ham = 10 }
+  |> Map.add "lake" { in_spam = 4; in_ham = 5 }
+  |> Map.add "lame" { in_spam = 1; in_ham = 13 }
+  |> Map.add "lan" { in_spam = 2; in_ham = 11 }
+  |> Map.add "lance" { in_spam = 0; in_ham = 14 }
+  |> Map.add "land" { in_spam = 10; in_ham = 24 }
+  |> Map.add "landed" { in_spam = 2; in_ham = 7 }
+  |> Map.add "lang" { in_spam = 16; in_ham = 7 }
+  |> Map.add "language" { in_spam = 6; in_ham = 53 }
+  |> Map.add "languages" { in_spam = 0; in_ham = 24 }
+  |> Map.add "langurs" { in_spam = 0; in_ham = 5 }
+  |> Map.add "laptop" { in_spam = 1; in_ham = 31 }
+  |> Map.add "laptops" { in_spam = 1; in_ham = 6 }
+  |> Map.add "large" { in_spam = 31; in_ham = 110 }
+  |> Map.add "largely" { in_spam = 1; in_ham = 17 }
+  |> Map.add "larger" { in_spam = 16; in_ham = 35 }
+  |> Map.add "largest" { in_spam = 8; in_ham = 46 }
+  |> Map.add "larry" { in_spam = 0; in_ham = 16 }
+  |> Map.add "last" { in_spam = 49; in_ham = 227 }
+  |> Map.add "lasted" { in_spam = 0; in_ham = 5 }
+  |> Map.add "late" { in_spam = 29; in_ham = 43 }
+  |> Map.add "lately" { in_spam = 7; in_ham = 11 }
+  |> Map.add "later" { in_spam = 30; in_ham = 73 }
+  |> Map.add "latest" { in_spam = 7; in_ham = 96 }
+  |> Map.add "lathe" { in_spam = 0; in_ham = 5 }
+  |> Map.add "latter" { in_spam = 1; in_ham = 21 }
+  |> Map.add "laugh" { in_spam = 8; in_ham = 11 }
+  |> Map.add "laughed" { in_spam = 3; in_ham = 5 }
+  |> Map.add "laughing" { in_spam = 3; in_ham = 12 }
+  |> Map.add "launch" { in_spam = 2; in_ham = 21 }
+  |> Map.add "launched" { in_spam = 8; in_ham = 18 }
+  |> Map.add "launching" { in_spam = 2; in_ham = 12 }
+  |> Map.add "laurance" { in_spam = 0; in_ham = 6 }
+  |> Map.add "laurent" { in_spam = 8; in_ham = 1 }
+  |> Map.add "law" { in_spam = 14; in_ham = 76 }
+  |> Map.add "lawful" { in_spam = 6; in_ham = 4 }
+  |> Map.add "lawrence" { in_spam = 0; in_ham = 96 }
+  |> Map.add "laws" { in_spam = 21; in_ham = 22 }
+  |> Map.add "lawsuits" { in_spam = 0; in_ham = 15 }
+  |> Map.add "lawyer" { in_spam = 1; in_ham = 12 }
+  |> Map.add "lawyers" { in_spam = 2; in_ham = 7 }
+  |> Map.add "lay" { in_spam = 7; in_ham = 6 }
+  |> Map.add "layer" { in_spam = 3; in_ham = 21 }
+  |> Map.add "laying" { in_spam = 4; in_ham = 6 }
+  |> Map.add "layout" { in_spam = 0; in_ham = 5 }
+  |> Map.add "lazy" { in_spam = 2; in_ham = 6 }
+  |> Map.add "lbs" { in_spam = 21; in_ham = 2 }
+  |> Map.add "lcd" { in_spam = 0; in_ham = 6 }
+  |> Map.add "leaa" { in_spam = 0; in_ham = 13 }
+  |> Map.add "lead" { in_spam = 8; in_ham = 43 }
+  |> Map.add "leader" { in_spam = 12; in_ham = 22 }
+  |> Map.add "leaders" { in_spam = 1; in_ham = 20 }
+  |> Map.add "leadership" { in_spam = 4; in_ham = 15 }
+  |> Map.add "leading" { in_spam = 7; in_ham = 24 }
+  |> Map.add "leading-edge" { in_spam = 0; in_ham = 6 }
+  |> Map.add "leads" { in_spam = 7; in_ham = 13 }
+  |> Map.add "league" { in_spam = 0; in_ham = 8 }
+  |> Map.add "leak" { in_spam = 0; in_ham = 5 }
+  |> Map.add "lean" { in_spam = 4; in_ham = 3 }
+  |> Map.add "learn" { in_spam = 37; in_ham = 54 }
+  |> Map.add "learned" { in_spam = 6; in_ham = 19 }
+  |> Map.add "learning" { in_spam = 9; in_ham = 13 }
+  |> Map.add "least" { in_spam = 25; in_ham = 159 }
+  |> Map.add "leather" { in_spam = 0; in_ham = 6 }
+  |> Map.add "leave" { in_spam = 16; in_ham = 60 }
+  |> Map.add "leaves" { in_spam = 0; in_ham = 6 }
+  |> Map.add "leaving" { in_spam = 4; in_ham = 28 }
+  |> Map.add "led" { in_spam = 2; in_ham = 35 }
+  |> Map.add "lee" { in_spam = 7; in_ham = 5 }
+  |> Map.add "left" { in_spam = 83; in_ham = 90 }
+  |> Map.add "leftmargin" { in_spam = 21; in_ham = 0 }
+  |> Map.add "leg" { in_spam = 1; in_ham = 6 }
+  |> Map.add "legacy" { in_spam = 1; in_ham = 7 }
+  |> Map.add "legal" { in_spam = 95; in_ham = 57 }
+  |> Map.add "legality" { in_spam = 8; in_ham = 2 }
+  |> Map.add "legally" { in_spam = 17; in_ham = 11 }
+  |> Map.add "legendary" { in_spam = 0; in_ham = 7 }
+  |> Map.add "legislation" { in_spam = 2; in_ham = 6 }
+  |> Map.add "legit" { in_spam = 0; in_ham = 10 }
+  |> Map.add "legitimate" { in_spam = 9; in_ham = 13 }
+  |> Map.add "legs" { in_spam = 0; in_ham = 11 }
+  |> Map.add "leitl" { in_spam = 0; in_ham = 15 }
+  |> Map.add "len" { in_spam = 0; in_ham = 5 }
+  |> Map.add "lenders" { in_spam = 13; in_ham = 0 }
+  |> Map.add "length" { in_spam = 4; in_ham = 16 }
+  |> Map.add "lengthy" { in_spam = 0; in_ham = 5 }
+  |> Map.add "les" { in_spam = 2; in_ham = 6 }
+  |> Map.add "less" { in_spam = 48; in_ham = 161 }
+  |> Map.add "lesson" { in_spam = 4; in_ham = 5 }
+  |> Map.add "lessons" { in_spam = 10; in_ham = 2 }
+  |> Map.add "let" { in_spam = 38; in_ham = 123 }
+  |> Map.add "let's" { in_spam = 14; in_ham = 42 }
+  |> Map.add "lethal" { in_spam = 0; in_ham = 5 }
+  |> Map.add "lets" { in_spam = 6; in_ham = 19 }
+  |> Map.add "letter" { in_spam = 24; in_ham = 23 }
+  |> Map.add "letters" { in_spam = 1; in_ham = 15 }
+  |> Map.add "letting" { in_spam = 0; in_ham = 7 }
+  |> Map.add "level" { in_spam = 21; in_ham = 63 }
+  |> Map.add "levels" { in_spam = 2; in_ham = 17 }
+  |> Map.add "leverage" { in_spam = 3; in_ham = 12 }
+  |> Map.add "leveraging" { in_spam = 1; in_ham = 6 }
+  |> Map.add "lewis" { in_spam = 0; in_ham = 5 }
+  |> Map.add "liability" { in_spam = 1; in_ham = 8 }
+  |> Map.add "liable" { in_spam = 0; in_ham = 8 }
+  |> Map.add "lib" { in_spam = 0; in_ham = 75 }
+  |> Map.add "libasound" { in_spam = 0; in_ham = 6 }
+  |> Map.add "libdv" { in_spam = 0; in_ham = 7 }
+  |> Map.add "liberal" { in_spam = 2; in_ham = 22 }
+  |> Map.add "liberalism" { in_spam = 0; in_ham = 5 }
+  |> Map.add "liberated" { in_spam = 0; in_ham = 5 }
+  |> Map.add "libertatem" { in_spam = 0; in_ham = 9 }
+  |> Map.add "liberties" { in_spam = 0; in_ham = 5 }
+  |> Map.add "liberty" { in_spam = 0; in_ham = 12 }
+  |> Map.add "liblit" { in_spam = 0; in_ham = 5 }
+  |> Map.add "libraries" { in_spam = 0; in_ham = 30 }
+  |> Map.add "library" { in_spam = 2; in_ham = 26 }
+  |> Map.add "libs" { in_spam = 0; in_ham = 6 }
+  |> Map.add "licence" { in_spam = 0; in_ham = 5 }
+  |> Map.add "licences" { in_spam = 0; in_ham = 5 }
+  |> Map.add "license" { in_spam = 4; in_ham = 20 }
+  |> Map.add "licensed" { in_spam = 3; in_ham = 9 }
+  |> Map.add "licenses" { in_spam = 1; in_ham = 7 }
+  |> Map.add "licensing" { in_spam = 1; in_ham = 10 }
+  |> Map.add "lie" { in_spam = 8; in_ham = 11 }
+  |> Map.add "lies" { in_spam = 5; in_ham = 7 }
+  |> Map.add "lieu" { in_spam = 3; in_ham = 8 }
+  |> Map.add "life" { in_spam = 98; in_ham = 115 }
+  |> Map.add "lifestyle" { in_spam = 5; in_ham = 5 }
+  |> Map.add "lifetime" { in_spam = 17; in_ham = 4 }
+  |> Map.add "lift" { in_spam = 5; in_ham = 9 }
+  |> Map.add "lifted" { in_spam = 1; in_ham = 7 }
+  |> Map.add "lig" { in_spam = 0; in_ham = 8 }
+  |> Map.add "light" { in_spam = 20; in_ham = 35 }
+  |> Map.add "lightly" { in_spam = 0; in_ham = 5 }
+  |> Map.add "lih" { in_spam = 0; in_ham = 7 }
+  |> Map.add "like" { in_spam = 114; in_ham = 648 }
+  |> Map.add "liked" { in_spam = 4; in_ham = 16 }
+  |> Map.add "likely" { in_spam = 5; in_ham = 75 }
+  |> Map.add "likes" { in_spam = 1; in_ham = 12 }
+  |> Map.add "likewise" { in_spam = 1; in_ham = 5 }
+  |> Map.add "lima" { in_spam = 1; in_ham = 6 }
+  |> Map.add "limit" { in_spam = 16; in_ham = 20 }
+  |> Map.add "limitations" { in_spam = 5; in_ham = 11 }
+  |> Map.add "limited" { in_spam = 43; in_ham = 33 }
+  |> Map.add "limits" { in_spam = 2; in_ham = 12 }
+  |> Map.add "lindex" { in_spam = 0; in_ham = 5 }
+  |> Map.add "line" { in_spam = 67; in_ham = 208 }
+  |> Map.add "lineno" { in_spam = 0; in_ham = 5 }
+  |> Map.add "lines" { in_spam = 3; in_ham = 69 }
+  |> Map.add "link" { in_spam = 120; in_ham = 175 }
+  |> Map.add "linked" { in_spam = 0; in_ham = 18 }
+  |> Map.add "linking" { in_spam = 0; in_ham = 8 }
+  |> Map.add "links" { in_spam = 15; in_ham = 59 }
+  |> Map.add "linux" { in_spam = 47; in_ham = 316 }
+  |> Map.add "linuxmafia" { in_spam = 0; in_ham = 5 }
+  |> Map.add "linuxworks" { in_spam = 0; in_ham = 5 }
+  |> Map.add "lipcon" { in_spam = 0; in_ham = 6 }
+  |> Map.add "liposuction" { in_spam = 0; in_ham = 6 }
+  |> Map.add "lirc" { in_spam = 0; in_ham = 10 }
+  |> Map.add "lisa" { in_spam = 0; in_ham = 5 }
+  |> Map.add "list" { in_spam = 256; in_ham = 920 }
+  |> Map.add "list's" { in_spam = 1; in_ham = 5 }
+  |> Map.add "listed" { in_spam = 20; in_ham = 25 }
+  |> Map.add "listen" { in_spam = 5; in_ham = 19 }
+  |> Map.add "listening" { in_spam = 0; in_ham = 24 }
+  |> Map.add "listinfo" { in_spam = 51; in_ham = 837 }
+  |> Map.add "listing" { in_spam = 6; in_ham = 5 }
+  |> Map.add "listman" { in_spam = 0; in_ham = 140 }
+  |> Map.add "listmaster" { in_spam = 46; in_ham = 92 }
+  |> Map.add "lists" { in_spam = 22; in_ham = 555 }
+  |> Map.add "literally" { in_spam = 8; in_ham = 17 }
+  |> Map.add "literature" { in_spam = 0; in_ham = 6 }
+  |> Map.add "litigation" { in_spam = 5; in_ham = 5 }
+  |> Map.add "little" { in_spam = 39; in_ham = 126 }
+  |> Map.add "live" { in_spam = 33; in_ham = 82 }
+  |> Map.add "lived" { in_spam = 2; in_ham = 11 }
+  |> Map.add "livejournal" { in_spam = 0; in_ham = 10 }
+  |> Map.add "lives" { in_spam = 4; in_ham = 36 }
+  |> Map.add "living" { in_spam = 17; in_ham = 50 }
+  |> Map.add "llc" { in_spam = 9; in_ham = 8 }
+  |> Map.add "lloyd" { in_spam = 0; in_ham = 5 }
+  |> Map.add "load" { in_spam = 3; in_ham = 103 }
+  |> Map.add "loaded" { in_spam = 4; in_ham = 24 }
+  |> Map.add "loading" { in_spam = 0; in_ham = 15 }
+  |> Map.add "loads" { in_spam = 0; in_ham = 8 }
+  |> Map.add "loan" { in_spam = 23; in_ham = 9 }
+  |> Map.add "loans" { in_spam = 20; in_ham = 3 }
+  |> Map.add "local" { in_spam = 20; in_ham = 124 }
+  |> Map.add "locale" { in_spam = 2; in_ham = 12 }
+  |> Map.add "localhost" { in_spam = 0; in_ham = 10 }
+  |> Map.add "locally" { in_spam = 1; in_ham = 7 }
+  |> Map.add "locals" { in_spam = 0; in_ham = 5 }
+  |> Map.add "locate" { in_spam = 5; in_ham = 14 }
+  |> Map.add "located" { in_spam = 5; in_ham = 12 }
+  |> Map.add "location" { in_spam = 11; in_ham = 24 }
+  |> Map.add "locations" { in_spam = 0; in_ham = 7 }
+  |> Map.add "lock" { in_spam = 5; in_ham = 21 }
+  |> Map.add "locked" { in_spam = 6; in_ham = 10 }
+  |> Map.add "locking" { in_spam = 2; in_ham = 9 }
+  |> Map.add "log" { in_spam = 3; in_ham = 146 }
+  |> Map.add "logged" { in_spam = 0; in_ham = 5 }
+  |> Map.add "logging" { in_spam = 0; in_ham = 7 }
+  |> Map.add "logic" { in_spam = 0; in_ham = 8 }
+  |> Map.add "logical" { in_spam = 4; in_ham = 11 }
+  |> Map.add "login" { in_spam = 4; in_ham = 14 }
+  |> Map.add "logo" { in_spam = 25; in_ham = 6 }
+  |> Map.add "logs" { in_spam = 0; in_ham = 13 }
+  |> Map.add "lol" { in_spam = 0; in_ham = 11 }
+  |> Map.add "london" { in_spam = 4; in_ham = 19 }
+  |> Map.add "lonely" { in_spam = 0; in_ham = 7 }
+  |> Map.add "long" { in_spam = 47; in_ham = 193 }
+  |> Map.add "long-term" { in_spam = 7; in_ham = 21 }
+  |> Map.add "longer" { in_spam = 33; in_ham = 53 }
+  |> Map.add "longest" { in_spam = 1; in_ham = 7 }
+  |> Map.add "look" { in_spam = 36; in_ham = 229 }
+  |> Map.add "looked" { in_spam = 6; in_ham = 54 }
+  |> Map.add "looking" { in_spam = 39; in_ham = 118 }
+  |> Map.add "looks" { in_spam = 0; in_ham = 120 }
+  |> Map.add "looney" { in_spam = 0; in_ham = 9 }
+  |> Map.add "loop" { in_spam = 0; in_ham = 8 }
+  |> Map.add "loose" { in_spam = 5; in_ham = 12 }
+  |> Map.add "lord" { in_spam = 0; in_ham = 9 }
+  |> Map.add "los" { in_spam = 4; in_ham = 13 }
+  |> Map.add "lose" { in_spam = 41; in_ham = 27 }
+  |> Map.add "loses" { in_spam = 0; in_ham = 7 }
+  |> Map.add "losing" { in_spam = 11; in_ham = 14 }
+  |> Map.add "loss" { in_spam = 26; in_ham = 20 }
+  |> Map.add "lost" { in_spam = 13; in_ham = 66 }
+  |> Map.add "lot" { in_spam = 27; in_ham = 170 }
+  |> Map.add "lots" { in_spam = 4; in_ham = 78 }
+  |> Map.add "lotus" { in_spam = 5; in_ham = 3 }
+  |> Map.add "loud" { in_spam = 0; in_ham = 7 }
+  |> Map.add "love" { in_spam = 16; in_ham = 68 }
+  |> Map.add "love-" { in_spam = 0; in_ham = 6 }
+  |> Map.add "loved" { in_spam = 2; in_ham = 9 }
+  |> Map.add "lovely" { in_spam = 0; in_ham = 8 }
+  |> Map.add "lover" { in_spam = 3; in_ham = 5 }
+  |> Map.add "lovers" { in_spam = 2; in_ham = 11 }
+  |> Map.add "loves" { in_spam = 0; in_ham = 7 }
+  |> Map.add "low" { in_spam = 57; in_ham = 32 }
+  |> Map.add "lower" { in_spam = 16; in_ham = 36 }
+  |> Map.add "lowering" { in_spam = 4; in_ham = 3 }
+  |> Map.add "lowest" { in_spam = 31; in_ham = 5 }
+  |> Map.add "ltd" { in_spam = 12; in_ham = 7 }
+  |> Map.add "lucas" { in_spam = 0; in_ham = 14 }
+  |> Map.add "luck" { in_spam = 9; in_ham = 23 }
+  |> Map.add "lucky" { in_spam = 5; in_ham = 12 }
+  |> Map.add "lucrative" { in_spam = 3; in_ham = 5 }
+  |> Map.add "luis" { in_spam = 3; in_ham = 5 }
+  |> Map.add "lunch" { in_spam = 3; in_ham = 8 }
+  |> Map.add "lutz" { in_spam = 0; in_ham = 6 }
+  |> Map.add "luxury" { in_spam = 2; in_ham = 4 }
+  |> Map.add "lying" { in_spam = 0; in_ham = 6 }
+  |> Map.add "lynn" { in_spam = 0; in_ham = 13 }
+  |> Map.add "lynx" { in_spam = 0; in_ham = 12 }
+  |> Map.add "mac" { in_spam = 1; in_ham = 35 }
+  |> Map.add "mach" { in_spam = 0; in_ham = 7 }
+  |> Map.add "machine" { in_spam = 10; in_ham = 71 }
+  |> Map.add "machines" { in_spam = 0; in_ham = 31 }
+  |> Map.add "macintosh" { in_spam = 0; in_ham = 8 }
+  |> Map.add "macosx" { in_spam = 0; in_ham = 8 }
+  |> Map.add "macros" { in_spam = 0; in_ham = 5 }
+  |> Map.add "mad" { in_spam = 0; in_ham = 11 }
+  |> Map.add "madam" { in_spam = 17; in_ham = 2 }
+  |> Map.add "made" { in_spam = 70; in_ham = 177 }
+  |> Map.add "mag" { in_spam = 0; in_ham = 5 }
+  |> Map.add "magazine" { in_spam = 8; in_ham = 19 }
+  |> Map.add "magazines" { in_spam = 9; in_ham = 3 }
+  |> Map.add "magic" { in_spam = 1; in_ham = 15 }
+  |> Map.add "magnesium" { in_spam = 0; in_ham = 56 }
+  |> Map.add "magnitude" { in_spam = 0; in_ham = 22 }
+  |> Map.add "maid" { in_spam = 0; in_ham = 9 }
+  |> Map.add "mail" { in_spam = 86; in_ham = 263 }
+  |> Map.add "mailbox" { in_spam = 3; in_ham = 11 }
+  |> Map.add "mailed" { in_spam = 10; in_ham = 4 }
+  |> Map.add "mailer" { in_spam = 9; in_ham = 34 }
+  |> Map.add "mailers" { in_spam = 0; in_ham = 8 }
+  |> Map.add "mailing" { in_spam = 121; in_ham = 706 }
+  |> Map.add "mailings" { in_spam = 87; in_ham = 3 }
+  |> Map.add "mailman" { in_spam = 46; in_ham = 584 }
+  |> Map.add "mails" { in_spam = 2; in_ham = 12 }
+  |> Map.add "mailscanner" { in_spam = 0; in_ham = 5 }
+  |> Map.add "mailto" { in_spam = 69; in_ham = 209 }
+  |> Map.add "main" { in_spam = 16; in_ham = 70 }
+  |> Map.add "mainly" { in_spam = 0; in_ham = 16 }
+  |> Map.add "maintain" { in_spam = 7; in_ham = 29 }
+  |> Map.add "maintained" { in_spam = 5; in_ham = 5 }
+  |> Map.add "maintainer" { in_spam = 46; in_ham = 96 }
+  |> Map.add "maintaining" { in_spam = 0; in_ham = 10 }
+  |> Map.add "maintains" { in_spam = 1; in_ham = 12 }
+  |> Map.add "maintenance" { in_spam = 2; in_ham = 15 }
+  |> Map.add "major" { in_spam = 29; in_ham = 75 }
+  |> Map.add "majordomo" { in_spam = 8; in_ham = 4 }
+  |> Map.add "majority" { in_spam = 9; in_ham = 21 }
+  |> Map.add "make" { in_spam = 101; in_ham = 375 }
+  |> Map.add "makedev" { in_spam = 0; in_ham = 6 }
+  |> Map.add "makefile" { in_spam = 0; in_ham = 11 }
+  |> Map.add "maker" { in_spam = 4; in_ham = 3 }
+  |> Map.add "makers" { in_spam = 6; in_ham = 12 }
+  |> Map.add "makes" { in_spam = 23; in_ham = 117 }
+  |> Map.add "making" { in_spam = 41; in_ham = 118 }
+  |> Map.add "male" { in_spam = 20; in_ham = 21 }
+  |> Map.add "males" { in_spam = 2; in_ham = 16 }
+  |> Map.add "malicious" { in_spam = 0; in_ham = 5 }
+  |> Map.add "malte" { in_spam = 0; in_ham = 9 }
+  |> Map.add "man" { in_spam = 11; in_ham = 92 }
+  |> Map.add "man's" { in_spam = 1; in_ham = 12 }
+  |> Map.add "manage" { in_spam = 16; in_ham = 29 }
+  |> Map.add "manageable" { in_spam = 0; in_ham = 5 }
+  |> Map.add "managed" { in_spam = 2; in_ham = 34 }
+  |> Map.add "management" { in_spam = 30; in_ham = 43 }
+  |> Map.add "manager" { in_spam = 31; in_ham = 38 }
+  |> Map.add "managers" { in_spam = 6; in_ham = 11 }
+  |> Map.add "manages" { in_spam = 0; in_ham = 9 }
+  |> Map.add "managing" { in_spam = 9; in_ham = 16 }
+  |> Map.add "mandate" { in_spam = 5; in_ham = 3 }
+  |> Map.add "mandated" { in_spam = 10; in_ham = 3 }
+  |> Map.add "mandrake" { in_spam = 0; in_ham = 6 }
+  |> Map.add "manhattan" { in_spam = 6; in_ham = 5 }
+  |> Map.add "manifest" { in_spam = 1; in_ham = 6 }
+  |> Map.add "manifesto" { in_spam = 0; in_ham = 5 }
+  |> Map.add "manner" { in_spam = 4; in_ham = 17 }
+  |> Map.add "manual" { in_spam = 6; in_ham = 16 }
+  |> Map.add "manually" { in_spam = 2; in_ham = 22 }
+  |> Map.add "many" { in_spam = 46; in_ham = 281 }
+  |> Map.add "map" { in_spam = 4; in_ham = 20 }
+  |> Map.add "mapped" { in_spam = 2; in_ham = 4 }
+  |> Map.add "maps" { in_spam = 0; in_ham = 11 }
+  |> Map.add "marc" { in_spam = 0; in_ham = 5 }
+  |> Map.add "march" { in_spam = 6; in_ham = 21 }
+  |> Map.add "margin" { in_spam = 5; in_ham = 9 }
+  |> Map.add "margin-left" { in_spam = 9; in_ham = 2 }
+  |> Map.add "margin-right" { in_spam = 10; in_ham = 1 }
+  |> Map.add "margin-top" { in_spam = 13; in_ham = 0 }
+  |> Map.add "marginal" { in_spam = 0; in_ham = 11 }
+  |> Map.add "marginheight" { in_spam = 10; in_ham = 0 }
+  |> Map.add "marginwidth" { in_spam = 10; in_ham = 0 }
+  |> Map.add "mario" { in_spam = 0; in_ham = 5 }
+  |> Map.add "mark" { in_spam = 7; in_ham = 88 }
+  |> Map.add "marked" { in_spam = 12; in_ham = 11 }
+  |> Map.add "market" { in_spam = 59; in_ham = 61 }
+  |> Map.add "marketing" { in_spam = 80; in_ham = 23 }
+  |> Map.add "marketplace" { in_spam = 6; in_ham = 11 }
+  |> Map.add "markets" { in_spam = 4; in_ham = 24 }
+  |> Map.add "marking" { in_spam = 0; in_ham = 6 }
+  |> Map.add "marks" { in_spam = 5; in_ham = 12 }
+  |> Map.add "markup" { in_spam = 0; in_ham = 8 }
+  |> Map.add "marriage" { in_spam = 0; in_ham = 16 }
+  |> Map.add "married" { in_spam = 0; in_ham = 12 }
+  |> Map.add "marry" { in_spam = 0; in_ham = 12 }
+  |> Map.add "marrying" { in_spam = 0; in_ham = 11 }
+  |> Map.add "marshall" { in_spam = 2; in_ham = 11 }
+  |> Map.add "martin" { in_spam = 2; in_ham = 17 }
+  |> Map.add "masnick" { in_spam = 0; in_ham = 5 }
+  |> Map.add "mason" { in_spam = 0; in_ham = 48 }
+  |> Map.add "mass" { in_spam = 8; in_ham = 31 }
+  |> Map.add "mass-check" { in_spam = 0; in_ham = 8 }
+  |> Map.add "masses" { in_spam = 3; in_ham = 11 }
+  |> Map.add "massive" { in_spam = 1; in_ham = 18 }
+  |> Map.add "master" { in_spam = 7; in_ham = 13 }
+  |> Map.add "mastercard" { in_spam = 10; in_ham = 0 }
+  |> Map.add "match" { in_spam = 1; in_ham = 26 }
+  |> Map.add "matched" { in_spam = 0; in_ham = 6 }
+  |> Map.add "matches" { in_spam = 0; in_ham = 11 }
+  |> Map.add "matching" { in_spam = 7; in_ham = 8 }
+  |> Map.add "mate" { in_spam = 2; in_ham = 7 }
+  |> Map.add "material" { in_spam = 6; in_ham = 27 }
+  |> Map.add "materials" { in_spam = 12; in_ham = 14 }
+  |> Map.add "math" { in_spam = 2; in_ham = 12 }
+  |> Map.add "mathematical" { in_spam = 0; in_ham = 6 }
+  |> Map.add "mathematics" { in_spam = 0; in_ham = 28 }
+  |> Map.add "mating" { in_spam = 0; in_ham = 6 }
+  |> Map.add "matt" { in_spam = 1; in_ham = 19 }
+  |> Map.add "matter" { in_spam = 27; in_ham = 65 }
+  |> Map.add "matters" { in_spam = 4; in_ham = 26 }
+  |> Map.add "matthew" { in_spam = 0; in_ham = 9 }
+  |> Map.add "matthias" { in_spam = 0; in_ham = 152 }
+  |> Map.add "max" { in_spam = 2; in_ham = 11 }
+  |> Map.add "maximize" { in_spam = 2; in_ham = 6 }
+  |> Map.add "maximum" { in_spam = 9; in_ham = 3 }
+  |> Map.add "may" { in_spam = 112; in_ham = 300 }
+  |> Map.add "maybe" { in_spam = 13; in_ham = 171 }
+  |> Map.add "mayor" { in_spam = 0; in_ham = 6 }
+  |> Map.add "mbox" { in_spam = 0; in_ham = 7 }
+  |> Map.add "mboxtest" { in_spam = 0; in_ham = 6 }
+  |> Map.add "mbps" { in_spam = 0; in_ham = 11 }
+  |> Map.add "mccarthy" { in_spam = 0; in_ham = 5 }
+  |> Map.add "mcgraw" { in_spam = 0; in_ham = 6 }
+  |> Map.add "mdt" { in_spam = 0; in_ham = 10 }
+  |> Map.add "mean" { in_spam = 18; in_ham = 102 }
+  |> Map.add "meaning" { in_spam = 11; in_ham = 23 }
+  |> Map.add "meaningful" { in_spam = 0; in_ham = 10 }
+  |> Map.add "meanings" { in_spam = 0; in_ham = 6 }
+  |> Map.add "means" { in_spam = 20; in_ham = 107 }
+  |> Map.add "meant" { in_spam = 6; in_ham = 30 }
+  |> Map.add "meantime" { in_spam = 0; in_ham = 9 }
+  |> Map.add "meanwhile" { in_spam = 2; in_ham = 13 }
+  |> Map.add "measure" { in_spam = 2; in_ham = 18 }
+  |> Map.add "measured" { in_spam = 0; in_ham = 11 }
+  |> Map.add "measurement" { in_spam = 0; in_ham = 5 }
+  |> Map.add "measurements" { in_spam = 0; in_ham = 6 }
+  |> Map.add "measures" { in_spam = 1; in_ham = 7 }
+  |> Map.add "measuring" { in_spam = 1; in_ham = 7 }
+  |> Map.add "mechanism" { in_spam = 2; in_ham = 13 }
+  |> Map.add "mechanisms" { in_spam = 1; in_ham = 10 }
+  |> Map.add "media" { in_spam = 14; in_ham = 57 }
+  |> Map.add "median" { in_spam = 0; in_ham = 6 }
+  |> Map.add "medical" { in_spam = 9; in_ham = 6 }
+  |> Map.add "medicine" { in_spam = 7; in_ham = 8 }
+  |> Map.add "medium" { in_spam = 17; in_ham = 7 }
+  |> Map.add "meet" { in_spam = 14; in_ham = 41 }
+  |> Map.add "meeting" { in_spam = 8; in_ham = 20 }
+  |> Map.add "meetings" { in_spam = 3; in_ham = 16 }
+  |> Map.add "melting" { in_spam = 0; in_ham = 7 }
+  |> Map.add "member" { in_spam = 46; in_ham = 27 }
+  |> Map.add "members" { in_spam = 26; in_ham = 37 }
+  |> Map.add "membership" { in_spam = 15; in_ham = 5 }
+  |> Map.add "memo" { in_spam = 2; in_ham = 4 }
+  |> Map.add "memorial" { in_spam = 1; in_ham = 8 }
+  |> Map.add "memories" { in_spam = 2; in_ham = 6 }
+  |> Map.add "memory" { in_spam = 8; in_ham = 54 }
+  |> Map.add "men" { in_spam = 9; in_ham = 51 }
+  |> Map.add "menlo" { in_spam = 0; in_ham = 7 }
+  |> Map.add "mental" { in_spam = 0; in_ham = 5 }
+  |> Map.add "mentally" { in_spam = 0; in_ham = 7 }
+  |> Map.add "mention" { in_spam = 4; in_ham = 32 }
+  |> Map.add "mentioned" { in_spam = 3; in_ham = 41 }
+  |> Map.add "mentioning" { in_spam = 0; in_ham = 11 }
+  |> Map.add "menu" { in_spam = 1; in_ham = 27 }
+  |> Map.add "menus" { in_spam = 0; in_ham = 5 }
+  |> Map.add "mercea" { in_spam = 0; in_ham = 6 }
+  |> Map.add "merchant" { in_spam = 6; in_ham = 3 }
+  |> Map.add "mercury" { in_spam = 0; in_ham = 5 }
+  |> Map.add "mere" { in_spam = 1; in_ham = 5 }
+  |> Map.add "merely" { in_spam = 0; in_ham = 17 }
+  |> Map.add "merge" { in_spam = 0; in_ham = 12 }
+  |> Map.add "merit" { in_spam = 2; in_ham = 8 }
+  |> Map.add "mess" { in_spam = 2; in_ham = 13 }
+  |> Map.add "message" { in_spam = 150; in_ham = 369 }
+  |> Map.add "message's" { in_spam = 0; in_ham = 8 }
+  |> Map.add "message-----" { in_spam = 0; in_ham = 119 }
+  |> Map.add "message-id" { in_spam = 0; in_ham = 34 }
+  |> Map.add "messages" { in_spam = 13; in_ham = 242 }
+  |> Map.add "messaging" { in_spam = 0; in_ham = 6 }
+  |> Map.add "messed" { in_spam = 0; in_ham = 8 }
+  |> Map.add "messenger" { in_spam = 0; in_ham = 16 }
+  |> Map.add "messing" { in_spam = 0; in_ham = 6 }
+  |> Map.add "met" { in_spam = 8; in_ham = 36 }
+  |> Map.add "meta" { in_spam = 133; in_ham = 8 }
+  |> Map.add "metal" { in_spam = 1; in_ham = 6 }
+  |> Map.add "meter" { in_spam = 0; in_ham = 5 }
+  |> Map.add "method" { in_spam = 69; in_ham = 63 }
+  |> Map.add "methods" { in_spam = 12; in_ham = 25 }
+  |> Map.add "metre" { in_spam = 0; in_ham = 7 }
+  |> Map.add "metrix" { in_spam = 0; in_ham = 6 }
+  |> Map.add "metro" { in_spam = 0; in_ham = 14 }
+  |> Map.add "mexico" { in_spam = 4; in_ham = 4 }
+  |> Map.add "mhprofile" { in_spam = 0; in_ham = 8 }
+  |> Map.add "mhreadseqs" { in_spam = 0; in_ham = 6 }
+  |> Map.add "mhseqexpand" { in_spam = 0; in_ham = 8 }
+  |> Map.add "mhz" { in_spam = 2; in_ham = 9 }
+  |> Map.add "miami" { in_spam = 6; in_ham = 6 }
+  |> Map.add "michael" { in_spam = 3; in_ham = 48 }
+  |> Map.add "michel" { in_spam = 0; in_ham = 9 }
+  |> Map.add "microsoft" { in_spam = 38; in_ham = 50 }
+  |> Map.add "microsoft's" { in_spam = 0; in_ham = 5 }
+  |> Map.add "mid" { in_spam = 4; in_ham = 4 }
+  |> Map.add "mid-" { in_spam = 0; in_ham = 5 }
+  |> Map.add "middle" { in_spam = 70; in_ham = 44 }
+  |> Map.add "midst" { in_spam = 2; in_ham = 5 }
+  |> Map.add "might" { in_spam = 21; in_ham = 215 }
+  |> Map.add "mike" { in_spam = 1; in_ham = 33 }
+  |> Map.add "mildly" { in_spam = 0; in_ham = 5 }
+  |> Map.add "mile" { in_spam = 2; in_ham = 11 }
+  |> Map.add "miles" { in_spam = 10; in_ham = 18 }
+  |> Map.add "military" { in_spam = 10; in_ham = 32 }
+  |> Map.add "mill" { in_spam = 0; in_ham = 5 }
+  |> Map.add "millennium" { in_spam = 2; in_ham = 13 }
+  |> Map.add "miller" { in_spam = 0; in_ham = 5 }
+  |> Map.add "million" { in_spam = 88; in_ham = 61 }
+  |> Map.add "millionaire" { in_spam = 11; in_ham = 4 }
+  |> Map.add "millions" { in_spam = 31; in_ham = 29 }
+  |> Map.add "milter" { in_spam = 0; in_ham = 8 }
+  |> Map.add "mime" { in_spam = 1; in_ham = 29 }
+  |> Map.add "mime-version" { in_spam = 1; in_ham = 9 }
+  |> Map.add "min" { in_spam = 5; in_ham = 4 }
+  |> Map.add "mind" { in_spam = 31; in_ham = 65 }
+  |> Map.add "minds" { in_spam = 0; in_ham = 6 }
+  |> Map.add "mine" { in_spam = 5; in_ham = 24 }
+  |> Map.add "minimal" { in_spam = 14; in_ham = 8 }
+  |> Map.add "minimize" { in_spam = 0; in_ham = 11 }
+  |> Map.add "minimum" { in_spam = 12; in_ham = 4 }
+  |> Map.add "minister" { in_spam = 5; in_ham = 13 }
+  |> Map.add "ministry" { in_spam = 10; in_ham = 0 }
+  |> Map.add "minor" { in_spam = 1; in_ham = 10 }
+  |> Map.add "minority" { in_spam = 1; in_ham = 8 }
+  |> Map.add "minute" { in_spam = 23; in_ham = 24 }
+  |> Map.add "minutes" { in_spam = 21; in_ham = 30 }
+  |> Map.add "mirror" { in_spam = 0; in_ham = 12 }
+  |> Map.add "mirrors" { in_spam = 1; in_ham = 13 }
+  |> Map.add "misc" { in_spam = 1; in_ham = 15 }
+  |> Map.add "miserable" { in_spam = 0; in_ham = 6 }
+  |> Map.add "misleading" { in_spam = 6; in_ham = 3 }
+  |> Map.add "mismatch" { in_spam = 0; in_ham = 5 }
+  |> Map.add "miss" { in_spam = 14; in_ham = 23 }
+  |> Map.add "missed" { in_spam = 1; in_ham = 12 }
+  |> Map.add "missile" { in_spam = 1; in_ham = 5 }
+  |> Map.add "missiles" { in_spam = 1; in_ham = 5 }
+  |> Map.add "missing" { in_spam = 4; in_ham = 46 }
+  |> Map.add "mission" { in_spam = 3; in_ham = 14 }
+  |> Map.add "missouri" { in_spam = 3; in_ham = 4 }
+  |> Map.add "mistake" { in_spam = 2; in_ham = 25 }
+  |> Map.add "mistakes" { in_spam = 11; in_ham = 6 }
+  |> Map.add "mit" { in_spam = 1; in_ham = 27 }
+  |> Map.add "mitchell" { in_spam = 7; in_ham = 2 }
+  |> Map.add "mithral" { in_spam = 0; in_ham = 38 }
+  |> Map.add "mix" { in_spam = 2; in_ham = 16 }
+  |> Map.add "mixed" { in_spam = 2; in_ham = 16 }
+  |> Map.add "mixer" { in_spam = 0; in_ham = 6 }
+  |> Map.add "mld" { in_spam = 0; in_ham = 10 }
+  |> Map.add "mlm" { in_spam = 12; in_ham = 0 }
+  |> Map.add "mmkay" { in_spam = 0; in_ham = 6 }
+  |> Map.add "mobile" { in_spam = 8; in_ham = 28 }
+  |> Map.add "mobius" { in_spam = 0; in_ham = 6 }
+  |> Map.add "mobiusvc" { in_spam = 0; in_ham = 7 }
+  |> Map.add "mock" { in_spam = 3; in_ham = 5 }
+  |> Map.add "mod" { in_spam = 0; in_ham = 9 }
+  |> Map.add "modalities" { in_spam = 10; in_ham = 0 }
+  |> Map.add "mode" { in_spam = 2; in_ham = 56 }
+  |> Map.add "model" { in_spam = 2; in_ham = 47 }
+  |> Map.add "models" { in_spam = 2; in_ham = 22 }
+  |> Map.add "modem" { in_spam = 1; in_ham = 19 }
+  |> Map.add "moderate" { in_spam = 3; in_ham = 7 }
+  |> Map.add "modern" { in_spam = 2; in_ham = 34 }
+  |> Map.add "modes" { in_spam = 3; in_ham = 9 }
+  |> Map.add "modest" { in_spam = 3; in_ham = 10 }
+  |> Map.add "modified" { in_spam = 8; in_ham = 39 }
+  |> Map.add "modify" { in_spam = 0; in_ham = 19 }
+  |> Map.add "modifying" { in_spam = 0; in_ham = 6 }
+  |> Map.add "module" { in_spam = 0; in_ham = 34 }
+  |> Map.add "modules" { in_spam = 0; in_ham = 56 }
+  |> Map.add "moen" { in_spam = 0; in_ham = 6 }
+  |> Map.add "mohr" { in_spam = 0; in_ham = 11 }
+  |> Map.add "molecules" { in_spam = 0; in_ham = 5 }
+  |> Map.add "mom" { in_spam = 2; in_ham = 7 }
+  |> Map.add "moment" { in_spam = 21; in_ham = 30 }
+  |> Map.add "moments" { in_spam = 4; in_ham = 7 }
+  |> Map.add "mon" { in_spam = 3; in_ham = 120 }
+  |> Map.add "moncur" { in_spam = 0; in_ham = 5 }
+  |> Map.add "monday" { in_spam = 1; in_ham = 99 }
+  |> Map.add "mondo" { in_spam = 0; in_ham = 10 }
+  |> Map.add "mondorescue" { in_spam = 0; in_ham = 6 }
+  |> Map.add "monetary" { in_spam = 0; in_ham = 6 }
+  |> Map.add "money" { in_spam = 118; in_ham = 106 }
+  |> Map.add "mongers" { in_spam = 0; in_ham = 5 }
+  |> Map.add "monitor" { in_spam = 1; in_ham = 14 }
+  |> Map.add "monitoring" { in_spam = 1; in_ham = 8 }
+  |> Map.add "monitors" { in_spam = 0; in_ham = 9 }
+  |> Map.add "monkey" { in_spam = 0; in_ham = 12 }
+  |> Map.add "monkeys" { in_spam = 0; in_ham = 7 }
+  |> Map.add "monolithic" { in_spam = 0; in_ham = 6 }
+  |> Map.add "monopolies" { in_spam = 0; in_ham = 5 }
+  |> Map.add "monopoly" { in_spam = 0; in_ham = 8 }
+  |> Map.add "montanaro" { in_spam = 0; in_ham = 9 }
+  |> Map.add "month" { in_spam = 61; in_ham = 71 }
+  |> Map.add "monthly" { in_spam = 18; in_ham = 4 }
+  |> Map.add "months" { in_spam = 35; in_ham = 79 }
+  |> Map.add "mood" { in_spam = 2; in_ham = 7 }
+  |> Map.add "moon" { in_spam = 0; in_ham = 6 }
+  |> Map.add "moral" { in_spam = 1; in_ham = 8 }
+  |> Map.add "moran" { in_spam = 0; in_ham = 8 }
+  |> Map.add "mord" { in_spam = 0; in_ham = 5 }
+  |> Map.add "more" { in_spam = 217; in_ham = 638 }
+  |> Map.add "morelikethis" { in_spam = 0; in_ham = 5 }
+  |> Map.add "moreover" { in_spam = 3; in_ham = 4 }
+  |> Map.add "morgan" { in_spam = 8; in_ham = 2 }
+  |> Map.add "morning" { in_spam = 1; in_ham = 31 }
+  |> Map.add "mortgage" { in_spam = 34; in_ham = 2 }
+  |> Map.add "most" { in_spam = 82; in_ham = 315 }
+  |> Map.add "mostly" { in_spam = 5; in_ham = 49 }
+  |> Map.add "mot" { in_spam = 2; in_ham = 9 }
+  |> Map.add "mother" { in_spam = 11; in_ham = 22 }
+  |> Map.add "mothers" { in_spam = 2; in_ham = 5 }
+  |> Map.add "motivate" { in_spam = 0; in_ham = 6 }
+  |> Map.add "motivated" { in_spam = 19; in_ham = 7 }
+  |> Map.add "motivator" { in_spam = 0; in_ham = 6 }
+  |> Map.add "motives" { in_spam = 0; in_ham = 6 }
+  |> Map.add "motor" { in_spam = 0; in_ham = 6 }
+  |> Map.add "mount" { in_spam = 0; in_ham = 8 }
+  |> Map.add "mountain" { in_spam = 7; in_ham = 18 }
+  |> Map.add "mounted" { in_spam = 0; in_ham = 6 }
+  |> Map.add "mouse" { in_spam = 1; in_ham = 31 }
+  |> Map.add "mouth" { in_spam = 1; in_ham = 6 }
+  |> Map.add "movable" { in_spam = 0; in_ham = 7 }
+  |> Map.add "move" { in_spam = 28; in_ham = 76 }
+  |> Map.add "moved" { in_spam = 15; in_ham = 35 }
+  |> Map.add "movement" { in_spam = 2; in_ham = 9 }
+  |> Map.add "moves" { in_spam = 0; in_ham = 13 }
+  |> Map.add "movie" { in_spam = 15; in_ham = 19 }
+  |> Map.add "movies" { in_spam = 14; in_ham = 14 }
+  |> Map.add "moving" { in_spam = 4; in_ham = 27 }
+  |> Map.add "moylan" { in_spam = 0; in_ham = 5 }
+  |> Map.add "mozilla" { in_spam = 1; in_ham = 22 }
+  |> Map.add "mozillazine" { in_spam = 0; in_ham = 8 }
+  |> Map.add "mph" { in_spam = 0; in_ham = 7 }
+  |> Map.add "mplayer" { in_spam = 0; in_ham = 26 }
+  |> Map.add "mrs" { in_spam = 8; in_ham = 5 }
+  |> Map.add "msec" { in_spam = 0; in_ham = 6 }
+  |> Map.add "msg" { in_spam = 0; in_ham = 51 }
+  |> Map.add "msgchange" { in_spam = 0; in_ham = 9 }
+  |> Map.add "msgid" { in_spam = 4; in_ham = 9 }
+  |> Map.add "msgids" { in_spam = 0; in_ham = 8 }
+  |> Map.add "msgs" { in_spam = 0; in_ham = 36 }
+  |> Map.add "msgshow" { in_spam = 0; in_ham = 5 }
+  |> Map.add "mshtml" { in_spam = 24; in_ham = 4 }
+  |> Map.add "msie" { in_spam = 0; in_ham = 5 }
+  |> Map.add "msn" { in_spam = 3; in_ham = 39 }
+  |> Map.add "msnbc" { in_spam = 0; in_ham = 9 }
+  |> Map.add "msquadrat" { in_spam = 0; in_ham = 7 }
+  |> Map.add "mta" { in_spam = 0; in_ham = 15 }
+  |> Map.add "much" { in_spam = 68; in_ham = 324 }
+  |> Map.add "muddied" { in_spam = 0; in_ham = 7 }
+  |> Map.add "multimedia" { in_spam = 5; in_ham = 4 }
+  |> Map.add "multipart" { in_spam = 1; in_ham = 11 }
+  |> Map.add "multiple" { in_spam = 12; in_ham = 55 }
+  |> Map.add "multiples" { in_spam = 0; in_ham = 7 }
+  |> Map.add "multiply" { in_spam = 0; in_ham = 5 }
+  |> Map.add "munnari" { in_spam = 0; in_ham = 11 }
+  |> Map.add "murcko" { in_spam = 0; in_ham = 11 }
+  |> Map.add "murder" { in_spam = 0; in_ham = 13 }
+  |> Map.add "murderous" { in_spam = 0; in_ham = 5 }
+  |> Map.add "murphy" { in_spam = 0; in_ham = 81 }
+  |> Map.add "muscle" { in_spam = 7; in_ham = 5 }
+  |> Map.add "museum" { in_spam = 0; in_ham = 8 }
+  |> Map.add "music" { in_spam = 9; in_ham = 50 }
+  |> Map.add "musical" { in_spam = 0; in_ham = 6 }
+  |> Map.add "muslim" { in_spam = 0; in_ham = 13 }
+  |> Map.add "muslims" { in_spam = 0; in_ham = 9 }
+  |> Map.add "musser" { in_spam = 0; in_ham = 5 }
+  |> Map.add "must" { in_spam = 73; in_ham = 115 }
+  |> Map.add "mutual" { in_spam = 9; in_ham = 10 }
+  |> Map.add "mvfiaa" { in_spam = 0; in_ham = 76 }
+  |> Map.add "myjabber" { in_spam = 0; in_ham = 9 }
+  |> Map.add "myself" { in_spam = 12; in_ham = 51 }
+  |> Map.add "mysql" { in_spam = 1; in_ham = 10 }
+  |> Map.add "mysterious" { in_spam = 0; in_ham = 7 }
+  |> Map.add "mystery" { in_spam = 0; in_ham = 7 }
+  |> Map.add "myth" { in_spam = 0; in_ham = 7 }
+  |> Map.add "mytokenizer" { in_spam = 0; in_ham = 6 }
+  |> Map.add "nah" { in_spam = 0; in_ham = 7 }
+  |> Map.add "naive" { in_spam = 0; in_ham = 6 }
+  |> Map.add "name" { in_spam = 217; in_ham = 110 }
+  |> Map.add "named" { in_spam = 3; in_ham = 33 }
+  |> Map.add "namely" { in_spam = 2; in_ham = 6 }
+  |> Map.add "names" { in_spam = 32; in_ham = 34 }
+  |> Map.add "namespaces" { in_spam = 0; in_ham = 5 }
+  |> Map.add "naming" { in_spam = 0; in_ham = 5 }
+  |> Map.add "napster" { in_spam = 0; in_ham = 6 }
+  |> Map.add "narrow" { in_spam = 3; in_ham = 12 }
+  |> Map.add "nasa" { in_spam = 1; in_ham = 9 }
+  |> Map.add "nasdaq" { in_spam = 0; in_ham = 7 }
+  |> Map.add "nasty" { in_spam = 2; in_ham = 12 }
+  |> Map.add "nat" { in_spam = 0; in_ham = 7 }
+  |> Map.add "nation" { in_spam = 3; in_ham = 15 }
+  |> Map.add "nation's" { in_spam = 0; in_ham = 10 }
+  |> Map.add "national" { in_spam = 30; in_ham = 57 }
+  |> Map.add "nationals" { in_spam = 1; in_ham = 5 }
+  |> Map.add "nations" { in_spam = 1; in_ham = 24 }
+  |> Map.add "nationwide" { in_spam = 11; in_ham = 4 }
+  |> Map.add "native" { in_spam = 2; in_ham = 12 }
+  |> Map.add "nato" { in_spam = 1; in_ham = 5 }
+  |> Map.add "natural" { in_spam = 12; in_ham = 17 }
+  |> Map.add "naturally" { in_spam = 6; in_ham = 9 }
+  |> Map.add "nature" { in_spam = 10; in_ham = 25 }
+  |> Map.add "nbsp" { in_spam = 143; in_ham = 12 }
+  |> Map.add "ncid" { in_spam = 0; in_ham = 5 }
+  |> Map.add "nder" { in_spam = 0; in_ham = 8 }
+  |> Map.add "neale" { in_spam = 0; in_ham = 13 }
+  |> Map.add "near" { in_spam = 10; in_ham = 42 }
+  |> Map.add "nearby" { in_spam = 0; in_ham = 9 }
+  |> Map.add "nearest" { in_spam = 3; in_ham = 5 }
+  |> Map.add "nearing" { in_spam = 0; in_ham = 5 }
+  |> Map.add "nearly" { in_spam = 2; in_ham = 26 }
+  |> Map.add "neary" { in_spam = 0; in_ham = 6 }
+  |> Map.add "neat" { in_spam = 1; in_ham = 13 }
+  |> Map.add "necessarily" { in_spam = 0; in_ham = 21 }
+  |> Map.add "necessary" { in_spam = 10; in_ham = 36 }

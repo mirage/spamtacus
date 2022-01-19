@@ -20,7 +20,7 @@ module type FEATURE = sig
   val empty_db : db
 
   (* [train] and [extract] are used for the same thing *)
-  val train : db -> [`Ham | `Spam] -> t -> db
+  val train : db -> [ `Ham | `Spam ] -> t -> db
   val write_db : out_channel -> db -> unit
   val read_db : in_channel option -> db
 
