@@ -3,5 +3,4 @@
 (library
  (name spamtacus_bayesian)
  (public_name spamtacus-bayesian)
- (libraries spamtacus lwt)
-)
+ (libraries spamtacus lwt))
