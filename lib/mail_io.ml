@@ -19,6 +19,6 @@ exception ParsingError of string
 
 let parse fpath =
   let mail_str = read fpath in
-  match Angstrom.parse_string ~consume:All Mrmime.Mail.mail mail_str with
+  match Angstrom.parse_string ~consume:All (Mrmime.Mail.mail None) mail_str with
   | Ok s -> s
   | Error s -> raise (ParsingError s)

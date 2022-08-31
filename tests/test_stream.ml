@@ -167,6 +167,7 @@ let cmd =
       `P "$(tname) generate $(i,bayesian_filter/database/static_database.ml).";
     ]
   in
-  (Term.(ret (const run $ testing_corpus_dir)), Term.info "generate" ~doc ~man)
+  let info = Cmd.info "generate" ~doc ~man in
+  Cmd.v info Term.(ret (const run $ testing_corpus_dir))
 
-let () = Term.(exit_status @@ eval cmd)
+let () = exit @@ Cmd.eval' cmd
