@@ -26,7 +26,6 @@ module Map = Map.Make (struct
 end)
 
 type db = { nb_spam : int; nb_ham : int; freqs : freq Map.t }
-
 and freq = { in_spam : int; in_ham : int }
 
 let create () : db = { nb_spam = 0; nb_ham = 0; freqs = Map.empty }

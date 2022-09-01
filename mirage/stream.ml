@@ -10,7 +10,7 @@ let blit src src_off dst dst_off len =
    in several pieces, the [emitter] will be called each time with the
    same [header]. *)
 let parse ~emitters =
-  let parser = Mrmime.Mail.stream ~emitters in
+  let parser = Mrmime.Mail.stream emitters in
   (* Initializing the parser *)
   let state = ref (Angstrom.Unbuffered.parse parser) in
   (* queue for parsing bit by bit with Angstrom *)
