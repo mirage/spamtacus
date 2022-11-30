@@ -25,5 +25,5 @@ depends: [
 ]
 
 pin-depends: [
-  [ "mrmime.dev" "git+https://github.com/mirage/mrmime.git#6fab5c2d3e95ad8e87b23033ef55ca171a4b36cf" ]
+  [ "mrmime.dev" "git+https://github.com/mirage/mrmime.git#722eac6d6579c2f537ac7ac4b14684767f648171" ]
 ]
