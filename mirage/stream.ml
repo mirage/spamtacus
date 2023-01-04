@@ -45,12 +45,14 @@ let parse ~emitters =
         in
         `Continue
 
-let rec transfer_words src dst =
+let rec transfer_words wk src dst =
   Lwt_stream.get src >>= function
-  | None -> Lwt.return_unit
+  | None ->
+      Lwt.wakeup_later wk ();
+      Lwt.return_unit
   | Some word ->
       dst (Some word);
-      transfer_words src dst
+      transfer_words wk src dst
 
 and stream ?(bounds = 10) stream =
   let output, push = Lwt_stream.create () in
@@ -68,7 +70,7 @@ and stream ?(bounds = 10) stream =
     ((fun data -> Queue.push (`Data (id, data)) q), ())
   in
   let parse = parse ~emitters in
-  let rec go () =
+  let rec go ths =
     match Queue.pop q with
     | `Headers (headers, id) ->
         let stream, emitter = Lwt_stream.create_bounded bounds in
@@ -77,28 +79,31 @@ and stream ?(bounds = 10) stream =
         in
         let stream = Lwt_stream.flatten stream in
         Hashtbl.add tbl id emitter;
-        Lwt.async (fun () -> transfer_words stream push);
-        go ()
+        let th, wk = Lwt.task () in
+        Lwt.async (fun () -> transfer_words wk stream push);
+        go (th :: ths)
     | `Data (id, Some data) ->
         let push = Hashtbl.find tbl id in
-        push#push data >>= go
+        push#push data >>= fun () -> go ths
     | `Data (id, None) ->
         let push = Hashtbl.find tbl id in
         push#close;
-        go ()
+        go ths
     | exception Queue.Empty -> (
         Lwt_stream.get stream >>= fun data ->
         let data = match data with Some str -> `String str | None -> `Eof in
         match parse data with
-        | `Continue -> go ()
+        | `Continue -> go ths
         | `Done (headers, tree) ->
+            Lwt.join ths >>= fun () ->
             push None;
             Lwt.return_ok (headers, tree)
         | `Fail ->
+            Lwt.join ths >>= fun () ->
             push None;
             Lwt.return_error (`Msg "Invalid email"))
   in
-  (`Parse (go ()), output)
+  (`Parse (go []), output)
 (*
 
 
