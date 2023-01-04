@@ -1,40 +1,15 @@
 open Lwt.Infix
 
-(* The training set mails are a particular format: they might have an
-   additional first line that make the parsing goes wrong. In this
-   case, we ignore the first line. *)
-let invalid_first_line line =
-  if String.sub line 0 5 = "From " then true else false
-
-let first_line ic =
-  Lwt_io.read_line_opt ic >|= function
-  | None -> failwith "empty mail"
-  | Some line -> if invalid_first_line line then None else Some line
-
 let read ic =
-  let first = ref true in
-  let read_to_stream ic =
-    if !first then (
-      first := false;
-      first_line ic >>= function
-      | None ->
-          Lwt_io.read_line_opt ic
-          >|= Option.map (fun str -> (str ^ "\r\n", 0, String.length str))
-      | Some str -> Lwt.return_some (str ^ "\r\n", 0, String.length str))
-    else
-      Lwt.catch
-        (fun () ->
-          Lwt_io.read_line_opt ic
-          >|= Option.map (fun str -> (str ^ "\r\n", 0, String.length str)))
-        (function _ -> Lwt.return_none)
-  in
-  Lwt.return (fun () ->
-      read_to_stream ic >>= function
-      | None -> Lwt.return_none
-      | Some truc -> Lwt.return (Some truc))
+  Lwt_stream.from @@ fun () ->
+  match input_line ic with
+  | line -> Lwt.return (Some (line ^ "\r\n"))
+  | exception End_of_file -> Lwt.return_none
 
 let rank stream : Spamtacus.label Lwt.t =
-  Spamtacus_mirage.rank stream >>= fun (label, _mail_stream) -> Lwt.return label
+  Spamtacus_mirage.rank stream >>= function
+  | Ok (label, _) -> Lwt.return label
+  | Error (`Msg err) -> invalid_arg err
 
 let print_result filename label =
   Format.printf "File %s is a %s@." filename
@@ -46,15 +21,10 @@ let ranks (labelled_filenames : ([ `Ham | `Spam ] * string) list) :
     ([ `Ham | `Spam ] * label) list Lwt.t =
   Lwt_list.map_s
     (fun (label, filename) ->
-      Lwt.catch
-        (fun () ->
-          Lwt_io.open_file ~mode:Lwt_io.input filename >>= fun ic ->
-          read ic >>= fun input ->
-          rank input >>= fun res ->
-          Lwt_io.close ic >>= fun _ -> Lwt.return (label, (res :> label)))
-        (function
-          | Spamtacus_mirage.ParsingError _str -> Lwt.return (label, `Error)
-          | exn -> Lwt.fail exn))
+      let ic = open_in filename in
+      rank (read ic) >>= fun res ->
+      close_in ic;
+      Lwt.return (label, (res :> label)))
     labelled_filenames
 
 (* Extract all filenames in the training set directory.*)
