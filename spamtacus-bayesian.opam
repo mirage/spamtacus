@@ -1,10 +1,10 @@
 opam-version: "2.0"
-name:         "spamtacus"
+name:         "spamtacus-bayesian"
 maintainer:   "Carine Morel <carine@tarides.com>"
 authors:      "Carine Morel <carine@tarides.com>"
-homepage:     "https://github.com/lyrm/spamtacus"
-bug-reports:  "https://github.com/lyrm/spamtacus/issues"
-dev-repo:     "git+https://github.com/lyrm/spamtacus.git"
+homepage:     "https://github.com/mirage/spamtacus"
+bug-reports:  "https://github.com/mirage/spamtacus/issues"
+dev-repo:     "git+https://github.com/mirage/spamtacus.git"
 license:      "MIT"
 synopsis:     "Spam filter in OCaml"
 description: """Naive bayesian spam filter implementation."""
@@ -17,6 +17,6 @@ depends: [
   "ocaml"      {>= "4.08.0"}
   "dune"       {>= "2.0.0"}
   "lwt"        {>= "5.5.0"}
-  "fpath"        {>= "0.7.3"}
-  "spamtacus"       {= version}
+  "fpath"      {>= "0.7.3"}
+  "spamtacus"  {= version}
 ]
