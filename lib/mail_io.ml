@@ -1,24 +1,14 @@
-let read fpath =
-  let filename = Fpath.to_string fpath in
-  let ic = open_in filename in
-  (* drop first line *)
-  let first_line = input_line ic in
-  let acc =
-    if String.sub first_line 0 5 = "From " then [] else [ first_line ]
-  in
-  let rec go acc =
-    match input_line ic with
-    | line -> go ((line ^ "\r\n") :: acc)
-    | exception End_of_file -> List.rev acc
-  in
-  let lines = go acc in
-  close_in ic;
-  String.concat "" lines
-
-exception ParsingError of string
+let msgf fmt = Fmt.kstr (fun msg -> `Msg msg) fmt
 
 let parse fpath =
-  let mail_str = read fpath in
-  match Angstrom.parse_string ~consume:All (Mrmime.Mail.mail None) mail_str with
-  | Ok s -> s
-  | Error s -> raise (ParsingError s)
+  let ic = open_in (Fpath.to_string fpath) in
+  let ln = in_channel_length ic in
+  let bs = Bytes.create ln in
+  really_input ic bs 0 ln;
+  close_in ic;
+  match
+    Angstrom.parse_string ~consume:All (Mrmime.Mail.mail None)
+      (Bytes.unsafe_to_string bs)
+  with
+  | Ok v -> Ok v
+  | Error _ -> Error (msgf "Invalid email: %a" Fpath.pp fpath)
