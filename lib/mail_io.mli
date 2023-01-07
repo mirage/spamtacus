@@ -1,3 +1,3 @@
-exception ParsingError of string
-
-val parse : Fpath.t -> Mrmime.Header.t * string Mrmime.Mail.t
+val parse :
+  Fpath.t ->
+  (Mrmime.Header.t * string Mrmime.Mail.t, [> `Msg of string ]) result
